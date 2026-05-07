@@ -6,29 +6,29 @@
 <title>Regency Life — A Dynasty of Society, Scandal & Legacy</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream: #f5f0e8; --parchment: #ede4d0; --dark-parchment: #d4c9a8;
-  --ink: #1a1208; --ink-light: #3d2e12; --gold: #9a7d3a; --gold-light: #c4a45a;
-  --burgundy: #6b1f2a; --burgundy-light: #a33040; --sage: #4a6741; --sage-light: #6a9465;
-  --navy: #1c2e4a; --blush: #c87070; --shadow: rgba(26,18,8,0.15); --rose: #9e4a6a;
+:root{
+  --cream:#f5f0e8;--parchment:#ede4d0;--dark-parchment:#d4c9a8;
+  --ink:#1a1208;--ink-light:#3d2e12;--gold:#9a7d3a;--gold-light:#c4a45a;
+  --burgundy:#6b1f2a;--burgundy-light:#a33040;--sage:#4a6741;--sage-light:#6a9465;
+  --navy:#1c2e4a;--blush:#c87070;--shadow:rgba(26,18,8,0.15);--rose:#9e4a6a;
+  --purple:#5a3a7a;--teal:#2a6a6a;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--ink);background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(154,125,58,0.03) 40px,rgba(154,125,58,0.03) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(154,125,58,0.03) 40px,rgba(154,125,58,0.03) 41px);min-height:100vh;font-family:'Cormorant Garamond',serif;color:var(--ink);display:flex;flex-direction:column;align-items:center;}
 #splash{min-height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse at center,#2a1f10 0%,#0d0a05 100%);}
 .splash-ornament{font-size:2rem;color:var(--gold);letter-spacing:0.5rem;margin-bottom:1rem;}
 .splash-title{font-family:'IM Fell English',serif;font-size:clamp(2.5rem,7vw,5rem);color:var(--gold-light);text-align:center;line-height:1.1;text-shadow:0 0 40px rgba(154,125,58,0.4);margin-bottom:0.3rem;}
-.splash-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.4rem);color:var(--dark-parchment);text-align:center;margin-bottom:3rem;letter-spacing:0.1em;}
-.splash-border{border:1px solid var(--gold);border-radius:2px;padding:2.5rem;max-width:620px;width:100%;background:rgba(26,18,8,0.6);position:relative;}
+.splash-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.4rem);color:var(--dark-parchment);text-align:center;margin-bottom:2rem;letter-spacing:0.1em;}
+.splash-border{border:1px solid var(--gold);border-radius:2px;padding:2rem;max-width:640px;width:100%;background:rgba(26,18,8,0.6);position:relative;}
 .splash-border::before,.splash-border::after{content:'❧';position:absolute;color:var(--gold);font-size:1.5rem;}
 .splash-border::before{top:-0.85rem;left:50%;transform:translateX(-50%);background:#0d0a05;padding:0 0.5rem;}
 .splash-border::after{bottom:-0.85rem;left:50%;transform:translateX(-50%) rotate(180deg);background:#0d0a05;padding:0 0.5rem;}
-.form-group{margin-bottom:1.2rem;}
-.form-label{display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.4rem;}
-.form-input,.form-select{width:100%;background:rgba(245,240,232,0.07);border:1px solid rgba(154,125,58,0.4);border-radius:2px;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.05rem;padding:0.6rem 0.9rem;outline:none;transition:border-color 0.2s;}
+.form-group{margin-bottom:1.1rem;}
+.form-label{display:block;font-size:0.74rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.35rem;}
+.form-input,.form-select{width:100%;background:rgba(245,240,232,0.07);border:1px solid rgba(154,125,58,0.4);border-radius:2px;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1rem;padding:0.55rem 0.85rem;outline:none;transition:border-color 0.2s;}
 .form-input:focus,.form-select:focus{border-color:var(--gold-light);}
 .form-select option{background:#1a1208;color:var(--cream);}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
 .btn-primary{width:100%;padding:0.85rem;background:var(--gold);border:none;border-radius:2px;color:var(--ink);font-family:'IM Fell English',serif;font-size:1.1rem;cursor:pointer;letter-spacing:0.05em;transition:background 0.2s;margin-top:0.5rem;}
 .btn-primary:hover{background:var(--gold-light);}
 .btn-small{padding:0.25rem 0.8rem;background:rgba(154,125,58,0.2);border:1px solid var(--gold);border-radius:2px;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:0.8rem;cursor:pointer;transition:all 0.15s;}
@@ -205,7 +205,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
 </style>
 </head>
 <body>
- 
+
 <!-- ═══════════════════════ SPLASH ═══════════════════════ -->
 <div id="splash">
   <div class="splash-ornament">— ✦ —</div>
@@ -275,7 +275,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     <button class="btn-primary" onclick="beginGame()">✦ Begin Your Story ✦</button>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════ GAME SHELL ═══════════════════════ -->
 <div id="game-shell">
   <div class="game-header">
@@ -292,7 +292,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     </div>
     <button class="year-btn" onclick="advanceYear()">⏳ Age One Year</button>
   </div>
- 
+
   <div class="game-body">
     <div class="main-panel">
       <div class="tab-row">
@@ -318,7 +318,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
       <div class="tab-content" id="tab-dynasty"><div id="dynasty-content"></div></div>
       <div class="tab-content" id="tab-gossip"><div id="gossip-content"></div></div>
     </div>
- 
+
     <div class="side-panel">
       <div class="money-display"><span class="money-label">Annual Income</span>£<span id="money-val">0</span></div>
       <div class="money-display" style="color:var(--sage)"><span class="money-label">Savings</span>£<span id="savings-val">0</span></div>
@@ -344,7 +344,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     </div>
   </div>
 </div>
- 
+
 <!-- MODAL -->
 <div class="modal-overlay hidden" id="modal">
   <div class="modal-box">
@@ -354,7 +354,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     <div class="modal-choices" id="modal-choices"></div>
   </div>
 </div>
- 
+
 <!-- PROFILE MODAL -->
 <div class="modal-overlay hidden" id="profile-modal">
   <div class="profile-modal">
@@ -375,7 +375,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     </div>
   </div>
 </div>
- 
+
 <script>
 'use strict';
 // ═══════════════════════════════════════════════════════
@@ -384,18 +384,18 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
 const NAMES_F=['Eleanor','Charlotte','Sophia','Caroline','Anne','Georgiana','Isabella','Louisa','Beatrice','Cecilia','Arabella','Josephine','Marianne','Victoria','Rosamund','Henrietta','Adelaide','Florence','Emmeline','Juliana','Harriet','Emma','Jane','Lydia','Diana','Penelope','Augusta','Eliza','Clara','Prudence','Constance','Frances','Margaret','Catherine','Alice','Helena','Dorothea','Millicent'];
 const NAMES_M=['Henry','Edward','Frederick','Charles','George','Arthur','William','Theodore','Sebastian','Edmund','Benedict','Percival','Nathaniel','Philip','Julian','Christopher','Alexander','Thomas','Francis','Alistair','James','Robert','Hugo','Reginald','Fitzwilliam','Lawrence','Oliver','Marcus','Rupert','Cornelius','Richard','Walter','Gilbert','Ambrose','Phineas','Maximilian'];
 const SURNAMES=['Ashbourne','Cavendish','Blackwood','Montague','Sinclair','Hawthorne','Ravenshire','Pembroke','Whitmore','Fairfax','Wycliffe','Beaumont','Lancaster','Everly','Harrington','Northcott','Alderidge','Bellamy','Rosenthal','Kingsleigh','Worthington','Crawford','Ferrars','Dashwood','Weston','Churchill','Elliot','Musgrove','Bingley','Darcy','Thornton','Wickham','Bertram','Collingwood','Farnsworth','Greystone'];
- 
+
 const NOBLE_RANKS=['duke','marquess','earl','viscount','baron','baronet'];
 const NOBLE_RANK_WEIGHTS=[0.04,0.07,0.14,0.2,0.27,0.28];
 const NOBLE_RANK_PRESTIGE={duke:100,marquess:85,earl:70,viscount:55,baron:42,baronet:30};
 const NOBLE_RANK_INCOME={duke:15000,marquess:8000,earl:5000,viscount:3000,baron:1800,baronet:900};
- 
+
 const DUKE_TITLES=['Duke of Ashbourne','Duke of Ravenshire','Duke of Westmarch','Duke of Thornfield','Duke of Northvale','Duke of Hartwick','Duke of Dunraven','Duke of Highclere','Duke of Kingsford','Duke of Briarwood'];
 const MARQUESS_TITLES=['Marquess of Aldermere','Marquess of Briarstone','Marquess of Hartwell','Marquess of Dunleigh','Marquess of Eastmere','Marquess of Greymoor','Marquess of Thornhaven','Marquess of Riverbourne'];
 const EARL_TITLES=['Earl of Westwood','Earl of Ashford','Earl of Bellshire','Earl of Thornwick','Earl of Highmere','Earl of Northwick','Earl of Foxhall','Earl of Dunmere','Earl of Blackwater','Earl of Greystone'];
 const VISCOUNT_TITLES=['Viscount Ravensby','Viscount Alderley','Viscount Fairmont','Viscount Thornwell','Viscount Rosecroft','Viscount Dunfield','Viscount Foxcroft','Viscount Hartmere'];
 const BARON_TITLES=['Baron Ashwick','Baron Thornfield','Baron Foxmere','Baron Bellshire','Baron Wintermere','Baron Crowfield','Baron Silverhall','Baron Blackthorn'];
- 
+
 // ═══════════════════════════════════════════════════════
 //  CAREER DATA — GENDER & CLASS SEPARATED
 // ═══════════════════════════════════════════════════════
@@ -412,7 +412,7 @@ const MALE_CAREERS = {
     {title:'Country Solicitor',income:200,rep:5,requiresUni:true,desc:'Law in the county town. Respectable and steady.'},
     {title:'Clergyman',income:150,rep:8,requiresUni:false,desc:'A living in the Church. Modest income, high moral standing.'},
     {title:'Military Officer',income:120,rep:8,requiresUni:false,desc:'A commission in the infantry or cavalry.'},
-    {title:'Land Steward',income:180,rep:3,requiresUni:false,desc:'Managing another's estate. Useful but not glamorous.'},
+    {title:'Land Steward',income:180,rep:3,requiresUni:false,desc:'Managing another\'s estate. Useful but not glamorous.'},
     {title:'Physician',income:280,rep:8,requiresUni:true,desc:'Medicine is respectable and increasingly well-paid.'},
     {title:'Banker',income:400,rep:-2,requiresUni:false,desc:'Finance and commerce. Profitable, slightly vulgar.'},
   ],
@@ -434,7 +434,7 @@ const MALE_CAREERS = {
     {title:'Merchant\'s Assistant',income:70,rep:-1,requiresUni:false,desc:'Learning trade from the bottom.'},
   ],
 };
- 
+
 const FEMALE_EDUCATIONS = {
   nobility: [
     {title:'Advanced Finishing School',cost:300,charm:15,composure:12,education:12,wit:5,desc:'The finest establishment. Languages, music, deportment perfected.'},
@@ -463,7 +463,7 @@ const FEMALE_EDUCATIONS = {
     {title:'Older Sibling\'s Teaching',cost:0,wit:4,education:3,desc:'What knowledge can be passed on within the family.'},
   ],
 };
- 
+
 const FEMALE_CAREERS = {
   nobility: [
     {title:'Society Hostess',income:0,rep:10,desc:'Running the social calendar of a great house. Influence without payment.'},
@@ -493,9 +493,9 @@ const FEMALE_CAREERS = {
     {title:'Nanny',income:20,rep:-1,desc:'Caring for the children of others.'},
   ],
 };
- 
+
 const UNIV_SUBJECTS_M=['Law','Medicine','Politics & History','Theology','Literature','Natural Philosophy','Military Science','Architecture'];
- 
+
 // ═══════════════════════════════════════════════════════
 //  CLASSES & BACKGROUNDS
 // ═══════════════════════════════════════════════════════
@@ -512,7 +512,7 @@ const BG_DATA={
   tragic:{desc:'You lost a parent early. Grief has given you depth and resilience.',repMod:0,charmMod:5,virtMod:8,witMod:10,confMod:8,healthMod:-5,savingsMod:-300,educMod:10,traitMod:'Resilient'},
   scholarly:{desc:'An unusually bookish youth — Latin, history, natural philosophy.',repMod:3,charmMod:-3,virtMod:8,witMod:20,confMod:5,healthMod:0,savingsMod:0,educMod:35,traitMod:'Scholarly'},
 };
- 
+
 const HOUSEHOLD_EXPENSES={
   nobility:{servants:1200,estate:2000,carriages:400,clothing:800,entertainment:600},
   gentry:{servants:300,estate:400,carriages:120,clothing:200,entertainment:150},
@@ -531,7 +531,7 @@ const ESTATE_IMPROVEMENTS=[
   {name:'Chapel',cost:800,prestige:8,income:0,desc:'Private worship; virtue improves.',emoji:'⛪'},
   {name:'Orangery',cost:700,prestige:7,income:30,desc:'Fashionable and fragrant.',emoji:'🍊'},
 ];
- 
+
 // ═══════════════════════════════════════════════════════
 //  TRAITS
 // ═══════════════════════════════════════════════════════
@@ -557,7 +557,7 @@ const ALL_TRAITS=[
   {name:'Hot-Tempered',type:'negative',effects:{composure:-8,confidence:+5},desc:'Your patience is not infinite — and it shows.'},
   {name:'Cynical',type:'negative',effects:{wit:+5,virtue:-5},desc:'You expect the worst and are rarely surprised.'},
 ];
- 
+
 // ═══════════════════════════════════════════════════════
 //  EVENTS & GOSSIP
 // ═══════════════════════════════════════════════════════
@@ -604,7 +604,7 @@ const GOSSIP_LINES=[
   '"It is whispered that Lord {title}\'s eldest is not precisely legitimate."',
   '"The Colonel returned wounded — and engaged to a French woman."',
 ];
- 
+
 // ═══════════════════════════════════════════════════════
 //  CHILDHOOD EVENTS
 // ═══════════════════════════════════════════════════════
@@ -628,7 +628,7 @@ const CHILDHOOD_EVENTS={
   16:[{icon:'💋',headline:'A Stolen Kiss',detail:'Behind the rose arbour at a garden party.',type:'scandal',effects:{charm:5,scandal:10,confidence:8}},{icon:'🎓',headline:'Education Complete',detail:'Your formal schooling concludes. You are pronounced accomplished.',type:'good',effects:{wit:8,education:15,charm:5}}],
   17:[{icon:'🌸',headline:'On the Threshold',detail:'You stand on the edge of Society. The Season approaches.',type:'good',effects:{charm:5,composure:5}}],
 };
- 
+
 // ═══════════════════════════════════════════════════════
 //  NPC GENERATION
 // ═══════════════════════════════════════════════════════
@@ -636,13 +636,13 @@ const NPC_TRAITS_LIST=['Charming','Witty','Proud','Ambitious','Gentle','Bold','S
 let WORLD_NPCS=[];
 let G={};
 let selectedClass='nobility';
- 
+
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function clamp(v,mn=0,mx=100){return Math.max(mn,Math.min(mx,v));}
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function pickN(arr,n){const a=[...arr];const r=[];for(let i=0;i<n&&a.length;i++)r.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);return r;}
 function wt(text,...args){return text.replace(/\{(\d+)\}/g,(_,i)=>args[i]??'?');}
- 
+
 function generateNPCPool(count,forGender){
   const pool=[];
   const classes=['nobility','nobility','gentry','gentry','gentry','middling','middling','poor'];
@@ -679,7 +679,7 @@ function generateNPCPool(count,forGender){
   }
   return pool;
 }
- 
+
 function assignNobleRank(){
   let cum=0;const r=Math.random();
   for(let i=0;i<NOBLE_RANKS.length;i++){
@@ -688,7 +688,7 @@ function assignNobleRank(){
   }
   return{rank:'baronet',tier:5,prestige:30};
 }
- 
+
 function formatNPCTitle(rankObj,gender,fname,lname){
   if(!rankObj)return gender==='gentleman'?`Mr. ${fname} ${lname}`:`Miss ${fname} ${lname}`;
   const{rank}=rankObj;
@@ -700,7 +700,7 @@ function formatNPCTitle(rankObj,gender,fname,lname){
   if(rank==='baronet')return gender==='gentleman'?`Sir ${fname} ${lname}`:`Lady ${fname} ${lname}`;
   return `${gender==='gentleman'?'Mr.':'Miss'} ${fname} ${lname}`;
 }
- 
+
 function genNPCDesc(sc,isMale){
   const d={
     nobility_m:['A man of considerable consequence with a fine estate and proud demeanour.','His address is impeccable; his intentions less certain.','Possessed of ten thousand a year and a somewhat cold manner.','A decorated officer recently returned from the Continent.','A younger son of the peerage — charming and quite without scruple.'],
@@ -715,13 +715,13 @@ function genNPCDesc(sc,isMale){
   const key=`${sc==='poor'?'poor':sc==='middling'?'middling':sc}_${isMale?'m':'f'}`;
   return pick(d[key]||['A person of some interest.']);
 }
- 
+
 // Noble rank for player
 function assignNobleTitle(gender,lname){
   const rk=assignNobleRank();
   return{rank:rk.rank,tier:rk.tier,prestige:rk.prestige,titleStr:formatPlayerTitle(rk,gender,G.fname||'',lname)};
 }
- 
+
 function formatPlayerTitle(rankObj,gender,fname,lname){
   if(!rankObj)return gender==='lady'?'Miss':'Mr.';
   const{rank}=rankObj;
@@ -734,7 +734,7 @@ function formatPlayerTitle(rankObj,gender,fname,lname){
   if(rank==='baronet')return g?`Sir ${fname} ${lname}`:`Lady ${fname} ${lname}`;
   return g?`Mr. ${fname} ${lname}`:`Miss ${fname} ${lname}`;
 }
- 
+
 function getShortTitle(gender,married){
   if(!G.nobleRank){
     if(gender==='lady')return married?'Mrs.':'Miss';
@@ -747,12 +747,12 @@ function getShortTitle(gender,married){
   if(rank==='baronet')return g?'Sir':'Lady';
   return gender==='lady'?(married?'Mrs.':'Miss'):'Mr.';
 }
- 
+
 function getRankPrestige(){
   if(!G.nobleRank)return 0;
   return NOBLE_RANK_PRESTIGE[G.nobleRank.rank]||0;
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  FRIENDS POOLS
 // ═══════════════════════════════════════════════════════
@@ -776,7 +776,7 @@ const FRIEND_POOL_LOW=[
   {name:'Thomas Moore',role:'Artist',benefit:'Portrait, charm boost',risk:'Eccentric associations',personality:'creative',tier:'low'},
   {name:'Sister Agnes',role:'Charity Worker',benefit:'Virtue boost',risk:'Considered excessively pious',personality:'kind',tier:'low'},
 ];
- 
+
 // ═══════════════════════════════════════════════════════
 //  UTILITY FUNCTIONS
 // ═══════════════════════════════════════════════════════
@@ -791,7 +791,7 @@ function updateNameByGender(){
   if(NAMES_F.includes(curr)||NAMES_M.includes(curr))document.getElementById('char-fname').value=pick(g==='lady'?NAMES_F:NAMES_M);
 }
 function selectClass(el){document.querySelectorAll('.class-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');selectedClass=el.dataset.class;}
- 
+
 function addEvent(icon,headline,detail='',type='neutral'){
   G.events.unshift({year:G.year,age:G.age,icon,headline,detail,type});
 }
@@ -802,7 +802,7 @@ function addNPCMemory(npcId,text){
   const npc=WORLD_NPCS.find(n=>n.id===npcId);
   if(npc)npc.memories.push({year:G.year,text});
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  BEGIN GAME
 // ═══════════════════════════════════════════════════════
@@ -815,11 +815,11 @@ function beginGame(){
   const cd=CLASS_DATA[selectedClass];
   const bg=BG_DATA[background];
   const nobleRank=selectedClass==='nobility'?assignNobleTitle(gender,lname):null;
- 
+
   // Assign initial traits
   const startTraits=[bg.traitMod];
   if(Math.random()<0.5)startTraits.push(pick(ALL_TRAITS.filter(t=>!startTraits.includes(t.name))).name);
- 
+
   G={
     fname,lname,gender,year,startYear:year,
     socialClass:selectedClass,background,nobleRank,
@@ -854,28 +854,28 @@ function beginGame(){
     careerProspects:[],// regenerated on demand
     worldYear:year,
   };
- 
+
   generateFamily();
   WORLD_NPCS=generateNPCPool(35,gender);
- 
+
   const titleStr=nobleRank?nobleRank.titleStr:`${gender==='lady'?'Miss':'Mr.'} ${fname} ${lname}`;
   addEvent('👶','Born into the World',`${titleStr} enters the world on a ${pick(['crisp autumn','mild spring','cold winter','warm summer'])} morning in ${year}.\n\n${bg.desc}${nobleRank?`\n\nYou are born to the rank of ${nobleRank.rank.charAt(0).toUpperCase()+nobleRank.rank.slice(1)} — ${getRankNote(nobleRank.rank)}`:''}`,'good');
- 
+
   document.getElementById('splash').style.display='none';
   document.getElementById('game-shell').style.display='block';
   renderAll();
   showTab('chronicle',true);
 }
- 
+
 function getRankNote(rank){
   const notes={duke:'the highest rank below royalty. All doors are open to you.',marquess:'among the most prestigious of titles. Society watches your every move.',earl:'highly respected; the backbone of the English nobility.',viscount:'respectable nobility; accepted in all the best circles.',baron:'the lowest rank of the Peerage proper; still a lord in every sense.',baronet:'technically noble, but regarded as little above the gentry by the higher ranks.'};
   return notes[rank]||'a notable rank in English society.';
 }
- 
+
 function generateFamily(){
   const ln=G.lname;
   const nr=G.nobleRank;
- 
+
   // Father title
   let fTitle='Mr.',mTitle='Mrs.';
   if(nr){
@@ -889,7 +889,7 @@ function generateFamily(){
   }
   G.relationships.push({id:'father',name:`${fTitle} ${fTitle.startsWith('Sir')||fTitle.startsWith('Mr.')?pick(NAMES_M)+' '+ln:''}`.trim()||`${fTitle}`,type:'Father',category:'Family',affection:rand(65,90),opinion:rand(65,85),trust:rand(70,95),emoji:'👨',age:rand(38,55),health:rand(55,90),isMale:true,memories:[]});
   G.relationships.push({id:'mother',name:`${mTitle} ${mTitle.startsWith('Mrs.')?pick(NAMES_F)+' '+ln:''}`.trim()||`${mTitle}`,type:'Mother',category:'Family',affection:rand(70,95),opinion:rand(70,90),trust:rand(75,95),emoji:'👩',age:rand(35,50),health:rand(55,90),isMale:false,memories:[]});
- 
+
   const sibCount=rand(1,3);
   for(let i=0;i<sibCount;i++){
     const isMale=Math.random()<0.5;
@@ -914,25 +914,25 @@ function generateFamily(){
     emoji:isAunt?'👩‍🦰':'👨‍🦰',age:rand(35,58),health:rand(60,90),isMale:!isAunt,memories:[],
   });
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  ADVANCE YEAR
 // ═══════════════════════════════════════════════════════
 function advanceYear(){
   if(G.dead)return;
   G.age++;G.year++;G.worldYear++;
- 
+
   // AGE FAMILY
   G.relationships.forEach(r=>{if(r.age!==undefined)r.age++;});
   // AGE CHILDREN — BUG FIX: always age children each year
   G.children.forEach(c=>c.age++);
- 
+
   // PREGNANCY
   if(G.pregnant){
     G.pregnancyMonth=(G.pregnancyMonth||0)+9;
     if(G.pregnancyMonth>=9){resolvePregnancy();return;}
   }
- 
+
   // UNIVERSITY (males only in this era, females get finishing school)
   if(G.atUniversity){
     G.universityYear++;
@@ -951,7 +951,7 @@ function advanceYear(){
     }
     renderAll();return;
   }
- 
+
   // CHILDHOOD (age 0-17)
   if(G.age<18){
     triggerChildhoodEvent();
@@ -960,7 +960,7 @@ function advanceYear(){
     else G.health=clamp(G.health+rand(0,3));
     renderAll();return;
   }
- 
+
   // DEBUT
   if(G.age===18&&!G.hasDebuted){
     G.hasDebuted=true;
@@ -969,7 +969,7 @@ function advanceYear(){
     addEvent('🌸','Your Debut',`${getShortTitle(G.gender,false)} ${G.fname} ${G.lname} makes their entrance into Society. ${G.gender==='lady'?'She':'He'} is received with ${G.reputation>65?'warm admiration':'polite curiosity'}.${rankBonus}`,'good');
     addMemory('Made my debut in Society in '+G.year,'positive');
   }
- 
+
   // HEALTH & DEATH — adjusted to be much less lethal
   const baseRisk=G.age<30?0.004:G.age<45?0.008:G.age<60?0.018:G.age<70?0.04:0.075;
   const wealthBonus=G.socialClass==='nobility'?0.006:G.socialClass==='gentry'?0.004:G.socialClass==='middling'?0.002:0;
@@ -980,7 +980,7 @@ function advanceYear(){
   // Health drift
   const aging=G.age>50?-rand(1,3):G.age>38?-rand(0,2):rand(-1,2);
   G.health=clamp(G.health+aging);
- 
+
   // FAMILY MEMBER DEATHS (rare)
   G.relationships.filter(r=>r.category==='Family').forEach(r=>{
     if(r.health<20&&Math.random()<0.2){
@@ -991,11 +991,11 @@ function advanceYear(){
       r.health=Math.max(5,r.health-rand(0,2));
     }
   });
- 
+
   // FERTILITY
   if(G.age>32)G.fertility=clamp(G.fertility-rand(1,3));
   if(G.age>42)G.fertility=clamp(G.fertility-rand(2,5));
- 
+
   // FINANCES
   const exp=HOUSEHOLD_EXPENSES[G.socialClass];
   const totalExp=Object.values(exp).reduce((a,b)=>a+b,0);
@@ -1003,18 +1003,18 @@ function advanceYear(){
   G.savings+=net;
   if(G.savings<0&&G.debtLevel<4){G.debtLevel++;G.savings=0;addEvent('💸','Debt Deepens','Creditors are becoming insistent.','scandal');}
   if(G.debtLevel>=4&&G.savings<-800){endGame('ruin');return;}
- 
+
   // SCANDAL DECAY
   G.scandal=clamp(G.scandal-rand(2,6),0,100);
- 
+
   G.seasonCount++;
   G.friends.forEach(f=>f.turnsKnown=(f.turnsKnown||0)+1);
- 
+
   triggerSeasonEvents();
   checkAchievements();
   renderAll();
 }
- 
+
 function triggerSeasonEvents(){
   triggerMainEvent();
   if(Math.random()<0.38){
@@ -1028,28 +1028,28 @@ function triggerSeasonEvents(){
   // Noble rank-specific events
   if(G.nobleRank&&G.nobleRank.tier<=2&&Math.random()<0.2)triggerNobleRankEvent();
 }
- 
+
 function triggerNobleRankEvent(){
   const rank=G.nobleRank.rank;
   const events={
     duke:[
       ()=>showModal('👑','A Royal Summons',`His Majesty's Court requests your attendance. As ${formatPlayerTitle(G.nobleRank,G.gender,G.fname,G.lname)}, you are among those expected at Court.`,
-        [{label:'Attend with full ceremony (Rep +15)',fn:()=>{G.reputation=clamp(G.reputation+15);G.savings-=200;addEvent('👑','Royal Attendance','Your attendance at Court was marked with favour.',\n'good');renderAll();}},
+        [{label:'Attend with full ceremony (Rep +15)',fn:()=>{G.reputation=clamp(G.reputation+15);G.savings-=200;addEvent('👑','Royal Attendance','Your attendance at Court was marked with favour.','good');renderAll();}},
          {label:'Send apologies (Rep -5)',fn:()=>{G.reputation=clamp(G.reputation-5);addEvent('📜','Absent from Court','Your absence was noted.','neutral');renderAll();}}]),
       ()=>showModal('🏛️','A Parliamentary Vote',`The Lords require your vote on a pressing matter of national significance.`,
-        [{label:'Vote with the Government',fn:()=>{G.reputation=clamp(G.reputation+5);addEvent('🏛️','Parliamentary Duty','You voted as expected.',\n'neutral');renderAll();}},
-         {label:'Vote with the Opposition (bold)',fn:()=>{G.confidence=clamp(G.confidence+8);G.reputation=clamp(G.reputation-3);addEvent('🏛️','An Independent Vote','Your independence was noted — with mixed feelings.',\n'neutral');renderAll();}}]),
+        [{label:'Vote with the Government',fn:()=>{G.reputation=clamp(G.reputation+5);addEvent('🏛️','Parliamentary Duty','You voted as expected.','neutral');renderAll();}},
+         {label:'Vote with the Opposition (bold)',fn:()=>{G.confidence=clamp(G.confidence+8);G.reputation=clamp(G.reputation-3);addEvent('🏛️','An Independent Vote','Your independence was noted — with mixed feelings.','neutral');renderAll();}}]),
     ],
     marquess:[
       ()=>showModal('📜','A Marriage Alliance Proposed',`A great family seeks an alliance through marriage with yours. This could be significant.`,
-        [{label:'Express interest (Family prestige +10)',fn:()=>{G.dynasty.prestige+=10;G.reputation=clamp(G.reputation+5);addEvent('📜','A Proposed Alliance','The families exchange formal expressions of interest.',\n'good');renderAll();}},
-         {label:'Decline politely',fn:()=>{addEvent('📜','Alliance Declined','You declined with courtesy.',\n'neutral');renderAll();}}]),
+        [{label:'Express interest (Family prestige +10)',fn:()=>{G.dynasty.prestige+=10;G.reputation=clamp(G.reputation+5);addEvent('📜','A Proposed Alliance','The families exchange formal expressions of interest.','good');renderAll();}},
+         {label:'Decline politely',fn:()=>{addEvent('📜','Alliance Declined','You declined with courtesy.','neutral');renderAll();}}]),
     ],
   };
   const rankEvents=events[rank]||events.marquess||[];
   if(rankEvents.length)pick(rankEvents)();
 }
- 
+
 function triggerChildhoodEvent(){
   // Get the event for current age, or nearest lower age
   const ages=Object.keys(CHILDHOOD_EVENTS).map(Number).filter(k=>k<=G.age).sort((a,b)=>b-a);
@@ -1067,7 +1067,7 @@ function triggerChildhoodEvent(){
   }
   if(G.age>=12&&Math.random()<0.3)triggerTeenChoice();
 }
- 
+
 function triggerTeenChoice(){
   const female=G.gender==='lady';
   const choices=[
@@ -1083,7 +1083,7 @@ function triggerTeenChoice(){
   ];
   pick(choices)();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  MAIN EVENT
 // ═══════════════════════════════════════════════════════
@@ -1124,7 +1124,7 @@ function triggerMainEvent(){
     specialNarrativeEvent();
   }
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  COURTSHIP SYSTEM
 // ═══════════════════════════════════════════════════════
@@ -1134,13 +1134,13 @@ function progressCourtships(){
     c.affection=Math.min(100,c.affection+rand(0,2));
   });
 }
- 
+
 function openProspectProfile(npcId){
   const npc=WORLD_NPCS.find(n=>n.id===npcId)||G.courtships.find(n=>n.id===npcId);
   if(!npc)return;
   showProfileModal(npc,'prospect');
 }
- 
+
 function showProfileModal(person,type){
   const fem=!person.isMale;
   document.getElementById('pm-avatar').textContent=person.isMale?'👨':'👩';
@@ -1152,24 +1152,24 @@ function showProfileModal(person,type){
     rBadge.innerHTML=`<span class="profile-rank-badge rank-${rankObj.rank}">${rankObj.rank.charAt(0).toUpperCase()+rankObj.rank.slice(1)} — Prestige ${rankObj.prestige}/100</span>`;
     rBadge.style.display='block';
   } else rBadge.style.display='none';
- 
+
   document.getElementById('pm-title-line').textContent=`${person.classLabel||''} · Age ${person.age||'?'} · £${(person.income||0).toLocaleString()}/yr`;
- 
+
   // Traits
   document.getElementById('pm-traits').innerHTML=(person.traits||[]).map(t=>`<span class="trait-badge">${t}</span>`).join('');
- 
+
   // Memory of this person
   const memEl=document.getElementById('pm-memory');
   if(person.memories&&person.memories.length>0){
     memEl.style.display='block';
     memEl.innerHTML='<strong>Their memories of you:</strong><br>'+person.memories.slice(-2).map(m=>`"${m.text}" (${m.year})`).join('<br>');
   } else memEl.style.display='none';
- 
+
   const inCourtship=G.courtships.find(c=>c.id===person.id);
   const courtshipPct=inCourtship?inCourtship.courtship:0;
   const affection=inCourtship?inCourtship.affection:(person.affection||0);
   const trust=inCourtship?inCourtship.trust:(person.trust||0);
- 
+
   document.getElementById('pm-stats').innerHTML=`
     <div class="profile-stat"><div class="profile-stat-label">Charm</div><div class="profile-stat-val">${person.charm||'?'}</div></div>
     <div class="profile-stat"><div class="profile-stat-label">Virtue</div><div class="profile-stat-val">${person.virtue||'?'}</div></div>
@@ -1177,9 +1177,9 @@ function showProfileModal(person,type){
     <div class="profile-stat"><div class="profile-stat-label">Health</div><div class="profile-stat-val">${person.health||'?'}</div></div>
     <div class="profile-stat"><div class="profile-stat-label">Opinion of You</div><div class="profile-stat-val">${person.opinion||affection||0}</div></div>
     <div class="profile-stat"><div class="profile-stat-label">Fertility</div><div class="profile-stat-val">${person.fertility||'?'}%</div></div>`;
- 
+
   document.getElementById('pm-desc').textContent=person.desc||'';
- 
+
   let relHtml='';
   if(inCourtship){
     relHtml=`<div class="courtship-progress"><div style="font-size:0.79rem;font-weight:600;margin-bottom:0.2rem;">💌 Courtship: ${courtshipPct}/100</div>
@@ -1188,7 +1188,7 @@ function showProfileModal(person,type){
     <div style="font-size:0.72rem;color:var(--ink-light);">Affection: ${affection} · Trust: ${trust}</div></div>`;
   }
   document.getElementById('pm-relationship-bar').innerHTML=relHtml;
- 
+
   // Actions
   const actions=[];
   if(type==='prospect'||type==='romance'){
@@ -1221,18 +1221,18 @@ function showProfileModal(person,type){
     if(person.tier==='high')actions.push({label:'🗣️ Gossip',cls:'',fn:`friendAction('${person.name}','gossip')`});
     if(person.tier==='risky')actions.push({label:'🤫 Share Secret',cls:'',fn:`friendAction('${person.name}','secret')`});
   }
- 
+
   document.getElementById('pm-actions').innerHTML=actions.map(a=>
     `<button class="profile-btn ${a.cls}" onclick="${a.fn};closeProfileModal();renderAll();">${a.label}</button>`
   ).join('');
- 
+
   document.getElementById('profile-modal').classList.remove('hidden');
 }
 function closeProfileModal(){document.getElementById('profile-modal').classList.add('hidden');}
- 
+
 function beginCourtship(npcId){
   const npc=WORLD_NPCS.find(n=>n.id===npcId);
-  if(!npc){addEvent('😶','Not Found','',\n'neutral');return;}
+  if(!npc){addEvent('😶','Not Found','','neutral');return;}
   if(G.courtships.find(c=>c.id===npcId)){addEvent('💌','Already Courting',`You are already pursuing ${npc.name}.`,'neutral');return;}
   const classRanks=['poor','middling','gentry','nobility'];
   const diff=classRanks.indexOf(npc.class)-classRanks.indexOf(G.socialClass);
@@ -1247,7 +1247,7 @@ function beginCourtship(npcId){
   addNPCMemory(npcId,`${G.fname} ${G.lname} began paying court to me in ${G.year}`);
   addEvent('💌','A Courtship Begins',`You have begun paying your attentions to ${npc.name}.`,'good');
 }
- 
+
 function courtshipAction(npcId,action){
   const c=G.courtships.find(x=>x.id===npcId);
   if(!c)return;
@@ -1273,7 +1273,7 @@ function courtshipAction(npcId,action){
   addNPCMemory(npcId,`${action} interaction with ${G.fname} in ${G.year}`);
   addEvent('💌',`With ${c.name}`,a.desc,action==='sex'||action==='kiss'?'scandal':'good');
 }
- 
+
 function proposeOrElope(npcId){
   const c=G.courtships.find(x=>x.id===npcId);
   if(!c)return;
@@ -1289,7 +1289,7 @@ function proposeOrElope(npcId){
     {label:'💍 Formal Proposal (requires courtship 70+)',fn:()=>formalProposal(npcId)},
     {label:'Continue Courting',fn:()=>renderAll()}]);
 }
- 
+
 function formalProposal(npcId){
   const c=G.courtships.find(x=>x.id===npcId);
   if(!c)return;
@@ -1324,13 +1324,13 @@ function formalProposal(npcId){
         G.courtships=G.courtships.filter(x=>x.id!==npcId);
       }
       renderAll();}},
-    {label:'Withdraw the proposal',fn:()=>{addEvent('📜','Proposal Withdrawn','You thought better of it.',\n'neutral');renderAll();}}]);
+    {label:'Withdraw the proposal',fn:()=>{addEvent('📜','Proposal Withdrawn','You thought better of it.','neutral');renderAll();}}]);
 }
- 
+
 function beginSecretRomance(npcId){
   const npc=WORLD_NPCS.find(n=>n.id===npcId);
   if(!npc)return;
-  if(G.secretRelationships.find(r=>r.id===npcId)){addEvent('💌','Already Involved','',\n'neutral');return;}
+  if(G.secretRelationships.find(r=>r.id===npcId)){addEvent('💌','Already Involved','','neutral');return;}
   showModal('🌹','A Forbidden Attraction',`${npc.name} has been giving you looks that go beyond propriety.\n\n"${npc.desc}"\n\nThere is danger here. But the heart is not obedient to reason.`,
     [{label:'Encourage the attachment',fn:()=>{
       G.charm=clamp(G.charm+5);G.confidence=clamp(G.confidence+5);
@@ -1340,7 +1340,7 @@ function beginSecretRomance(npcId){
       renderAll();}},
     {label:'Resist (Virtue +8)',fn:()=>{G.virtue=clamp(G.virtue+8);addEvent('🕊️','Temptation Resisted','You turned away from ruin.','good');renderAll();}}]);
 }
- 
+
 function secretRomanceAction(id,action){
   const r=G.secretRelationships.find(x=>x.id===id||x.name===id);
   if(!r)return;
@@ -1358,11 +1358,11 @@ function secretRomanceAction(id,action){
     addEvent('💋','A Passionate Liaison',`An act of reckless passion with ${r.name}.`,'scandal');
   } else if(action==='end'){
     G.secretRelationships=G.secretRelationships.filter(x=>x.id!==r.id);
-    addEvent('💔','The Secret Ended','You broke off the secret connection.',\n'neutral');
+    addEvent('💔','The Secret Ended','You broke off the secret connection.','neutral');
   }
   renderAll();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  PREGNANCY
 // ═══════════════════════════════════════════════════════
@@ -1376,7 +1376,7 @@ function attemptPregnancy(partner){
       ,legit?'good':'scandal');
   }
 }
- 
+
 function resolvePregnancy(){
   G.pregnant=false;G.pregnancyMonth=0;
   const father=G.pregnancyFather;
@@ -1406,7 +1406,7 @@ function resolvePregnancy(){
   }
   G.pregnancyFather=null;
 }
- 
+
 function addChildToFamily(father,legitimate){
   const isMale=Math.random()<0.5;
   const fname=pick(isMale?NAMES_M:NAMES_F);
@@ -1433,7 +1433,7 @@ function addChildToFamily(father,legitimate){
     ,legitimate?'good':'scandal');
   showAchievement('👶 A Blessed Event!');
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  MARRIAGE EVENTS
 // ═══════════════════════════════════════════════════════
@@ -1447,12 +1447,12 @@ function triggerMarriageEvent(){
     pick(evs)();
   } else if(Math.random()<0.55){
     showModal('😤','A Domestic Disagreement',`You and ${G.spouse.name} have quarrelled about ${pick(['money','the estate accounts','your mother','their habits','the children\'s education','a social slight'])}.`,
-      [{label:'Capitulate gracefully (Happiness +5)',fn:()=>{G.marriageHappiness=clamp((G.marriageHappiness||70)+5);addEvent('😶','Peace Restored','You conceded. Harmony is restored.',\n'neutral');renderAll();}},
+      [{label:'Capitulate gracefully (Happiness +5)',fn:()=>{G.marriageHappiness=clamp((G.marriageHappiness||70)+5);addEvent('😶','Peace Restored','You conceded. Harmony is restored.','neutral');renderAll();}},
        {label:'Stand firm (Confidence +5, Happiness -10)',fn:()=>{G.confidence=clamp(G.confidence+5);G.marriageHappiness=clamp((G.marriageHappiness||70)-10);addEvent('😤','Unresolved Dispute',`The argument continues.`,'neutral');renderAll();}},
-       {label:'Attempt reconciliation (Happiness +15)',fn:()=>{G.marriageHappiness=clamp((G.marriageHappiness||70)+15);addEvent('❤️','Reconciled','You made your peace.',\n'good');renderAll();}}]);
+       {label:'Attempt reconciliation (Happiness +15)',fn:()=>{G.marriageHappiness=clamp((G.marriageHappiness||70)+15);addEvent('❤️','Reconciled','You made your peace.','good');renderAll();}}]);
   }
 }
- 
+
 function triggerSecretScandalRisk(){
   const r=pick(G.secretRelationships);if(!r)return;
   if(Math.random()<0.14){
@@ -1461,7 +1461,7 @@ function triggerSecretScandalRisk(){
     addMemory(`Secret with ${r.name} nearly exposed in ${G.year}`,'negative');
   }
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  FRIEND EVENTS
 // ═══════════════════════════════════════════════════════
@@ -1472,21 +1472,21 @@ function triggerFriendEvent(){
     // Check if higher-ranked noble looks down on player
     if(friend.rankPower&&getRankPrestige()<friend.rankPower-30&&Math.random()<0.35){
       showModal('😤','A Social Snub',`${friend.name} was markedly cold at the last assembly. Your rank is rather beneath theirs, and they clearly feel it.`,
-        [{label:'Bear it with composure (Composure +3)',fn:()=>{G.composure=clamp(G.composure+3);addEvent('😶','A Social Slight','You bore it gracefully.',\n'neutral');renderAll();}},
-         {label:'Withdraw from the acquaintance',fn:()=>{G.friends=G.friends.filter(f=>f.name!==friend.name);addEvent('📜','A Friendship Ended','You withdrew from the acquaintance.',\n'neutral');renderAll();}}]);
+        [{label:'Bear it with composure (Composure +3)',fn:()=>{G.composure=clamp(G.composure+3);addEvent('😶','A Social Slight','You bore it gracefully.','neutral');renderAll();}},
+         {label:'Withdraw from the acquaintance',fn:()=>{G.friends=G.friends.filter(f=>f.name!==friend.name);addEvent('📜','A Friendship Ended','You withdrew from the acquaintance.','neutral');renderAll();}}]);
       return;
     }
     if(Math.random()<0.45){
       showModal('🫖','An Invitation from '+friend.name,`${friend.name} invites you to take tea at her townhouse.`,
-        [{label:'Accept (Rep +8)',fn:()=>{G.reputation=clamp(G.reputation+rand(5,10));friend.affection=clamp(friend.affection+8);addEvent('🫖','Tea with '+friend.name,'A productive social occasion.',\n'good');renderAll();}},
-         {label:'Send polite regrets',fn:()=>{friend.affection=clamp(friend.affection-5);addEvent('📜','Regrets Sent','She was not pleased.',\n'neutral');renderAll();}}]);
+        [{label:'Accept (Rep +8)',fn:()=>{G.reputation=clamp(G.reputation+rand(5,10));friend.affection=clamp(friend.affection+8);addEvent('🫖','Tea with '+friend.name,'A productive social occasion.','good');renderAll();}},
+         {label:'Send polite regrets',fn:()=>{friend.affection=clamp(friend.affection-5);addEvent('📜','Regrets Sent','She was not pleased.','neutral');renderAll();}}]);
     }
   } else if(friend.tier==='risky'){
     showModal('🎲','A Proposition from '+friend.name,`${friend.name} proposes something rather improper — a private masquerade.`,
       [{label:'Attend! (Confidence +5, Scandal risk)',fn:()=>{
         G.confidence=clamp(G.confidence+5);friend.affection=clamp(friend.affection+10);
         if(Math.random()<0.5){G.scandal=clamp(G.scandal+rand(10,20),0,100);addEvent('🎭','A Most Improper Evening','Someone saw you there.','scandal');}
-        else addEvent('🎭','A Delightful Secret','Thrilling. No one of consequence saw you.',\n'good');
+        else addEvent('🎭','A Delightful Secret','Thrilling. No one of consequence saw you.','good');
         renderAll();}},
        {label:'Decline wisely',fn:()=>{friend.affection=clamp(friend.affection-5);addEvent('📜','Prudence Prevails','','neutral');renderAll();}}]);
   } else {
@@ -1494,7 +1494,7 @@ function triggerFriendEvent(){
     addEvent('🤝','Practical Assistance from '+friend.name,"Their help proved useful.",'good');
   }
 }
- 
+
 function triggerChildEvent(){
   // Age children first (already done in advanceYear)
   const children=G.children.filter(c=>c.age>0);
@@ -1505,7 +1505,7 @@ function triggerChildEvent(){
     const prospect=pick(WORLD_NPCS.filter(n=>n.isMale!==child.isMale));
     showModal('💍','A Match for '+child.name,`${child.name} (${child.age}) has attracted the attention of ${prospect.name}.`,
       [{label:'Encourage (+8 Rep)',fn:()=>{child.betrothed=true;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement Arranged',`${child.name} is engaged.`,'good');renderAll();}},
-       {label:'Disapprove — seek better',fn:()=>{child.relationship=clamp(child.relationship-10);addEvent('💬','Parental Veto','Your child accepted your judgment, distressed.',\n'neutral');renderAll();}},
+       {label:'Disapprove — seek better',fn:()=>{child.relationship=clamp(child.relationship-10);addEvent('💬','Parental Veto','Your child accepted your judgment, distressed.','neutral');renderAll();}},
        {label:'Let them choose',fn:()=>{child.relationship=clamp(child.relationship+10);child.betrothed=Math.random()<0.5;addEvent('💍','The Child\'s Choice','',child.betrothed?'good':'neutral');renderAll();}}]);
   } else if(teen&&Math.random()<0.4){
     showModal('📝','Education for '+child.name,`${child.name} (${child.age}) would benefit from instruction. What will you arrange?`,
@@ -1516,7 +1516,7 @@ function triggerChildEvent(){
     addEvent('👧','A Childhood Moment',`Little ${child.name} (${child.age}) has ${pick(['said something remarkably clever','been praised by the governess','caught a summer cold but recovered','made friends with the parson\'s children','shown great aptitude for music'])}.`,'good');
   }
 }
- 
+
 function specialNarrativeEvent(){
   const events=[
     ()=>{
@@ -1526,7 +1526,7 @@ function specialNarrativeEvent(){
           if(Math.random()<0.5){G.savings+=amount;addEvent('🃏','Fortune Favours',`£${amount} won.`,'good');}
           else{G.savings=Math.max(0,G.savings-amount);G.scandal=clamp(G.scandal+15,0,100);addEvent('🃏','Ruinous Play','The cards were cruel.','scandal');}
           renderAll();}},
-         {label:'Decline (Virtue +3)',fn:()=>{G.virtue=clamp(G.virtue+3);addEvent('🎴','Virtuous Restraint','You declined.',\n'good');renderAll();}}]);
+         {label:'Decline (Virtue +3)',fn:()=>{G.virtue=clamp(G.virtue+3);addEvent('🎴','Virtuous Restraint','You declined.','good');renderAll();}}]);
     },
     ()=>{
       showModal('📜','A Question of Inheritance',`Your solicitor informs you a distant relative has died, leaving a contested will.`,
@@ -1539,17 +1539,17 @@ function specialNarrativeEvent(){
     },
     ()=>{
       showModal('🌹','A Compromising Situation',`At Lady Hartley's garden party, an attractive ${pick(['officer','gentleman','foreign count','widow'])} contrives to speak with you alone.`,
-        [{label:'Leave immediately (Virtue +5)',fn:()=>{G.virtue=clamp(G.virtue+5);addEvent('🌹','Propriety Maintained','You excused yourself at once.',\n'good');renderAll();}},
+        [{label:'Leave immediately (Virtue +5)',fn:()=>{G.virtue=clamp(G.virtue+5);addEvent('🌹','Propriety Maintained','You excused yourself at once.','good');renderAll();}},
          {label:'Remain and flirt (Charm +8)',fn:()=>{
            G.charm=clamp(G.charm+8);G.confidence=clamp(G.confidence+5);
-           if(Math.random()<0.5){G.scandal=clamp(G.scandal+15,0,100);addEvent('😮','Observed!','Someone saw.',\n'scandal');}
+           if(Math.random()<0.5){G.scandal=clamp(G.scandal+15,0,100);addEvent('😮','Observed!','Someone saw.','scandal');}
            else addEvent('🌹','A Stolen Conversation','No one noticed. This time.','neutral');
            renderAll();}}]);
     },
   ];
   pick(events)();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  SOCIETY TAB
 // ═══════════════════════════════════════════════════════
@@ -1585,20 +1585,20 @@ function renderSociety(){
     el.appendChild(btn);
   });
 }
- 
+
 function triggerSocialEmbarrassment(){
   showModal('😳','A Social Embarrassment',`You ${pick(['stumbled on the dance floor','spilled punch on Lady Worthington\'s gown','laughed at precisely the wrong moment','forgot the name of someone very important','arrived at entirely the wrong address'])}.`,
     [{label:'Recover with composure (check)',fn:()=>{if(G.composure>=55){G.reputation=clamp(G.reputation-3);addEvent('😳','Gracefully Recovered','You carried it off with style.','neutral');}else{G.scandal=clamp(G.scandal+10,0,100);G.reputation=clamp(G.reputation-10);addEvent('😳','A Mortifying Scene','The assembly witnessed everything.','scandal');}renderAll();}},
      {label:'Flee the room (Rep -12)',fn:()=>{G.reputation=clamp(G.reputation-12);addEvent('😤','A Swift Retreat','You departed rather precipitously.','scandal');renderAll();}}]);
 }
- 
+
 function triggerPromenadeEncounter(){
   const npc=pick(WORLD_NPCS);
   showModal('🌸','An Encounter in the Park',`You encounter ${npc.name} on the promenade. They seem pleased to see you.`,
     [{label:'Converse warmly',fn:()=>{npc.opinion=Math.min(100,(npc.opinion||30)+15);addEvent('🌸','A Chance Meeting',`A pleasant conversation with ${npc.name}.`,'good');renderAll();}},
      {label:'Acknowledge politely',fn:()=>{G.reputation=clamp(G.reputation+2);addEvent('👒','Proper Behaviour','','neutral');renderAll();}}]);
 }
- 
+
 function triggerHouseParty(){
   const host=pick(SURNAMES);
   const npc=pick(WORLD_NPCS);
@@ -1606,7 +1606,7 @@ function triggerHouseParty(){
     [{label:'Attend (£30)',fn:()=>{if(G.savings<30){addEvent('💸','Cannot Afford','','neutral');return;}G.savings-=30;G.charm=clamp(G.charm+rand(3,8));G.reputation=clamp(G.reputation+rand(3,8));npc.opinion=Math.min(100,(npc.opinion||30)+20);addEvent('🏡','A House Party','A most agreeable week.','good');renderAll();}},
      {label:'Decline',fn:()=>{addEvent('📜','Declined','You sent your regrets.','neutral');renderAll();}}]);
 }
- 
+
 function renderFriendSeeking(){
   const el=document.getElementById('society-choices');
   el.innerHTML=`<div class="info-box">Choose the type of acquaintance to cultivate.</div>
@@ -1615,7 +1615,7 @@ function renderFriendSeeking(){
     <button class="choice-btn" onclick="meetNewFriend('low')"><span class="choice-emoji">🌿</span><span class="choice-info">Befriend Someone of Lower Station<small>Loyal, reputation risk.</small></span></button>
     <button class="choice-btn" onclick="renderSociety()"><span class="choice-emoji">↩</span><span class="choice-info">Return<small></small></span></button>`;
 }
- 
+
 function meetNewFriend(tier){
   const pool=tier==='high'?FRIEND_POOL_HIGH:tier==='risky'?FRIEND_POOL_RISKY:FRIEND_POOL_LOW;
   const existing=G.friends.map(f=>f.name);
@@ -1625,7 +1625,7 @@ function meetNewFriend(tier){
   // Higher-ranked nobles may refuse lower-ranked players
   if(tier==='high'&&t.rankPower&&getRankPrestige()<t.rankPower-40){
     showModal('😔','A Cool Reception',`${t.name} received your introduction politely but distantly. Your rank is somewhat beneath theirs.`,
-      [{label:'Accept the snub graciously',fn:()=>{addEvent('😶','A Distant Acquaintance','',\n'neutral');renderAll();}},
+      [{label:'Accept the snub graciously',fn:()=>{addEvent('😶','A Distant Acquaintance','','neutral');renderAll();}},
        {label:'Seek a different connection',fn:()=>renderFriendSeeking()}]);
     return;
   }
@@ -1633,7 +1633,7 @@ function meetNewFriend(tier){
     [{label:'Cultivate this friendship',fn:()=>{G.friends.push({...t,affection:rand(40,65),trust:rand(35,55),active:true,turnsKnown:0});addEvent('🤝','A New Friend',`You have begun a friendship with ${t.name}.`,'good');renderAll();}},
      {label:'Acknowledge and move on',fn:()=>{addEvent('😶','An Acquaintance Only','','neutral');renderAll();}}]);
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  CONNECTIONS TAB
 // ═══════════════════════════════════════════════════════
@@ -1661,7 +1661,7 @@ function renderConnections(){
   if(!G.friends.length&&!known.length)html=`<p class="info-box">No notable connections yet. Visit Society to seek acquaintances.</p>`;
   el.innerHTML=html;
 }
- 
+
 function renderFriendCard(f){
   const tc=f.tier==='high'?'high-society':f.tier==='risky'?'risky':'low-society';
   const tl=f.tier==='high'?'tag-high':f.tier==='risky'?'tag-risky':'tag-low';
@@ -1680,7 +1680,7 @@ function renderFriendCard(f){
       ${f.tier==='low'?`<button class="friend-btn" onclick="friendAction('${f.name}','help')">🤝 Help</button>`:''}
     </div></div>`;
 }
- 
+
 function friendAction(fname,action){
   const f=G.friends.find(x=>x.name===fname);if(!f)return;
   if(action==='tea'){f.affection=clamp(f.affection+rand(5,10));f.trust=clamp(f.trust+3);if(f.tier==='high')G.reputation=clamp(G.reputation+rand(2,5));addEvent('🫖','Tea with '+f.name,'A pleasant hour.','good');}
@@ -1691,7 +1691,7 @@ function friendAction(fname,action){
   else if(action==='help'){G.savings+=rand(10,60);f.affection=clamp(f.affection+5);addEvent('🤝','Practical Assistance','','good');}
   renderAll();renderConnections();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  ROMANCE TAB
 // ═══════════════════════════════════════════════════════
@@ -1761,7 +1761,7 @@ function renderRomance(){
     </div></div>`).join('');
   el.innerHTML=html;
 }
- 
+
 function renderMarriagePanel(){
   const s=G.spouse;
   return `<div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:0.9rem;margin-bottom:0.9rem;">
@@ -1779,7 +1779,7 @@ function renderMarriagePanel(){
     ${(G.marriageHappiness||70)<30?`<button class="choice-btn danger" onclick="maritalAction('separate')"><span class="choice-emoji">💔</span><span class="choice-info">Seek a Separation<small>Very scandalous and costly.</small></span></button>`:''}
   </div>`;
 }
- 
+
 function maritalAction(type){
   const s=G.spouse;
   if(type==='romance'){G.marriageHappiness=clamp((G.marriageHappiness||70)+10);addEvent('❤️','A Happy Evening',`An agreeable evening with ${s.name}.`,'good');}
@@ -1799,7 +1799,7 @@ function maritalAction(type){
   }
   renderAll();
 }
- 
+
 function showLoverOptions(){
   const candidates=WORLD_NPCS.filter(n=>n.isMale!==(G.gender==='gentleman')).slice(0,4);
   showModal('💋','Seek a Lover','In your unhappiness, you look elsewhere.',
@@ -1812,7 +1812,7 @@ function showLoverOptions(){
     }}))
     .concat([{label:'Resist (Virtue +8)',fn:()=>{G.virtue=clamp(G.virtue+8);addEvent('🕊️','Temptation Resisted','','good');renderAll();}}]));
 }
- 
+
 function loverAction(id,action){
   const l=G.lovers.find(x=>x.id===id||x.name===id);if(!l)return;
   if(action==='meet'){l.affection=Math.min(100,l.affection+rand(5,12));if(Math.random()<0.2){G.scandal=clamp(G.scandal+20,0,100);addEvent('😱','The Affair Suspected','Whispers are spreading.','scandal');}else addEvent('🌹','A Tryst','A clandestine meeting.','neutral');}
@@ -1820,9 +1820,9 @@ function loverAction(id,action){
   else if(action==='sex'){l.affection=Math.min(100,l.affection+rand(10,18));G.scandal=clamp(G.scandal+rand(10,18),0,100);if(G.gender==='lady')attemptPregnancy(l);addEvent('💋','An Intimate Encounter','Dangerous and wonderful.','scandal');}
   renderAll();
 }
- 
+
 function endAffair(id){G.lovers=G.lovers.filter(l=>l.id!==id&&l.name!==id);addEvent('💔','An Affair Ended','The connection is severed.','neutral');renderAll();}
- 
+
 // ═══════════════════════════════════════════════════════
 //  FAMILY TAB
 // ═══════════════════════════════════════════════════════
@@ -1856,12 +1856,12 @@ function renderFamily(){
   </div>`;
   el.innerHTML=html;
 }
- 
+
 function showFamilyMemberProfile(id){
   const r=G.relationships.find(x=>x.id===id);if(!r)return;
   showProfileModal({...r,classLabel:'Family',age:r.age||30,income:0,charm:60,virtue:70,wit:55,health:r.health||75,fertility:60,opinion:r.affection,desc:`${r.type} · Affection: ${r.affection}/100 · Trust: ${r.trust||50}/100`},'family');
 }
- 
+
 function familyMemberAction(id,action){
   const r=G.relationships.find(x=>x.id===id);if(!r)return;
   if(action==='bond'){r.affection=Math.min(100,r.affection+10);r.trust=Math.min(100,(r.trust||50)+5);addEvent('❤️','Time with '+r.name.split(' ')[0],'Quality time together.','good');}
@@ -1875,14 +1875,14 @@ function familyMemberAction(id,action){
   }
   renderAll();renderFamily();
 }
- 
+
 function familyGroupAction(type){
   if(type==='gather'){G.relationships.filter(r=>r.category==='Family').forEach(r=>{r.affection=Math.min(100,r.affection+5);r.trust=Math.min(100,(r.trust||50)+3);});addEvent('👨‍👩‍👧','Family Gathered','An agreeable family evening.','good');}
   else if(type==='educate'){G.children.forEach(c=>{if(c.age>=5){c.wit=clamp(c.wit+rand(1,4));c.virtue=clamp(c.virtue+rand(1,3));}});addEvent('📚','Parental Instruction','Your oversight has borne fruit.','good');}
   else if(type==='celebrate'){if(G.savings<50){addEvent('💸','Cannot Afford','','neutral');return;}G.savings-=50;G.relationships.filter(r=>r.category==='Family').forEach(r=>r.affection=Math.min(100,r.affection+10));addEvent('🥂','A Celebration','All bonds strengthened.','good');}
   renderAll();renderFamily();
 }
- 
+
 function renderChildCard(c,i){
   const stage=c.age<2?'Infant':c.age<13?'Child':c.age<18?'Teenager':'Adult';
   const legit=c.legitimate?'✓ Legitimate':'⚠ Illegitimate';
@@ -1900,7 +1900,7 @@ function renderChildCard(c,i){
     </div>`:''}
     </div>`;
 }
- 
+
 function childAction(i,action){
   const c=G.children[i];if(!c)return;
   if(action==='bond'){c.relationship=clamp(c.relationship+10);c.health=clamp(c.health+2);addEvent('❤️','Time with '+c.name,'The bond deepens.','good');}
@@ -1909,14 +1909,14 @@ function childAction(i,action){
   else if(action==='match'){
     const p=pick(WORLD_NPCS.filter(n=>n.isMale!==c.isMale));
     showModal('💍','A Match for '+c.name,`You consider ${c.name} and ${p.name}.\n\n"${p.desc}"`,
-      [{label:'Arrange',fn:()=>{c.betrothed=true;c.betrothedTo=p.name;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement','',\n'good');renderAll();}},
+      [{label:'Arrange',fn:()=>{c.betrothed=true;c.betrothedTo=p.name;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement','','good');renderAll();}},
        {label:'Not yet',fn:()=>renderAll()}]);return;
   }
   else if(action==='university'){if(G.savings>=600){G.savings-=600;c.atUniversity=true;c.wit=clamp(c.wit+25);c.education=clamp((c.education||0)+30);addEvent('🎓','Sent to University',c.name+' goes up to Oxford.','good');}else addEvent('💸','Cannot Afford','','neutral');}
   else if(action==='discipline'){if(G.composure>=55){c.rebellious=false;addEvent('⚡','Order Restored','','neutral');}else{c.relationship=clamp(c.relationship-10);addEvent('😤','Defiance',''+c.name+' grows resentful.','scandal');}}
   renderAll();renderFamily();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  CAREER TAB — FIXED BUG + GENDER-AWARE
 // ═══════════════════════════════════════════════════════
@@ -1924,7 +1924,7 @@ function renderCareer(){
   const el=document.getElementById('career-content');
   const female=G.gender==='lady';
   let html='';
- 
+
   // Current position
   if(G.employed){
     html+=`<div class="dynasty-panel">
@@ -1937,14 +1937,14 @@ function renderCareer(){
       <button class="choice-btn danger" onclick="resignPosition()"><span class="choice-emoji">🚪</span><span class="choice-info">Resign Position<small>Lose job income. Reputation shift.</small></span></button>
     </div>`;
   }
- 
+
   // University / Education section
   if(G.atUniversity){
     html+=`<div class="info-box">🎓 You are in Year ${G.universityYear} of ${G.universitySubject} at university. Advance years to complete your degree.</div>`;
   } else if(G.universityDone){
     html+=`<div class="info-box">🎓 University Graduate — ${G.universitySubject}. Your degree unlocks the learned professions.</div>`;
   }
- 
+
   // Education options (gender-split)
   if(female){
     html+=`<div class="sub-header">📚 Female Education &amp; Accomplishments</div>
@@ -1968,7 +1968,7 @@ function renderCareer(){
         </button>`).join('')+`</div>`;
     }
   }
- 
+
   // Career options
   if(!G.employed&&G.age>=16){
     html+=`<div class="sub-header">${female?'💼 Positions Available to Ladies':'💼 Career Opportunities'}</div>`;
@@ -1989,10 +1989,10 @@ function renderCareer(){
       html+=`<div class="warn-box">⚠ Working publicly may damage your reputation as a lady of quality. Consider your choices carefully.</div>`;
     }
   }
- 
+
   el.innerHTML=html;
 }
- 
+
 function pursueFemalEducation(title){
   const all=Object.values(FEMALE_EDUCATIONS).flat();
   const ed=all.find(e=>e.title===title);if(!ed)return;
@@ -2002,7 +2002,7 @@ function pursueFemalEducation(title){
   addEvent('📖','Education: '+title,ed.desc,'good');
   renderAll();renderCareer();
 }
- 
+
 function applyToUniversity(subject){
   if(G.gender==='lady'){addEvent('📚','Not Permitted','University is not open to women in this era. Pursue finishing school instead.','neutral');return;}
   if(G.atUniversity||G.universityDone){addEvent('📚','Already Studied','','neutral');return;}
@@ -2017,7 +2017,7 @@ function applyToUniversity(subject){
   }
   renderAll();
 }
- 
+
 function takeJob(title,income){
   // Check noble scandal — noble ladies working publicly is scandalous
   if(G.gender==='lady'&&(G.socialClass==='nobility'||G.socialClass==='gentry')){
@@ -2030,7 +2030,7 @@ function takeJob(title,income){
   }
   doTakeJob(title,income);
 }
- 
+
 function doTakeJob(title,income){
   G.employed=true;G.position=title;G.jobIncome=income;G.jobPromotion=0;
   const repChange=G.socialClass==='nobility'?-12:G.socialClass==='gentry'?-4:2;
@@ -2040,7 +2040,7 @@ function doTakeJob(title,income){
   addMemory(`Took position as ${title} in ${G.year}`,'neutral');
   renderAll();renderCareer();
 }
- 
+
 function seekPromotion(){
   if(!G.employed)return;
   const check=G.wit*0.4+G.reputation*0.3+G.confidence*0.3;
@@ -2052,13 +2052,13 @@ function seekPromotion(){
   }
   renderAll();
 }
- 
+
 function resignPosition(){
   G.employed=false;const p=G.position;G.position=null;G.jobIncome=0;G.jobPromotion=0;
   addEvent('🚪','Resigned','You have left your position as '+p+'.','neutral');
   renderAll();renderCareer();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  HOUSEHOLD TAB
 // ═══════════════════════════════════════════════════════
@@ -2101,13 +2101,13 @@ function renderHousehold(){
     <button class="choice-btn" onclick="borrowMoney()"><span class="choice-emoji">🏦</span><span class="choice-info">Borrow from a Moneylender<small>Funds now. Scandal and interest later.</small></span></button>
   </div>`;
 }
- 
+
 function buyImprovement(name){const ei=ESTATE_IMPROVEMENTS.find(e=>e.name===name);if(!ei||G.savings<ei.cost)return;G.savings-=ei.cost;G.estate.improvements.push(name);G.estate.prestige=clamp(G.estate.prestige+ei.prestige/10,0,10);G.estateIncome+=ei.income||0;G.reputation=clamp(G.reputation+Math.floor(ei.prestige/2));G.dynasty.prestige+=ei.prestige*0.5;addEvent(ei.emoji,ei.name+' Completed',ei.desc,'good');renderAll();renderHousehold();}
 function retrench(){G.income=Math.round(G.income*0.85);G.reputation=clamp(G.reputation-8);addEvent('✂️','Economies Made','Staff dismissed, horses sold.','scandal');renderAll();}
 function invest(){G.savings-=500;const r=Math.random();if(r<0.15){G.savings=Math.max(0,G.savings-300);addEvent('📉','Ill Investment','£300 lost.','scandal');}else if(r<0.7){const g=rand(30,55);G.income+=g;addEvent('📈','A Sound Investment',`+£${g}/yr.`,'good');}else{const g=rand(55,110);G.income+=g;addEvent('📈','An Excellent Return',`+£${g}/yr.`,'good');}renderAll();}
 function sellJewels(){const g=rand(100,600);G.savings+=g;G.reputation=clamp(G.reputation-5);G.scandal=clamp(G.scandal+5,0,100);addEvent('💎','Heirlooms Sold',`£${g} raised.`,'scandal');renderAll();}
 function borrowMoney(){const a=rand(300,1000);G.savings+=a;G.debtLevel=Math.min(4,G.debtLevel+1);G.scandal=clamp(G.scandal+10,0,100);addEvent('🏦','A Loan Secured',`£${a} borrowed at ruinous interest.`,'scandal');renderAll();}
- 
+
 // ═══════════════════════════════════════════════════════
 //  DYNASTY TAB
 // ═══════════════════════════════════════════════════════
@@ -2123,7 +2123,7 @@ function renderDynasty(){
       Enemies: ${G.dynasty.enemies.length}
     </div>
   </div>`;
- 
+
   if(nr){
     html+=`<div class="sub-header">👑 Noble Status</div>
     <div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:0.9rem;margin-bottom:0.7rem;">
@@ -2138,39 +2138,39 @@ function renderDynasty(){
       </div>
     </div>`;
   }
- 
+
   html+=`<div class="sub-header">📜 Memories & Life History</div>`;
   if(G.memories.length){
     html+=`<div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:0.75rem;max-height:200px;overflow-y:auto;">`;
     html+=G.memories.slice().reverse().slice(0,15).map(m=>`<div class="memory-entry">${m.year} (Age ${m.age}): ${m.text}</div>`).join('');
     html+=`</div>`;
   } else html+=`<div class="info-box">No significant memories yet.</div>`;
- 
+
   html+=`<div class="sub-header">🏛️ Traits</div>`;
   html+=`<div>${G.traits.map(t=>{const td=ALL_TRAITS.find(x=>x.name===t);return td?`<span class="trait-badge ${td.type==='positive'?'positive':td.type==='negative'?'negative':''}">${t}</span>`:`<span class="trait-badge">${t}</span>`}).join('')}</div>`;
   if(G.traits.length<5){
     html+=`<div style="margin-top:0.7rem"><button class="choice-btn" onclick="developTrait()"><span class="choice-emoji">🌟</span><span class="choice-info">Reflect & Develop a Trait<small>Costs nothing. Gain a new character trait.</small></span></button></div>`;
   }
- 
+
   html+=`<div class="sub-header">🔐 Secrets</div>`;
   if(G.secrets.length){
     html+=G.secrets.map(s=>`<div class="info-box" style="border-color:var(--burgundy-light);background:rgba(107,31,42,0.06)">🤫 ${secretDesc(s)}</div>`).join('');
   } else html+=`<div class="info-box">No secrets — yet.</div>`;
- 
+
   el.innerHTML=html;
 }
- 
+
 function getRankSocialNote(rank){
   const notes={duke:'As a Duke, you are among the most powerful people in England. Only the royal family outranks you. Invitations arrive from the highest circles. Lesser nobles defer to you. Your scandals are devastating — but your recovery is swiftest.',marquess:'As a Marquess, doors that are closed to ordinary nobility open for you. The greatest families seek your alliance. Your political influence is formidable.',earl:'As an Earl, you command respect throughout English society. Marriage to you is a prize sought by ambitious families. You may expect the best of everything.',viscount:'As a Viscount, you are received with respect in all but the very highest circles. Your title carries weight, though the Dukes and Earls remain above you.',baron:'As a Baron, you are a Lord of the Realm — respected, invited, and expected to uphold noble standards. Higher-ranked families may occasionally look down on you.',baronet:'As a Baronet, you hold the lowest form of hereditary honour. Some treat you as little more than elevated gentry. You have much to prove — or much to enjoy.'};
   return notes[rank]||'';
 }
- 
+
 function secretDesc(s){
   if(s.type==='child_given_up')return `A child was given up in ${s.year||'the past'}. The father was ${s.father}.`;
   if(s.type==='affair')return `An affair with ${s.with}, begun in ${s.year||'the past'}.`;
   return `A secret from ${s.year||'the past'}.`;
 }
- 
+
 function developTrait(){
   const available=ALL_TRAITS.filter(t=>!G.traits.includes(t.name));
   if(!available.length){addEvent('🌟','No New Traits','You have reached the limits of self-knowledge — for now.','neutral');return;}
@@ -2187,7 +2187,7 @@ function developTrait(){
       renderAll();
     }})));
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  GOSSIP TAB
 // ═══════════════════════════════════════════════════════
@@ -2210,7 +2210,7 @@ function renderGossip(){
 }
 function spreadRumour(){if(G.wit>=65){G.scandal=clamp(G.scandal-8,0,100);G.reputation=clamp(G.reputation+3);addEvent('🤫','A Clever Deflection','A well-placed whisper turned attention elsewhere.','good');}else{G.scandal=clamp(G.scandal+10,0,100);addEvent('🤫','Backfired','Your attempt was too obvious.','scandal');}renderAll();}
 function squashRumour(){if(G.composure>=60&&G.reputation>=50){G.rumorLevel=clamp((G.rumorLevel||0)-20);G.scandal=clamp(G.scandal-10,0,100);addEvent('🛡️','Rumour Contained','Your composure quelled the whispers.','good');}else{G.scandal=clamp(G.scandal+5,0,100);addEvent('🛡️','Failed','Your efforts amplified them.','scandal');}renderAll();}
- 
+
 // ═══════════════════════════════════════════════════════
 //  LIFE TAB
 // ═══════════════════════════════════════════════════════
@@ -2254,7 +2254,7 @@ function renderLife(){
   }
   el.innerHTML=html;
 }
- 
+
 function lifeAction(action){
   const map={play:{health:5,confidence:3,d:'A morning in the gardens refreshed body and spirit.'},study:{wit:6,education:8,d:'The governess is satisfied.'},music:{charm:5,education:4,d:'Another hour of practice. Progress is made.'},dance:{charm:6,composure:4,d:'Your dancing master ran out of corrections.'},riding:{health:8,confidence:5,d:'A spirited ride across the fields.'},sibling:{family:8,d:'Siblings and family; bonds renewed.'},rebel:{confidence:10,virtue:-10,scandal:5,d:'You challenged every rule you found. Thrilling.'}};
   const a=map[action];if(!a)return;
@@ -2267,7 +2267,7 @@ function lifeAction(action){
   addEvent('🌿','A Day Well Spent',a.d,'good');
   renderAll();
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  SIDE PANEL
 // ═══════════════════════════════════════════════════════
@@ -2280,7 +2280,7 @@ function renderRelationships(){
     <div class="rel-bar"><div class="rel-fill" style="width:${r.affection}%"></div></div>
   </div>`).join('');
 }
- 
+
 function renderStatus(){
   const el=document.getElementById('status-block');
   const nr=G.nobleRank;
@@ -2298,7 +2298,7 @@ function renderStatus(){
     `Class: ${CLASS_DATA[G.socialClass].label}`,
   ].filter(Boolean).join(' · ');
 }
- 
+
 function renderHiddenStats(){
   const el=document.getElementById('hidden-stats');
   el.innerHTML=[
@@ -2309,7 +2309,7 @@ function renderHiddenStats(){
     `Dynasty: ${Math.round(G.dynasty.prestige)}`,
   ].filter(Boolean).join(' · ');
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  RENDER ALL
 // ═══════════════════════════════════════════════════════
@@ -2338,7 +2338,7 @@ function renderAll(){
   const at=document.querySelector('.tab.active');
   if(at)showTab(at.dataset.tab||'chronicle',true);
 }
- 
+
 function renderLog(){
   const el=document.getElementById('event-log');if(!el)return;
   el.innerHTML=G.events.slice(0,55).map(e=>`<div class="event-entry">
@@ -2346,7 +2346,7 @@ function renderLog(){
     <span class="event-text event-${e.type}"><strong>${e.icon} ${e.headline}</strong>${e.detail?`<br><span style="font-size:0.84rem">${e.detail}</span>`:''}</span>
   </div>`).join('');
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  TABS
 // ═══════════════════════════════════════════════════════
@@ -2366,7 +2366,7 @@ function showTab(name,silent=false){
     if(name==='life')renderLife();
   }
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  MODAL
 // ═══════════════════════════════════════════════════════
@@ -2382,7 +2382,7 @@ function showModal(deco,title,body,choices){
 function modalChoice(i){document.getElementById('modal').classList.add('hidden');if(window._mc&&window._mc[i])window._mc[i].fn();}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
 document.getElementById('profile-modal').addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
- 
+
 // ═══════════════════════════════════════════════════════
 //  ACHIEVEMENTS
 // ═══════════════════════════════════════════════════════
@@ -2404,12 +2404,12 @@ function checkAchievements(){
   ];
   checks.forEach(c=>{if(c.cond&&!G.achievements.includes(c.id)){G.achievements.push(c.id);showAchievement(c.text);}});
 }
- 
+
 function showAchievement(text){
   const el=document.createElement('div');el.className='achievement-popup';el.textContent=text;
   document.body.appendChild(el);setTimeout(()=>el.remove(),4000);
 }
- 
+
 // ═══════════════════════════════════════════════════════
 //  END GAME & LEGACY
 // ═══════════════════════════════════════════════════════
@@ -2434,4 +2434,3 @@ function endGame(type){
 </script>
 </body>
 </html>
- 
