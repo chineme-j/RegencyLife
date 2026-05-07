@@ -1,3 +1,6 @@
+ash
+
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,389 +9,132 @@
 <title>Regency Life — A Game of Society & Scandal</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #f5f0e8;
-    --parchment: #ede4d0;
-    --dark-parchment: #d4c9a8;
-    --ink: #1a1208;
-    --ink-light: #3d2e12;
-    --gold: #9a7d3a;
-    --gold-light: #c4a45a;
-    --burgundy: #6b1f2a;
-    --burgundy-light: #a33040;
-    --sage: #4a6741;
-    --sage-light: #6a9465;
-    --navy: #1c2e4a;
-    --blush: #c87070;
-    --shadow: rgba(26,18,8,0.15);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--ink);
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(154,125,58,0.03) 40px, rgba(154,125,58,0.03) 41px),
-      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(154,125,58,0.03) 40px, rgba(154,125,58,0.03) 41px);
-    min-height: 100vh;
-    font-family: 'Cormorant Garamond', serif;
-    color: var(--ink);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #splash {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: radial-gradient(ellipse at center, #2a1f10 0%, #0d0a05 100%);
-  }
-  .splash-ornament { font-size: 2rem; color: var(--gold); letter-spacing: 0.5rem; margin-bottom: 1rem; }
-  .splash-title {
-    font-family: 'IM Fell English', serif;
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    color: var(--gold-light);
-    text-align: center;
-    line-height: 1.1;
-    text-shadow: 0 0 40px rgba(154,125,58,0.4);
-    margin-bottom: 0.3rem;
-  }
-  .splash-subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: clamp(1rem, 2.5vw, 1.4rem);
-    color: var(--dark-parchment);
-    text-align: center;
-    margin-bottom: 3rem;
-    letter-spacing: 0.1em;
-  }
-  .splash-border {
-    border: 1px solid var(--gold);
-    border-radius: 2px;
-    padding: 3rem 2.5rem;
-    max-width: 540px;
-    width: 100%;
-    background: rgba(26,18,8,0.6);
-    position: relative;
-  }
-  .splash-border::before, .splash-border::after {
-    content: '❧';
-    position: absolute;
-    color: var(--gold);
-    font-size: 1.5rem;
-  }
-  .splash-border::before { top: -0.85rem; left: 50%; transform: translateX(-50%); background: #0d0a05; padding: 0 0.5rem; }
-  .splash-border::after { bottom: -0.85rem; left: 50%; transform: translateX(-50%) rotate(180deg); background: #0d0a05; padding: 0 0.5rem; }
-  .form-group { margin-bottom: 1.4rem; }
-  .form-label {
-    display: block;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold-light);
-    margin-bottom: 0.4rem;
-  }
-  .form-input, .form-select {
-    width: 100%;
-    background: rgba(245,240,232,0.07);
-    border: 1px solid rgba(154,125,58,0.4);
-    border-radius: 2px;
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    padding: 0.6rem 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus, .form-select:focus { border-color: var(--gold-light); }
-  .form-select option { background: #1a1208; color: var(--cream); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .btn-primary {
-    width: 100%;
-    padding: 0.9rem;
-    background: var(--gold);
-    border: none;
-    border-radius: 2px;
-    color: var(--ink);
-    font-family: 'IM Fell English', serif;
-    font-size: 1.15rem;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: background 0.2s, transform 0.1s;
-    margin-top: 0.5rem;
-  }
-  .btn-primary:hover { background: var(--gold-light); }
-  .btn-primary:active { transform: scale(0.99); }
-  .class-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 0.4rem; }
-  .class-card {
-    border: 1px solid rgba(154,125,58,0.3);
-    border-radius: 2px;
-    padding: 0.7rem;
-    cursor: pointer;
-    background: rgba(245,240,232,0.04);
-    transition: all 0.2s;
-    position: relative;
-  }
-  .class-card:hover { background: rgba(245,240,232,0.1); border-color: var(--gold-light); }
-  .class-card.selected { background: rgba(154,125,58,0.2); border-color: var(--gold-light); }
-  .class-card-title { color: var(--gold-light); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
-  .class-card-desc { color: rgba(245,240,232,0.6); font-size: 0.78rem; font-style: italic; line-height: 1.3; }
-  #game-shell { display: none; width: 100%; max-width: 860px; min-height: 100vh; padding: 0; }
-  .game-header {
-    background: linear-gradient(180deg, #1a1208 0%, #261a0c 100%);
-    border-bottom: 2px solid var(--gold);
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-  .header-name {
-    font-family: 'IM Fell English', serif;
-    font-size: 1.3rem;
-    color: var(--gold-light);
-  }
-  .header-meta { font-size: 0.8rem; color: var(--dark-parchment); font-style: italic; }
-  .stats-bar { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
-  .stat-pill {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: rgba(245,240,232,0.07);
-    border: 1px solid rgba(154,125,58,0.25);
-    border-radius: 20px;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.8rem;
-    color: var(--cream);
-  }
-  .stat-pill span { color: var(--gold-light); font-weight: 600; }
-  .year-btn {
-    background: var(--burgundy);
-    border: 1px solid var(--burgundy-light);
-    color: var(--cream);
-    font-family: 'IM Fell English', serif;
-    font-size: 1rem;
-    padding: 0.4rem 1.2rem;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-  .year-btn:hover { background: var(--burgundy-light); }
-  .game-body { display: grid; grid-template-columns: 1fr 280px; gap: 0; min-height: calc(100vh - 80px); }
-  .main-panel { background: var(--cream); padding: 1.5rem; border-right: 1px solid var(--dark-parchment); }
-  .side-panel { background: var(--parchment); padding: 1.2rem; }
-  .panel-title {
-    font-family: 'IM Fell English', serif;
-    font-size: 1.1rem;
-    color: var(--ink-light);
-    margin-bottom: 0.8rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 1px solid var(--dark-parchment);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .tab-row { display: flex; gap: 0; margin-bottom: 1.2rem; border-bottom: 1px solid var(--dark-parchment); }
-  .tab {
-    padding: 0.5rem 1rem;
-    font-size: 0.82rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    color: var(--ink-light);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .tab.active { color: var(--burgundy); border-bottom-color: var(--burgundy); font-weight: 600; }
-  .tab:hover:not(.active) { color: var(--ink); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  .event-log { max-height: 340px; overflow-y: auto; }
-  .event-entry {
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--dark-parchment);
-    font-size: 0.93rem;
-    line-height: 1.5;
-    display: flex;
-    gap: 0.7rem;
-    align-items: flex-start;
-  }
-  .event-entry:last-child { border-bottom: none; }
-  .event-year { font-size: 0.72rem; color: var(--gold); font-weight: 600; min-width: 52px; padding-top: 0.1rem; letter-spacing: 0.05em; }
-  .event-text { color: var(--ink-light); flex: 1; }
-  .event-scandal { color: var(--burgundy); font-style: italic; }
-  .event-good { color: var(--sage); }
-  .event-neutral { color: var(--ink-light); }
-  .choices-grid { display: flex; flex-direction: column; gap: 0.6rem; }
-  .choice-btn {
-    background: white;
-    border: 1px solid var(--dark-parchment);
-    border-radius: 3px;
-    padding: 0.8rem 1rem;
-    text-align: left;
-    cursor: pointer;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    color: var(--ink);
-    transition: all 0.15s;
-    display: flex;
-    gap: 0.7rem;
-    align-items: center;
-    line-height: 1.4;
-  }
-  .choice-btn:hover { border-color: var(--gold); background: #fffdf8; box-shadow: 0 2px 8px var(--shadow); }
-  .choice-btn:active { transform: scale(0.99); }
-  .choice-emoji { font-size: 1.2rem; min-width: 1.5rem; }
-  .choice-info small { display: block; color: var(--gold); font-size: 0.78rem; margin-top: 0.15rem; font-style: italic; }
-  .stat-block { margin-bottom: 1rem; }
-  .stat-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; }
-  .stat-name { font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-light); }
-  .stat-num { font-size: 0.82rem; font-weight: 600; color: var(--ink); min-width: 28px; text-align: right; }
-  .stat-track { flex: 1; height: 5px; background: var(--dark-parchment); border-radius: 3px; margin: 0 0.6rem; }
-  .stat-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
-  .fill-health { background: var(--burgundy); }
-  .fill-rep { background: var(--gold); }
-  .fill-charm { background: var(--blush); }
-  .fill-virtue { background: var(--sage); }
-  .fill-wit { background: var(--navy); }
-  .money-display {
-    font-family: 'IM Fell English', serif;
-    font-size: 1.4rem;
-    color: var(--sage);
-    text-align: center;
-    padding: 0.6rem;
-    background: white;
-    border: 1px solid var(--dark-parchment);
-    border-radius: 3px;
-    margin-bottom: 1rem;
-  }
-  .money-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.15rem; }
-  .relationship-card {
-    background: white;
-    border: 1px solid var(--dark-parchment);
-    border-radius: 3px;
-    padding: 0.6rem 0.8rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-  }
-  .rel-name { font-weight: 600; color: var(--ink); }
-  .rel-type { font-style: italic; color: var(--gold); font-size: 0.78rem; }
-  .rel-bar { height: 4px; background: var(--dark-parchment); border-radius: 2px; margin-top: 0.4rem; }
-  .rel-fill { height: 100%; border-radius: 2px; background: var(--blush); transition: width 0.3s; }
-  .scandal-meter {
-    background: white;
-    border: 1px solid var(--burgundy-light);
-    border-radius: 3px;
-    padding: 0.6rem 0.8rem;
-    margin-bottom: 1rem;
-  }
-  .scandal-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy); margin-bottom: 0.3rem; }
-  .scandal-track { height: 6px; background: var(--dark-parchment); border-radius: 3px; }
-  .scandal-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--burgundy)); transition: width 0.4s; }
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(10,7,3,0.75);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 200;
-    padding: 1rem;
-  }
-  .modal-box {
-    background: var(--parchment);
-    border: 2px solid var(--gold);
-    border-radius: 3px;
-    padding: 2rem;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .modal-deco { font-size: 2.5rem; margin-bottom: 0.5rem; }
-  .modal-title {
-    font-family: 'IM Fell English', serif;
-    font-size: 1.5rem;
-    color: var(--ink);
-    margin-bottom: 0.7rem;
-  }
-  .modal-body { font-size: 0.95rem; color: var(--ink-light); line-height: 1.6; margin-bottom: 1.3rem; font-style: italic; }
-  .modal-choices { display: flex; flex-direction: column; gap: 0.5rem; }
-  .modal-btn {
-    padding: 0.7rem 1rem;
-    border: 1px solid var(--dark-parchment);
-    border-radius: 3px;
-    background: white;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    cursor: pointer;
-    color: var(--ink);
-    transition: all 0.15s;
-  }
-  .modal-btn:hover { background: var(--cream); border-color: var(--gold); }
-  .modal-btn.primary { background: var(--burgundy); color: white; border-color: var(--burgundy); }
-  .modal-btn.primary:hover { background: var(--burgundy-light); }
-  .season-badge {
-    display: inline-block;
-    padding: 0.2rem 0.7rem;
-    background: var(--gold);
-    color: var(--ink);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .suitor-card {
-    background: white;
-    border: 1px solid var(--dark-parchment);
-    border-radius: 3px;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .suitor-card:hover { border-color: var(--gold); box-shadow: 0 2px 8px var(--shadow); }
-  .suitor-name { font-weight: 600; color: var(--ink); font-size: 0.95rem; }
-  .suitor-class { font-style: italic; color: var(--gold); font-size: 0.8rem; }
-  .suitor-chance { font-size: 0.78rem; color: var(--sage); margin-top: 0.3rem; }
-  .hidden { display: none !important; }
-  .ornament { color: var(--gold); }
-  .italic { font-style: italic; }
-  .dying-msg { color: var(--burgundy); font-style: italic; }
-  .achievement-popup {
-    position: fixed; bottom: 1.5rem; right: 1.5rem;
-    background: var(--ink);
-    border: 1px solid var(--gold);
-    border-radius: 3px;
-    padding: 0.8rem 1.2rem;
-    color: var(--gold-light);
-    font-size: 0.88rem;
-    max-width: 260px;
-    z-index: 300;
-    animation: slideIn 0.3s ease, slideOut 0.3s ease 3.7s forwards;
-  }
-  @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
-  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
-  @media (max-width: 640px) {
-    .game-body { grid-template-columns: 1fr; }
-    .side-panel { border-top: 1px solid var(--dark-parchment); }
-    .form-row { grid-template-columns: 1fr; }
-    .class-cards { grid-template-columns: 1fr; }
-    .stats-bar { gap: 0.5rem; }
-  }
+:root{--cream:#f5f0e8;--parchment:#ede4d0;--dark-parchment:#d4c9a8;--ink:#1a1208;--ink-light:#3d2e12;--gold:#9a7d3a;--gold-light:#c4a45a;--burgundy:#6b1f2a;--burgundy-light:#a33040;--sage:#4a6741;--sage-light:#6a9465;--navy:#1c2e4a;--blush:#c87070;--shadow:rgba(26,18,8,0.15);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0d0a05;min-height:100vh;font-family:'Cormorant Garamond',serif;color:var(--ink);display:flex;flex-direction:column;align-items:center;}
+#splash{min-height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse at center,#2a1f10 0%,#0d0a05 100%);}
+.splash-ornament{font-size:2rem;color:var(--gold);letter-spacing:.5rem;margin-bottom:1rem;}
+.splash-title{font-family:'IM Fell English',serif;font-size:clamp(2.5rem,7vw,5rem);color:var(--gold-light);text-align:center;line-height:1.1;text-shadow:0 0 40px rgba(154,125,58,.4);margin-bottom:.3rem;}
+.splash-subtitle{font-style:italic;font-size:clamp(1rem,2.5vw,1.4rem);color:var(--dark-parchment);text-align:center;margin-bottom:3rem;letter-spacing:.1em;}
+.splash-border{border:1px solid var(--gold);border-radius:2px;padding:2.5rem 2rem;max-width:560px;width:100%;background:rgba(26,18,8,.6);position:relative;}
+.splash-border::before,.splash-border::after{content:'❧';position:absolute;color:var(--gold);font-size:1.5rem;}
+.splash-border::before{top:-.85rem;left:50%;transform:translateX(-50%);background:#0d0a05;padding:0 .5rem;}
+.splash-border::after{bottom:-.85rem;left:50%;transform:translateX(-50%) rotate(180deg);background:#0d0a05;padding:0 .5rem;}
+.form-group{margin-bottom:1.2rem;}
+.form-label{display:block;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-light);margin-bottom:.35rem;}
+.form-input,.form-select{width:100%;background:rgba(245,240,232,.07);border:1px solid rgba(154,125,58,.4);border-radius:2px;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1rem;padding:.55rem .8rem;outline:none;transition:border-color .2s;}
+.form-input:focus,.form-select:focus{border-color:var(--gold-light);}
+.form-select option{background:#1a1208;color:var(--cream);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+.btn-primary{width:100%;padding:.85rem;background:var(--gold);border:none;border-radius:2px;color:var(--ink);font-family:'IM Fell English',serif;font-size:1.1rem;cursor:pointer;letter-spacing:.05em;transition:background .2s,transform .1s;margin-top:.5rem;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-primary:active{transform:scale(.99);}
+.class-cards{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.3rem;}
+.class-card{border:1px solid rgba(154,125,58,.3);border-radius:2px;padding:.65rem;cursor:pointer;background:rgba(245,240,232,.04);transition:all .2s;}
+.class-card:hover{background:rgba(245,240,232,.1);border-color:var(--gold-light);}
+.class-card.selected{background:rgba(154,125,58,.2);border-color:var(--gold-light);}
+.class-card-title{color:var(--gold-light);font-size:.9rem;font-weight:600;margin-bottom:.15rem;}
+.class-card-desc{color:rgba(245,240,232,.6);font-size:.75rem;font-style:italic;line-height:1.3;}
+#game-shell{display:none;width:100%;max-width:900px;min-height:100vh;}
+.game-header{background:linear-gradient(180deg,#1a1208 0%,#261a0c 100%);border-bottom:2px solid var(--gold);padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;position:sticky;top:0;z-index:50;}
+.header-name{font-family:'IM Fell English',serif;font-size:1.2rem;color:var(--gold-light);}
+.header-meta{font-size:.75rem;color:var(--dark-parchment);font-style:italic;}
+.stats-bar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.stat-pill{display:flex;align-items:center;gap:.3rem;background:rgba(245,240,232,.07);border:1px solid rgba(154,125,58,.25);border-radius:20px;padding:.2rem .6rem;font-size:.75rem;color:var(--cream);}
+.stat-pill span{color:var(--gold-light);font-weight:600;}
+.year-btn{background:var(--burgundy);border:1px solid var(--burgundy-light);color:var(--cream);font-family:'IM Fell English',serif;font-size:.95rem;padding:.35rem 1rem;border-radius:2px;cursor:pointer;transition:background .2s;white-space:nowrap;}
+.year-btn:hover{background:var(--burgundy-light);}
+.game-body{display:grid;grid-template-columns:1fr 260px;gap:0;min-height:calc(100vh - 75px);}
+.main-panel{background:var(--cream);padding:1.2rem;border-right:1px solid var(--dark-parchment);}
+.side-panel{background:var(--parchment);padding:1rem;overflow-y:auto;max-height:calc(100vh - 75px);}
+.panel-title{font-family:'IM Fell English',serif;font-size:1rem;color:var(--ink-light);margin-bottom:.7rem;padding-bottom:.35rem;border-bottom:1px solid var(--dark-parchment);display:flex;align-items:center;gap:.4rem;}
+.tab-row{display:flex;gap:0;margin-bottom:1rem;border-bottom:1px solid var(--dark-parchment);overflow-x:auto;}
+.tab{padding:.45rem .8rem;font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;color:var(--ink-light);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:nowrap;}
+.tab.active{color:var(--burgundy);border-bottom-color:var(--burgundy);font-weight:600;}
+.tab:hover:not(.active){color:var(--ink);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.event-log{max-height:360px;overflow-y:auto;}
+.event-entry{padding:.6rem 0;border-bottom:1px solid var(--dark-parchment);font-size:.9rem;line-height:1.5;display:flex;gap:.6rem;align-items:flex-start;}
+.event-entry:last-child{border-bottom:none;}
+.event-year{font-size:.7rem;color:var(--gold);font-weight:600;min-width:48px;padding-top:.1rem;letter-spacing:.05em;}
+.event-text{color:var(--ink-light);flex:1;}
+.event-scandal{color:var(--burgundy);}
+.event-good{color:var(--sage);}
+.event-neutral{color:var(--ink-light);}
+.choices-grid{display:flex;flex-direction:column;gap:.55rem;}
+.choice-btn{background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:.7rem .9rem;text-align:left;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--ink);transition:all .15s;display:flex;gap:.6rem;align-items:center;line-height:1.4;}
+.choice-btn:hover{border-color:var(--gold);background:#fffdf8;box-shadow:0 2px 8px var(--shadow);}
+.choice-btn:active{transform:scale(.99);}
+.choice-emoji{font-size:1.15rem;min-width:1.4rem;}
+.choice-info small{display:block;color:var(--gold);font-size:.75rem;margin-top:.1rem;font-style:italic;}
+.stat-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;}
+.stat-name{font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-light);}
+.stat-num{font-size:.78rem;font-weight:600;color:var(--ink);min-width:26px;text-align:right;}
+.stat-track{flex:1;height:5px;background:var(--dark-parchment);border-radius:3px;margin:0 .5rem;}
+.stat-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+.fill-health{background:var(--burgundy);}
+.fill-rep{background:var(--gold);}
+.fill-charm{background:var(--blush);}
+.fill-virtue{background:var(--sage);}
+.fill-wit{background:var(--navy);}
+.fill-composure{background:#7a6a9a;}
+.fill-beauty{background:#c87070;}
+.fill-confidence{background:#8a7a3a;}
+.money-display{font-family:'IM Fell English',serif;font-size:1.25rem;color:var(--sage);text-align:center;padding:.5rem;background:white;border:1px solid var(--dark-parchment);border-radius:3px;margin-bottom:.8rem;}
+.money-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);display:block;margin-bottom:.1rem;}
+.scandal-meter{background:white;border:1px solid var(--burgundy-light);border-radius:3px;padding:.55rem .7rem;margin-bottom:.8rem;}
+.scandal-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--burgundy);margin-bottom:.25rem;}
+.scandal-track{height:5px;background:var(--dark-parchment);border-radius:3px;}
+.scandal-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--burgundy));transition:width .4s;}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,7,3,.78);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem;}
+.modal-box{background:var(--parchment);border:2px solid var(--gold);border-radius:3px;padding:1.8rem;max-width:440px;width:100%;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto;}
+.modal-deco{font-size:2.2rem;margin-bottom:.4rem;}
+.modal-title{font-family:'IM Fell English',serif;font-size:1.4rem;color:var(--ink);margin-bottom:.6rem;}
+.modal-body{font-size:.9rem;color:var(--ink-light);line-height:1.6;margin-bottom:1.1rem;font-style:italic;white-space:pre-line;}
+.modal-choices{display:flex;flex-direction:column;gap:.45rem;}
+.modal-btn{padding:.65rem .9rem;border:1px solid var(--dark-parchment);border-radius:3px;background:white;font-family:'Cormorant Garamond',serif;font-size:.9rem;cursor:pointer;color:var(--ink);transition:all .15s;text-align:left;}
+.modal-btn:hover{background:var(--cream);border-color:var(--gold);}
+.modal-btn.primary{background:var(--burgundy);color:white;border-color:var(--burgundy);text-align:center;}
+.modal-btn.primary:hover{background:var(--burgundy-light);}
+.modal-btn small{display:block;font-size:.75rem;color:var(--gold-light);margin-top:.15rem;}
+.modal-btn.primary small{color:rgba(255,255,255,.7);}
+.person-card{background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:.75rem;margin-bottom:.5rem;}
+.person-name{font-weight:600;color:var(--ink);font-size:.95rem;}
+.person-type{font-style:italic;color:var(--gold);font-size:.78rem;}
+.person-desc{font-size:.82rem;color:var(--ink-light);margin:.3rem 0;font-style:italic;line-height:1.4;}
+.person-stats{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem;}
+.p-stat{font-size:.72rem;background:var(--parchment);padding:.15rem .5rem;border-radius:10px;color:var(--ink-light);}
+.rel-bar{height:4px;background:var(--dark-parchment);border-radius:2px;margin-top:.35rem;}
+.rel-fill{height:100%;border-radius:2px;background:var(--blush);transition:width .3s;}
+.person-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem;}
+.p-action{font-size:.72rem;padding:.25rem .6rem;border:1px solid var(--dark-parchment);border-radius:2px;cursor:pointer;background:var(--parchment);color:var(--ink-light);font-family:'Cormorant Garamond',serif;transition:all .15s;}
+.p-action:hover{border-color:var(--gold);background:var(--cream);}
+.p-action.danger{border-color:var(--burgundy-light);color:var(--burgundy);}
+.p-action.love{border-color:var(--blush);color:var(--burgundy);}
+.badge{display:inline-block;font-size:.68rem;padding:.15rem .5rem;border-radius:8px;font-weight:600;margin-left:.4rem;}
+.badge-red{background:#f8d7da;color:#721c24;}
+.badge-green{background:#d4edda;color:#155724;}
+.badge-gold{background:#fff3cd;color:#856404;}
+.achievement-popup{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink);border:1px solid var(--gold);border-radius:3px;padding:.7rem 1.1rem;color:var(--gold-light);font-size:.85rem;max-width:260px;z-index:300;animation:slideIn .3s ease,slideOut .3s ease 3.7s forwards;}
+@keyframes slideIn{from{transform:translateX(120%);}to{transform:translateX(0);}}
+@keyframes slideOut{from{transform:translateX(0);opacity:1;}to{transform:translateX(120%);opacity:0;}}
+.childhood-phase{text-align:center;padding:2rem;}
+.childhood-phase h2{font-family:'IM Fell English',serif;font-size:1.5rem;color:var(--ink);margin-bottom:.5rem;}
+.childhood-phase p{font-style:italic;color:var(--ink-light);margin-bottom:1.5rem;}
+.age-stage-badge{display:inline-block;padding:.3rem 1rem;background:var(--gold);color:var(--ink);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;border-radius:20px;font-weight:600;margin-bottom:1rem;}
+.section-divider{border:none;border-top:1px solid var(--dark-parchment);margin:1rem 0;}
+.friend-type-badge{font-size:.68rem;padding:.15rem .5rem;border-radius:8px;margin-left:.3rem;}
+.friend-high{background:#fff3cd;color:#856404;}
+.friend-risky{background:#f8d7da;color:#721c24;}
+.friend-low{background:#d4edda;color:#155724;}
+.notification-dot{width:8px;height:8px;background:var(--burgundy);border-radius:50%;display:inline-block;margin-left:.3rem;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@media(max-width:640px){.game-body{grid-template-columns:1fr;}.side-panel{border-top:1px solid var(--dark-parchment);max-height:none;}.form-row{grid-template-columns:1fr;}.class-cards{grid-template-columns:1fr;}.stats-bar{gap:.35rem;}}
 </style>
 </head>
 <body>
 
-<!-- SPLASH / CHARACTER CREATION -->
 <div id="splash">
   <div class="splash-ornament">— ✦ —</div>
   <div class="splash-title">Regency Life</div>
@@ -397,43 +143,47 @@
     <div class="form-group">
       <label class="form-label">Your Name</label>
       <div class="form-row">
-        <input class="form-input" id="char-fname" placeholder="First name" value="Eleanor">
-        <input class="form-input" id="char-lname" placeholder="Family name" value="Ashford">
+        <input class="form-input" id="cf" placeholder="First name" value="Eleanor">
+        <input class="form-input" id="cl" placeholder="Family name" value="Ashford">
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Gender & Starting Year</label>
       <div class="form-row">
-        <select class="form-select" id="char-gender">
-          <option value="lady">Lady</option>
-          <option value="gentleman">Gentleman</option>
-        </select>
-        <select class="form-select" id="char-year">
-          <option value="1810">1810</option>
-          <option value="1813" selected>1813</option>
-          <option value="1815">1815</option>
-          <option value="1818">1818</option>
-        </select>
+        <div>
+          <label class="form-label">Gender</label>
+          <select class="form-select" id="cg">
+            <option value="lady">Lady</option>
+            <option value="gentleman">Gentleman</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Starting Year</label>
+          <select class="form-select" id="cy">
+            <option value="1810">1810</option>
+            <option value="1813" selected>1813</option>
+            <option value="1815">1815</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="form-group">
       <label class="form-label">Station in Society</label>
       <div class="class-cards" id="class-cards">
-        <div class="class-card" data-class="nobility" onclick="selectClass(this)">
+        <div class="class-card" data-class="nobility" onclick="selClass(this)">
           <div class="class-card-title">🏰 Nobility</div>
-          <div class="class-card-desc">A Duke or Earl's family. £12,000/yr. Great expectations, greater scrutiny.</div>
+          <div class="class-card-desc">Duke/Earl's family. £12,000/yr. Great privilege, great scrutiny.</div>
         </div>
-        <div class="class-card selected" data-class="gentry" onclick="selectClass(this)">
+        <div class="class-card selected" data-class="gentry" onclick="selClass(this)">
           <div class="class-card-title">🌿 Landed Gentry</div>
-          <div class="class-card-desc">A respectable estate. £3,000/yr. Genteel but anxious about reputation.</div>
+          <div class="class-card-desc">Respectable estate. £3,000/yr. Genteel but anxious about reputation.</div>
         </div>
-        <div class="class-card" data-class="middling" onclick="selectClass(this)">
+        <div class="class-card" data-class="middling" onclick="selClass(this)">
           <div class="class-card-title">🏪 Middling Sort</div>
-          <div class="class-card-desc">Trade or clergy. £800/yr. Must work harder for society's approval.</div>
+          <div class="class-card-desc">Trade or clergy. £800/yr. Must work harder for approval.</div>
         </div>
-        <div class="class-card" data-class="poor" onclick="selectClass(this)">
+        <div class="class-card" data-class="poor" onclick="selClass(this)">
           <div class="class-card-title">🪶 Impoverished</div>
-          <div class="class-card-desc">Reduced circumstances. £120/yr. Survival and a good match are paramount.</div>
+          <div class="class-card-desc">Reduced circumstances. £120/yr. A good match is everything.</div>
         </div>
       </div>
     </div>
@@ -441,865 +191,1239 @@
   </div>
 </div>
 
-<!-- GAME SHELL -->
 <div id="game-shell">
   <div class="game-header">
     <div>
       <div class="header-name" id="hdr-name">Lady Eleanor Ashford</div>
-      <div class="header-meta" id="hdr-meta">Year 1813 · The London Season · Landed Gentry</div>
+      <div class="header-meta" id="hdr-meta">Year 1813 · Age 0</div>
     </div>
     <div class="stats-bar">
       <div class="stat-pill">❤️ <span id="hdr-health">100</span></div>
       <div class="stat-pill">⭐ <span id="hdr-rep">70</span></div>
-      <div class="stat-pill">💰 <span id="hdr-money">3,000</span></div>
-      <div class="stat-pill">🗓 <span id="hdr-age">17</span> yrs</div>
+      <div class="stat-pill">💰 £<span id="hdr-money">3000</span></div>
+      <div class="stat-pill">🗓 <span id="hdr-age">0</span></div>
     </div>
-    <button class="year-btn" onclick="advanceYear()">Pass the Season ›</button>
+    <button class="year-btn" id="advance-btn" onclick="advanceTime()">Advance ›</button>
   </div>
-
   <div class="game-body">
     <div class="main-panel">
       <div class="tab-row">
         <div class="tab active" onclick="showTab('chronicle')">Chronicle</div>
         <div class="tab" onclick="showTab('society')">Society</div>
+        <div class="tab" onclick="showTab('connections')">Connections</div>
         <div class="tab" onclick="showTab('marriage')">Marriage</div>
         <div class="tab" onclick="showTab('household')">Household</div>
         <div class="tab" onclick="showTab('gossip')">Gossip</div>
       </div>
-
-      <!-- CHRONICLE TAB -->
       <div class="tab-content active" id="tab-chronicle">
-        <div class="panel-title"><span class="ornament">❧</span> The Chronicle of Your Life</div>
+        <div class="panel-title">❧ The Chronicle of Your Life</div>
         <div class="event-log" id="event-log"></div>
       </div>
-
-      <!-- SOCIETY TAB -->
       <div class="tab-content" id="tab-society">
-        <div class="panel-title"><span class="ornament">❧</span> Activities This Season</div>
-        <div class="choices-grid" id="society-choices"></div>
+        <div class="panel-title">❧ Activities This Season</div>
+        <div id="society-content"></div>
       </div>
-
-      <!-- MARRIAGE TAB -->
+      <div class="tab-content" id="tab-connections">
+        <div class="panel-title">❧ Your Connections</div>
+        <div id="connections-content"></div>
+      </div>
       <div class="tab-content" id="tab-marriage">
-        <div class="panel-title"><span class="ornament">❧</span> Prospects & Matrimony</div>
+        <div class="panel-title">❧ Prospects & Matrimony</div>
         <div id="marriage-content"></div>
       </div>
-
-      <!-- HOUSEHOLD TAB -->
       <div class="tab-content" id="tab-household">
-        <div class="panel-title"><span class="ornament">❧</span> Household Affairs</div>
+        <div class="panel-title">❧ Household Affairs</div>
         <div id="household-content"></div>
       </div>
-
-      <!-- GOSSIP TAB -->
       <div class="tab-content" id="tab-gossip">
-        <div class="panel-title"><span class="ornament">❧</span> What They Say in the Drawing Rooms</div>
+        <div class="panel-title">❧ Drawing Room Whispers</div>
         <div id="gossip-content"></div>
       </div>
     </div>
-
     <div class="side-panel">
-      <div class="panel-title"><span class="ornament">❧</span> Character</div>
+      <div class="panel-title">❧ Character</div>
       <div class="money-display">
+        <span class="money-label">Savings</span>
+        £<span id="money-val">3000</span>
+      </div>
+      <div class="money-display" style="margin-top:-.4rem">
         <span class="money-label">Annual Income</span>
-        £<span id="money-val">3,000</span>
+        £<span id="income-val">3000</span>
       </div>
       <div class="scandal-meter">
         <div class="scandal-label">⚠ Scandal Level</div>
         <div class="scandal-track"><div class="scandal-fill" id="scandal-fill" style="width:0%"></div></div>
       </div>
-      <div class="stat-block">
-        <div class="stat-row">
-          <span class="stat-name">Health</span>
-          <div class="stat-track"><div class="stat-fill fill-health" id="fill-health" style="width:100%"></div></div>
-          <span class="stat-num" id="num-health">100</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Reputation</span>
-          <div class="stat-track"><div class="stat-fill fill-rep" id="fill-rep" style="width:70%"></div></div>
-          <span class="stat-num" id="num-rep">70</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Charm</span>
-          <div class="stat-track"><div class="stat-fill fill-charm" id="fill-charm" style="width:50%"></div></div>
-          <span class="stat-num" id="num-charm">50</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Virtue</span>
-          <div class="stat-track"><div class="stat-fill fill-virtue" id="fill-virtue" style="width:80%"></div></div>
-          <span class="stat-num" id="num-virtue">80</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Wit</span>
-          <div class="stat-track"><div class="stat-fill fill-wit" id="fill-wit" style="width:50%"></div></div>
-          <span class="stat-num" id="num-wit">50</span>
-        </div>
-      </div>
-      <div class="panel-title" style="margin-top:1rem"><span class="ornament">❧</span> Connections</div>
-      <div id="relationships-list"></div>
-      <div class="panel-title" style="margin-top:1rem"><span class="ornament">❧</span> Status</div>
-      <div id="status-block" style="font-size:0.85rem; color:var(--ink-light); line-height:1.7;"></div>
+      <div id="stat-block"></div>
+      <div class="panel-title" style="margin-top:.8rem">❧ Status</div>
+      <div id="status-block" style="font-size:.82rem;color:var(--ink-light);line-height:1.8;"></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay hidden" id="modal">
+<div class="modal-overlay" id="modal" style="display:none">
   <div class="modal-box">
     <div class="modal-deco" id="modal-deco">📜</div>
     <div class="modal-title" id="modal-title">An Event!</div>
-    <div class="modal-body" id="modal-body">Something has occurred.</div>
+    <div class="modal-body" id="modal-body">Something occurred.</div>
     <div class="modal-choices" id="modal-choices"></div>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-//  DATA & CONSTANTS
-// ═══════════════════════════════════════════
-const CLASS_DATA = {
-  nobility:  { label:'Nobility',      income:12000, startRep:85, startMoney:12000, startCharm:55, startVirtue:75, startWit:50, debutAge:17 },
-  gentry:    { label:'Landed Gentry', income:3000,  startRep:70, startMoney:3000,  startCharm:50, startVirtue:80, startWit:50, debutAge:17 },
-  middling:  { label:'Middling Sort', income:800,   startRep:45, startMoney:800,   startCharm:45, startVirtue:70, startWit:55, debutAge:18 },
-  poor:      { label:'Impoverished',  income:120,   startRep:25, startMoney:120,   startCharm:40, startVirtue:65, startWit:50, debutAge:18 },
+// ════════════════════════════════════════════════════════
+//  CONSTANTS & DATA
+// ════════════════════════════════════════════════════════
+const CL={
+  nobility:{label:'Nobility',income:12000,startMoney:12000,startRep:85,startCharm:55,startVirtue:75,startWit:50,startBeauty:55,startComposure:70,startConfidence:65},
+  gentry:{label:'Landed Gentry',income:3000,startMoney:3000,startRep:70,startCharm:50,startVirtue:80,startWit:50,startBeauty:50,startComposure:60,startConfidence:55},
+  middling:{label:'Middling Sort',income:800,startMoney:800,startRep:45,startCharm:45,startVirtue:70,startWit:55,startBeauty:50,startComposure:50,startConfidence:45},
+  poor:{label:'Impoverished',income:120,startMoney:120,startRep:25,startCharm:40,startVirtue:65,startWit:50,startBeauty:50,startComposure:40,startConfidence:35},
 };
+const CLASS_RANK={poor:0,middling:1,gentry:2,nobility:3};
 
-const SUITOR_POOL = [
-  { name:'Lord Fitzwilliam Darcy',    class:'nobility',  income:10000, charm:70, virtue:65, age:28, desc:'Proud and taciturn, but possessed of a great estate in Derbyshire.' },
-  { name:'Mr. Edmund Wentworth',      class:'gentry',    income:2500,  charm:80, virtue:85, age:26, desc:'A naval captain, lately returned from sea with a modest fortune.' },
-  { name:'Sir George Wickham',        class:'gentry',    income:800,   charm:90, virtue:30, age:27, desc:'Exceedingly charming, with a suspicious past and a talent for debt.' },
-  { name:'Mr. Arthur Tilney',         class:'middling',  income:600,   charm:60, virtue:80, age:30, desc:'A clergyman of steady income and very dull conversation.' },
-  { name:'Lord Henry Bridgerton',     class:'nobility',  income:8000,  charm:75, virtue:70, age:29, desc:'A viscount, much sought after, insufferably aware of the fact.' },
-  { name:'Mr. Charles Musgrove',      class:'gentry',    income:3000,  charm:65, virtue:75, age:24, desc:'Good-natured, handsome, and not overly burdened with intellect.' },
-  { name:'Colonel Frederick Brandon', class:'gentry',    income:2000,  charm:55, virtue:90, age:35, desc:'A man of sense and feeling, if not of great conversation.' },
-  { name:'Mr. John Willoughby',       class:'gentry',    income:4000,  charm:95, virtue:20, age:25, desc:'Dazzlingly handsome, devastatingly charming, and morally bankrupt.' },
-  { name:'Mr. Edward Ferrars',        class:'gentry',    income:1000,  charm:60, virtue:85, age:27, desc:'Amiable and kind, though entangled in a prior secret engagement.' },
-  { name:'Lord Anthony Crawford',     class:'nobility',  income:15000, charm:65, virtue:50, age:32, desc:'A marquess of immense fortune and rather libertine reputation.' },
-  { name:'Mr. Peter Hawkins',         class:'poor',      income:200,   charm:70, virtue:80, age:23, desc:'A penniless schoolmaster of good family, excellent poetry, no prospects.' },
-  { name:'Mr. Augustus Norris',       class:'middling',  income:500,   charm:50, virtue:60, age:40, desc:'A widower, owner of a modest ironworks, seeking a young bride.' },
+const FN_F=['Eleanor','Arabella','Charlotte','Georgiana','Isabella','Sophia','Jane','Anne','Emma','Harriet','Caroline','Lydia','Mary','Catherine','Fanny','Diana','Cecilia','Eliza','Augusta','Penelope'];
+const FN_M=['Frederick','Edmund','Henry','Charles','George','William','James','Arthur','Edward','John','Robert','Richard','Thomas','Francis','Anthony','Phillip','Nathaniel','Oliver','Rupert','Sebastian'];
+const SN=['Worthington','Pemberton','Cavendish','Montague','Radcliffe','Sinclair','Hartley','Crawford','Ferrars','Bingley','Tilney','Darcy','Wentworth','Morland','Elliot','Musgrove','Brandon','Wickham','Norris','Price','Churchill','Knightley','Elton','Churchill','Fairfax','Dashwood'];
+const TITLES=['Lord','Sir','Colonel','Captain','Reverend','Major'];
+
+function rn(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function cl(v,mn=0,mx=100){return Math.max(mn,Math.min(mx,Math.round(v)));}
+function pk(a){return a[Math.floor(Math.random()*a.length)];}
+function mkName(g){return (g==='f'?pk(FN_F):pk(FN_M))+' '+pk(SN);}
+function pct(v){return cl(v)+'%';}
+
+// ════════════════════════════════════════════════════════
+//  PEOPLE DATABASE
+// ════════════════════════════════════════════════════════
+const PROSPECT_TEMPLATES=[
+  // MALE prospects (for ladies)
+  {name:'Lord Fitzwilliam Darcy',g:'m',cls:'nobility',income:10000,charm:70,virtue:65,beauty:75,age:28,desc:'Proud and taciturn, possessed of a great estate in Derbyshire.',personality:'serious'},
+  {name:'Mr. Edmund Wentworth',g:'m',cls:'gentry',income:2500,charm:80,virtue:85,beauty:70,age:26,desc:'A naval captain lately returned with a modest fortune and excellent manners.',personality:'romantic'},
+  {name:'Sir George Wickham',g:'m',cls:'gentry',income:500,charm:95,virtue:20,beauty:85,age:27,desc:'Exceedingly charming with a suspicious past and a talent for debt.',personality:'rake'},
+  {name:'Mr. Arthur Tilney',g:'m',cls:'middling',income:400,charm:55,virtue:85,beauty:55,age:30,desc:'A clergyman of steady income and perfectly dull conversation.',personality:'steady'},
+  {name:'Lord Henry Bridgerton',g:'m',cls:'nobility',income:8000,charm:75,virtue:70,beauty:80,age:29,desc:'A viscount much sought after, insufferably aware of the fact.',personality:'charming'},
+  {name:'Mr. Charles Musgrove',g:'m',cls:'gentry',income:3000,charm:65,virtue:75,beauty:70,age:24,desc:'Good-natured, handsome, and not overly burdened with intellect.',personality:'gentle'},
+  {name:'Colonel Frederick Brandon',g:'m',cls:'gentry',income:2000,charm:55,virtue:90,beauty:60,age:35,desc:'A man of great sense and feeling, if not of sparkling conversation.',personality:'serious'},
+  {name:'Mr. John Willoughby',g:'m',cls:'gentry',income:3000,charm:95,virtue:15,beauty:90,age:25,desc:'Dazzlingly handsome, devastatingly charming, and morally bankrupt.',personality:'rake'},
+  {name:'Lord Anthony Crawford',g:'m',cls:'nobility',income:15000,charm:65,virtue:40,beauty:70,age:32,desc:'A marquess of immense fortune and libertine reputation.',personality:'libertine'},
+  {name:'Mr. Peter Hawkins',g:'m',cls:'poor',income:80,charm:70,virtue:80,beauty:65,age:23,desc:'A penniless schoolmaster of good family and excellent poetry.',personality:'romantic'},
+  {name:'Mr. Augustus Norris',g:'m',cls:'middling',income:600,charm:45,virtue:65,beauty:45,age:42,desc:'A widower with modest ironworks, seeking a young wife.',personality:'steady'},
+  {name:'Captain Samuel Price',g:'m',cls:'poor',income:200,charm:75,virtue:80,beauty:70,age:26,desc:'A brave officer returned from the wars with little but honour.',personality:'romantic'},
+  {name:'Sir Thomas Elliot',g:'m',cls:'nobility',income:6000,charm:60,virtue:50,beauty:65,age:38,desc:'A baronet consumed by pride in his own consequence.',personality:'proud'},
+  {name:'Mr. Frank Churchill',g:'m',cls:'gentry',income:4000,charm:88,virtue:45,beauty:80,age:24,desc:'Charming and secretive, always with something to hide.',personality:'rake'},
+  // FEMALE prospects (for gentlemen)
+  {name:'Miss Emma Woodhouse',g:'f',cls:'gentry',income:3000,charm:80,virtue:75,beauty:82,age:21,desc:'Clever, handsome, and rich — she fancies herself a matchmaker.',personality:'charming'},
+  {name:'Miss Anne Elliot',g:'f',cls:'nobility',income:2000,charm:65,virtue:90,beauty:68,age:27,desc:'Persuaded against her heart once; she will not be persuaded again.',personality:'serious'},
+  {name:'Miss Jane Fairfax',g:'f',cls:'poor',income:0,charm:75,virtue:90,beauty:80,age:21,desc:'Elegant and accomplished, of very reduced means and great mystery.',personality:'reserved'},
+  {name:'Miss Lydia Bennet',g:'f',cls:'gentry',income:200,charm:85,virtue:20,beauty:78,age:16,desc:'Flirtatious and heedless — the talk of every regiment in the county.',personality:'flirt'},
+  {name:'Lady Catherine Pemberton',g:'f',cls:'nobility',income:8000,charm:60,virtue:80,beauty:70,age:22,desc:'An earl\'s daughter of excellent connections and considerable pride.',personality:'proud'},
+  {name:'Miss Harriet Smith',g:'f',cls:'poor',income:50,charm:70,virtue:80,beauty:75,age:18,desc:'A sweet, pretty girl of uncertain parentage and no prospects.',personality:'gentle'},
+  {name:'Miss Caroline Bingley',g:'f',cls:'gentry',income:5000,charm:68,virtue:55,beauty:72,age:23,desc:'Ambitious, fashionable, and calculating in her choice of connections.',personality:'ambitious'},
+  {name:'Mrs. Arabella Weston',g:'f',cls:'gentry',income:2500,charm:75,virtue:70,beauty:68,age:30,desc:'A young widow of comfortable means and an easy temper.',personality:'charming'},
 ];
 
-const LADY_SUITOR_POOL = [
-  { name:'Miss Charlotte Lucas',     class:'gentry',   income:500,  charm:60, virtue:85, age:22, desc:'Sensible and practical, she married for a home rather than love.' },
-  { name:'Lady Amelia Crosby',       class:'nobility', income:8000, charm:75, virtue:70, age:20, desc:'An earl\'s daughter, proud and highly accomplished.' },
-  { name:'Miss Jane Fairfax',        class:'poor',     income:50,   charm:80, virtue:90, age:21, desc:'Elegant and accomplished, though of very reduced means.' },
-  { name:'Miss Lydia Bennet',        class:'gentry',   income:300,  charm:85, virtue:30, age:16, desc:'Flirtatious and heedless, she is the talk of every regiment.' },
-  { name:'Miss Emma Woodhouse',      class:'gentry',   income:3000, charm:80, virtue:75, age:21, desc:'Clever and handsome, she fancies herself a matchmaker.' },
-  { name:'Miss Anne Elliot',         class:'nobility', income:2000, charm:65, virtue:90, age:27, desc:'Persuaded against her heart once; she does not intend to be again.' },
+const FRIEND_TEMPLATES=[
+  // HIGH SOCIETY
+  {name:'Lady Sophia Cavendish',g:'f',ftype:'high',cls:'nobility',charm:70,wit:65,desc:'A duke\'s daughter, gracious when pleased, cutting when not.',personality:'proud'},
+  {name:'Lord William Hartley',g:'m',ftype:'high',cls:'nobility',charm:65,wit:70,desc:'A young earl with impeccable taste and excellent connexions.',personality:'charming'},
+  {name:'Lady Margaret Sinclair',g:'f',ftype:'high',cls:'nobility',charm:60,wit:75,desc:'A great society hostess whose approval opens every door.',personality:'serious'},
+  {name:'Mr. George Pemberton',g:'m',ftype:'high',cls:'gentry',charm:72,wit:68,desc:'A wealthy landowner whose opinion sets the fashion locally.',personality:'steady'},
+  // RISKY
+  {name:'Miss Cecilia Radcliffe',g:'f',ftype:'risky',cls:'gentry',charm:88,wit:72,desc:'A dazzling widow of scandalous reputation who makes life interesting.',personality:'flirt'},
+  {name:'Mr. Sebastian Hawke',g:'m',ftype:'risky',cls:'middling',charm:85,wit:65,desc:'A charming gambler who knows every secret in three counties.',personality:'rake'},
+  {name:'Lady Diana Morland',g:'f',ftype:'risky',cls:'nobility',charm:80,wit:78,desc:'A bored noblewomen who delights in mischief and intrigue.',personality:'libertine'},
+  {name:'Captain Rupert Crawford',g:'m',ftype:'risky',cls:'gentry',charm:82,wit:60,desc:'A dashing cavalry officer with debts and a careless heart.',personality:'rake'},
+  // LOW SOCIETY
+  {name:'Mrs. Hannah Price',g:'f',ftype:'low',cls:'poor',charm:55,wit:50,desc:'A warm-hearted seamstress who knows everyone in the village.',personality:'gentle'},
+  {name:'Thomas Briggs',g:'m',ftype:'low',cls:'poor',charm:50,wit:55,desc:'An honest tenant farmer, loyal and plain-spoken.',personality:'steady'},
+  {name:'Miss Rose Cooper',g:'f',ftype:'low',cls:'middling',charm:60,wit:58,desc:'A merchant\'s daughter of lively spirits and genuine kindness.',personality:'gentle'},
+  {name:'Mr. Samuel Nash',g:'m',ftype:'low',cls:'middling',charm:58,wit:65,desc:'A clever apothecary\'s son with radical ideas and warm manner.',personality:'romantic'},
 ];
 
-const SCANDAL_EVENTS = [
-  { text: 'was seen walking unchaperoned with {name} in Hyde Park.', scandal: 20, rep: -15 },
-  { text: 'was observed corresponding secretly with a gentleman.', scandal: 15, rep: -10 },
-  { text: 'was heard making a cutting remark about Lady Worthington.', scandal: 10, rep: -8 },
-  { text: 'was seen gambling at a card party until the small hours.', scandal: 18, rep: -12 },
-  { text: 'refused a dance at the Pemberton ball without adequate excuse.', scandal: 8, rep: -5 },
-  { text: 'was observed weeping publicly in the Pump Room.', scandal: 12, rep: -8 },
-  { text: 'wore a gown of indecent transparency at the Hartley assembly.', scandal: 22, rep: -18 },
-  { text: 'was heard speaking disparagingly of the Prince Regent.', scandal: 25, rep: -20 },
+const FAMILY_TEMPLATES=[
+  {rel:'Mother',g:'f',affection:75,emoji:'👩'},
+  {rel:'Father',g:'m',affection:70,emoji:'👨'},
+  {rel:'Elder Sister',g:'f',affection:65,emoji:'👩'},
+  {rel:'Younger Brother',g:'m',affection:70,emoji:'👦'},
+  {rel:'Aunt',g:'f',affection:60,emoji:'👩'},
+  {rel:'Uncle',g:'m',affection:55,emoji:'👨'},
 ];
 
-const GOOD_EVENTS = [
-  { text: 'impressed the assembly with an accomplished performance at the pianoforte.', rep: 8, charm: 5 },
-  { text: 'was praised by Lady Worthington for exceptional embroidery.', rep: 6, virtue: 3 },
-  { text: 'danced every dance at the Netherfield ball without scandal.', rep: 10, charm: 5 },
-  { text: 'nursed a sick neighbour through a fortnight\'s fever, earning much admiration.', rep: 12, virtue: 8 },
-  { text: 'delivered a particularly witty bon mot that was repeated across three drawing rooms.', rep: 8, wit: 5 },
-  { text: 'was presented at Court and acquitted oneself admirably.', rep: 15, charm: 3 },
-  { text: 'made a generous charitable donation that Society noted approvingly.', rep: 10, virtue: 5 },
-  { text: 'spoke excellent French at a dinner party, astonishing the guests.', rep: 7, wit: 5 },
-];
-
-const HOUSEHOLD_EXPENSES = {
-  nobility:  { servants: 1200, estate: 2000, carriages: 400, clothing: 800, entertainment: 600 },
-  gentry:    { servants: 300,  estate: 400,  carriages: 120, clothing: 200, entertainment: 150 },
-  middling:  { servants: 60,   estate: 100,  carriages: 0,   clothing: 80,  entertainment: 50  },
-  poor:      { servants: 0,    estate: 30,   carriages: 0,   clothing: 20,  entertainment: 10  },
-};
-
-const GOSSIP_LINES = [
-  '"I hear {name} is quite ruined — the estate is mortgaged to the hilt."',
-  '"They say {name} eloped with a soldier. Her mother is in hysterics."',
-  '"Have you heard? {name} refused Lord {title}! She must be quite mad."',
-  '"The new parson is quite handsome, though unfortunately without a penny."',
-  '"Lady {name} was seen at the theatre with — but I shall say no more."',
-  '"The Worthingtons are declared bankrupt. The daughters are quite desperate."',
-  '"I am told {name} has forty thousand pounds. Every mother in London is scheming."',
-  '"That wedding was very sudden. Very sudden indeed."',
-  '"The Colonel swears he never made her any promise. She says otherwise."',
-  '"Poor Miss {name} — three seasons and no offer. It is most unfortunate."',
-];
-
-const TITLES = ['Pemberton','Ashford','Montague','Radcliffe','Cavendish','Sinclair','Hartley'];
-const NAMES_F = ['Georgiana','Isabella','Caroline','Sophia','Charlotte','Arabella','Harriet','Emma','Jane','Anne','Lydia','Mary'];
-const NAMES_M = ['Frederick','Edmund','Henry','Charles','George','William','James','Arthur','Edward','John','Robert'];
-const SURNAMES = ['Worthington','Pemberton','Cavendish','Montague','Radcliffe','Sinclair','Hartley','Bingley','Crawford','Ferrars'];
-
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  GAME STATE
-// ═══════════════════════════════════════════
-let G = {};
+// ════════════════════════════════════════════════════════
+let G={};
+let selCls='gentry';
+function selClass(el){document.querySelectorAll('.class-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');selCls=el.dataset.class;}
 
-function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-function clamp(v,mn=0,mx=100){ return Math.max(mn,Math.min(mx,v)); }
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function pct(v){ return clamp(Math.round(v))+'%'; }
-
-// ═══════════════════════════════════════════
-//  CHARACTER CREATION
-// ═══════════════════════════════════════════
-let selectedClass = 'gentry';
-function selectClass(el){
-  document.querySelectorAll('.class-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedClass = el.dataset.class;
-}
-
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
 function beginGame(){
-  const fname = document.getElementById('char-fname').value.trim() || 'Eleanor';
-  const lname = document.getElementById('char-lname').value.trim() || 'Ashford';
-  const gender = document.getElementById('char-gender').value;
-  const year = parseInt(document.getElementById('char-year').value);
-  const cd = CLASS_DATA[selectedClass];
+  const fname=document.getElementById('cf').value.trim()||'Eleanor';
+  const lname=document.getElementById('cl').value.trim()||'Ashford';
+  const gender=document.getElementById('cg').value;
+  const year=parseInt(document.getElementById('cy').value);
+  const cd=CL[selCls];
 
-  G = {
-    fname, lname, gender,
-    year, startYear: year,
-    socialClass: selectedClass,
-    age: cd.debutAge,
-    health: 100,
-    reputation: cd.startRep,
-    charm: cd.startCharm + rand(-5,10),
-    virtue: cd.startVirtue + rand(-5,5),
-    wit: cd.startWit + rand(-5,10),
-    income: cd.income,
-    savings: cd.startMoney,
-    scandal: 0,
-    married: false,
-    spouse: null,
-    children: 0,
-    dead: false,
-    exiled: false,
-    relationships: [],
-    events: [],
-    suitorsSeen: [],
-    gossipSeen: [],
-    seasonCount: 0,
-    achievements: [],
-    squanderCount: 0,
-    debtLevel: 0,
-    employed: false,
-    position: null,
+  G={
+    fname,lname,gender,year,startYear:year,
+    socialClass:selCls,
+    lifeStage:'infant', // infant->child->teen->adult->elder
+    age:0,
+    health:100,reputation:cd.startRep,charm:cd.startCharm,virtue:cd.startVirtue,
+    wit:cd.startWit,beauty:cd.startBeauty,composure:cd.startComposure,confidence:cd.startConfidence,
+    income:cd.income,savings:cd.startMoney,
+    scandal:0,debtLevel:0,
+    married:false,spouse:null,marriageHappiness:0,
+    children:[],pregnancies:0,
+    bastards:0,
+    dead:false,exiled:false,
+    seasonCount:0,
+    events:[],
+    // connections
+    family:[],friends:[],prospects:[],enemies:[],
+    // letters/reconciliation
+    pendingLetters:[],
+    // queued events
+    eventQueue:[],
+    // tracking
+    squanderCount:0,employed:false,position:null,
+    // hidden
+    fertility:rn(40,90),rumourLevel:0,familyPrestige:cd.startRep,
   };
 
-  // Starting relationships
-  if(gender==='lady'){
-    G.relationships.push({ name:'Mama '+lname, type:'Mother', affection:80, emoji:'👩' });
-    G.relationships.push({ name:'Papa '+lname, type:'Father', affection:75, emoji:'👨' });
-  } else {
-    G.relationships.push({ name:'Lady '+lname, type:'Mother', affection:80, emoji:'👩' });
-    G.relationships.push({ name:'Lord '+lname, type:'Father', affection:75, emoji:'👨' });
-  }
+  // Build family
+  FAMILY_TEMPLATES.forEach(ft=>{
+    G.family.push({
+      id:uid(),name:mkName(ft.g==='f'?'f':'m'),displayName:ft.rel+' '+lname,
+      rel:ft.rel,g:ft.g,emoji:ft.emoji,
+      affection:ft.affection+rn(-10,10),opinion:ft.affection,
+      speaking:true,lettersNeeded:0,
+      cls:selCls,
+    });
+  });
 
-  addEvent('🌸','Your story begins.', `${getTitle()} ${fname} ${lname} of the ${cd.label} has entered society in the year of Our Lord ${year}. The world awaits.`, 'good');
+  // Build initial prospects (4-5)
+  buildProspects();
+  // Build initial friends (2)
+  addFriend('high'); addFriend('low');
+
+  addEvent('🌸','A New Life Begins',`${getTitle()} ${fname} ${lname} is born into a ${cd.label} family in the year ${year}. The world is full of possibility.`,'good');
 
   document.getElementById('splash').style.display='none';
   document.getElementById('game-shell').style.display='block';
+  document.getElementById('advance-btn').textContent='Grow Up ›';
   renderAll();
+  // Queue first childhood event
+  setTimeout(()=>triggerChildhoodEvent(),500);
 }
+
+let _uid=0;function uid(){return 'p'+(++_uid);}
 
 function getTitle(){
-  if(G.gender==='lady'){
-    if(G.socialClass==='nobility') return 'Lady';
-    return 'Miss';
-  } else {
-    if(G.socialClass==='nobility') return 'Lord';
-    return 'Mr.';
+  if(G.married&&G.spouse){
+    if(G.gender==='lady') return G.socialClass==='nobility'?'Lady':'Mrs.';
+    return G.socialClass==='nobility'?'Lord':'Mr.';
   }
+  if(G.gender==='lady') return G.socialClass==='nobility'?'Lady':'Miss';
+  return G.socialClass==='nobility'?'Lord':'Mr.';
 }
 
-// ═══════════════════════════════════════════
-//  EVENTS & LOG
-// ═══════════════════════════════════════════
-function addEvent(icon, headline, detail='', type='neutral'){
-  G.events.unshift({ year:`${G.year}`, icon, headline, detail, type });
+function buildProspects(){
+  const wantedG = G.gender==='lady'?'m':'f';
+  const pool=PROSPECT_TEMPLATES.filter(p=>p.g===wantedG&&!G.prospects.find(x=>x.name===p.name));
+  // pick 5 random
+  const shuffled=pool.sort(()=>Math.random()-.5).slice(0,5);
+  shuffled.forEach(p=>{
+    G.prospects.push({...p,id:uid(),affection:rn(20,50),courting:false,secret:false,seduced:false,refused:false,lettersSent:0});
+  });
+}
+
+function addFriend(type){
+  const pool=FRIEND_TEMPLATES.filter(f=>f.ftype===type&&!G.friends.find(x=>x.name===f.name));
+  if(!pool.length)return;
+  const tmpl=pk(pool);
+  G.friends.push({...tmpl,id:uid(),affection:rn(30,55),opinion:rn(30,55),speaking:true,lettersNeeded:0,lettersSent:0});
+}
+
+// ════════════════════════════════════════════════════════
+//  EVENTS LOG
+// ════════════════════════════════════════════════════════
+function addEvent(icon,headline,detail='',type='neutral'){
+  G.events.unshift({year:G.year,age:G.age,icon,headline,detail,type});
 }
 
 function renderLog(){
-  const el = document.getElementById('event-log');
-  el.innerHTML = G.events.slice(0,30).map(e=>`
+  document.getElementById('event-log').innerHTML=G.events.slice(0,40).map(e=>`
     <div class="event-entry">
-      <span class="event-year">${e.year}</span>
-      <span class="event-text event-${e.type}">
-        <strong>${e.icon} ${e.headline}</strong>
-        ${e.detail ? `<br><span style="font-size:0.87rem">${e.detail}</span>` : ''}
-      </span>
+      <span class="event-year">${e.year} (${e.age})</span>
+      <span class="event-text event-${e.type}"><strong>${e.icon} ${e.headline}</strong>${e.detail?`<br><span style="font-size:.84rem">${e.detail}</span>`:''}</span>
     </div>`).join('');
 }
 
-// ═══════════════════════════════════════════
-//  ADVANCE YEAR (core loop)
-// ═══════════════════════════════════════════
-function advanceYear(){
-  if(G.dead) return;
-  G.year++; G.age++; G.seasonCount++;
+// ════════════════════════════════════════════════════════
+//  CHILDHOOD PHASE
+// ════════════════════════════════════════════════════════
+const CHILDHOOD_EVENTS=[
+  {min:0,max:3,weight:5,fn:()=>showModal('👶','A Sickly Season',`The winter is harsh and you fall ill with fever. Mama sits by your cradle night and day.`,[
+    {label:'You recover (common)',fn:()=>{G.health=cl(G.health-rn(5,15));addEvent('🤒','Infant Illness',`You survived your first winter\'s fever, though the health toll lingered.`,'neutral');}}
+  ])},
+  {min:3,max:7,weight:4,fn:()=>showModal('👧','A Cruel Governess',`Miss Pringle raps your knuckles when you make errors. Do you endure or complain to Mama?`,[
+    {label:'Endure in silence (+Composure +5, +Virtue +3)',fn:()=>{G.composure=cl(G.composure+5);G.virtue=cl(G.virtue+3);addEvent('📚','Stoic Pupil',`You bore Miss Pringle\'s cruelty with composure. Character was formed in the enduring.`,'good');}},
+    {label:'Complain to Mama (+Confidence +5, -Composure -3)',fn:()=>{G.confidence=cl(G.confidence+5);G.composure=cl(G.composure-3);addEvent('📢','A Child\'s Grievance',`Mama replaced the governess. You learned to speak up for yourself.`,'good');}},
+  ])},
+  {min:3,max:8,weight:4,fn:()=>showModal('🌳','A Childhood Adventure',`You sneak out to the woods with the tenant farmer\'s children, strictly forbidden.`,[
+    {label:'Go freely (+Confidence +8, +Charm +3, Scandal risk)',fn:()=>{G.confidence=cl(G.confidence+8);G.charm=cl(G.charm+3);if(Math.random()<.4){G.reputation=cl(G.reputation-5);addEvent('🌳','Caught in the Woods',`The escapade was discovered. A small scandal for one so young.`,'scandal');}else{addEvent('🌳','Wild Childhood Memories',`The adventure shaped your confidence and love of freedom.`,'good');}}},
+    {label:'Refuse — it is improper (+Virtue +5, +Reputation +3)',fn:()=>{G.virtue=cl(G.virtue+5);G.reputation=cl(G.reputation+3);addEvent('📖','A Virtuous Child',`You chose propriety over adventure. Governess approved.`,'good');}},
+  ])},
+  {min:6,max:12,weight:5,fn:()=>showModal('📚','Exceptional at Lessons',`Your tutor says you have a rare mind. How do you apply it?`,[
+    {label:'Devote yourself to books (+Wit +8, +Reputation +4)',fn:()=>{G.wit=cl(G.wit+8);G.reputation=cl(G.reputation+4);addEvent('📖','A Scholarly Child',`Your diligence at lessons earns the admiration of your parents.`,'good');}},
+    {label:'Prefer music and drawing (+Charm +6, +Beauty +4)',fn:()=>{G.charm=cl(G.charm+6);G.beauty=cl(G.beauty+4);addEvent('🎵','An Accomplished Young Person',`Your talents at the pianoforte and watercolours are remarked upon.`,'good');}},
+  ])},
+  {min:8,max:14,weight:3,fn:()=>{
+    const sib=G.family.find(f=>f.rel.includes('Sister')||f.rel.includes('Brother'));
+    const name=sib?sib.displayName:'your sibling';
+    showModal('😤','Sibling Rivalry',`${name} receives praise you feel you deserved. The jealousy burns.`,[
+      {label:'Confront them (+Confidence +4, -Family affection)',fn:()=>{G.confidence=cl(G.confidence+4);if(sib)sib.affection=cl(sib.affection-10);addEvent('😤','Sibling Quarrel',`The confrontation cleared the air, though feelings were bruised.`,'neutral');}},
+      {label:'Channel it into effort (+Wit +5, +Virtue +3)',fn:()=>{G.wit=cl(G.wit+5);G.virtue=cl(G.virtue+3);addEvent('✨','Rising Above',`You transformed jealousy into motivation. Quietly impressive.`,'good');}},
+    ]);
+  }},
+  {min:10,max:15,weight:3,fn:()=>showModal('💌','A Secret Letter',`You discover a hidden letter suggesting Papa has a debt he has concealed from Mama.`,[
+    {label:'Tell Mama (honest, family disrupted)',fn:()=>{G.virtue=cl(G.virtue+5);G.family.forEach(f=>{if(f.rel==='Father')f.affection=cl(f.affection-15);if(f.rel==='Mother')f.affection=cl(f.affection+8);});addEvent('📨','A Family Secret Revealed',`Telling Mama caused a great domestic storm.`,'scandal');}},
+    {label:'Keep the secret (+Wit +4, internal turmoil)',fn:()=>{G.wit=cl(G.wit+4);G.composure=cl(G.composure-3);addEvent('🤫','A Heavy Secret',`You bore the knowledge alone. It weighed upon you.`,'neutral');}},
+    {label:'Confront Papa directly (+Confidence +6)',fn:()=>{G.confidence=cl(G.confidence+6);G.family.forEach(f=>{if(f.rel==='Father')f.affection=cl(f.affection+5);});addEvent('💬','Facing Papa',`Papa was shaken but ultimately grateful for your discretion.`,'good');}},
+  ])},
+  {min:13,max:17,weight:4,fn:()=>showModal('💕','A First Crush',`Your heart flutters at the sight of ${rn(0,1)?'a young gentleman':'a young lady'} at church. You are far too young for anything serious.`,[
+    {label:'Write secretly in your diary (+Wit +3, +Charm +2)',fn:()=>{G.wit=cl(G.wit+3);G.charm=cl(G.charm+2);addEvent('📓','First Love',`The experience, safely contained in a diary, expanded your heart.`,'good');}},
+    {label:'Attempt to speak to them (+Confidence +5, Scandal risk)',fn:()=>{G.confidence=cl(G.confidence+5);if(Math.random()<.35){G.scandal=cl(G.scandal+8,0,100);addEvent('😳','Youthful Indiscretion',`Your forwardness was remarked upon by someone who told someone else.`,'scandal');}else{addEvent('💕','A Charming Exchange',`The brief conversation left you pink-cheeked and smiling.`,'good');}}},
+    {label:'Suppress the feeling entirely (+Virtue +4)',fn:()=>{G.virtue=cl(G.virtue+4);G.composure=cl(G.composure+3);addEvent('🙏','Mastered Feeling',`You subdued the sentiment. Very proper.`,'neutral');}},
+  ])},
+];
 
-  // Income & expenses
-  const exp = HOUSEHOLD_EXPENSES[G.socialClass];
-  const totalExp = Object.values(exp).reduce((a,b)=>a+b,0);
-  const net = G.income - totalExp;
-  G.savings += net;
+function triggerChildhoodEvent(){
+  if(G.age>17||G.lifeStage==='adult')return;
+  const eligible=CHILDHOOD_EVENTS.filter(e=>G.age>=e.min&&G.age<=e.max);
+  if(!eligible.length)return;
+  const ev=pk(eligible);
+  ev.fn();
+}
 
-  if(G.savings < 0){
-    G.debtLevel++;
-    G.reputation = clamp(G.reputation - 8);
-    addEvent('💸','Financial Ruin Looms',`Your accounts show a deficit of £${Math.abs(net).toLocaleString()}. Creditors begin to call. Reputation suffers.`,'scandal');
-    if(G.debtLevel >= 4){
-      G.savings = 0;
-      endGame('ruin');
-      return;
+// ════════════════════════════════════════════════════════
+//  ADVANCE TIME
+// ════════════════════════════════════════════════════════
+const EXPENSES_PER_YEAR={
+  nobility:{servants:1200,estate:2000,carriages:400,clothing:800,entertainment:600},
+  gentry:{servants:300,estate:400,carriages:120,clothing:200,entertainment:150},
+  middling:{servants:60,estate:100,carriages:0,clothing:80,entertainment:50},
+  poor:{servants:0,estate:30,carriages:0,clothing:20,entertainment:10},
+};
+
+function advanceTime(){
+  if(G.dead)return;
+  G.age++;G.year++;G.seasonCount++;
+
+  // Life stage transitions
+  if(G.age<3)G.lifeStage='infant';
+  else if(G.age<13)G.lifeStage='child';
+  else if(G.age<18)G.lifeStage='teen';
+  else if(G.age<70)G.lifeStage='adult';
+  else G.lifeStage='elder';
+
+  if(G.age===18){
+    document.getElementById('advance-btn').textContent='Pass the Season ›';
+    addEvent('🎊','You Are Out!',`${getTitle()} ${G.fname} ${G.lname} has entered society. The Season begins.`,'good');
+    buildProspects();
+    addFriend('high');addFriend('risky');
+    showAchievement('🌸 Your first Season!');
+  }
+
+  // EXPENSES (only in adult life)
+  if(G.age>=18){
+    const exp=EXPENSES_PER_YEAR[G.socialClass];
+    const totalExp=Object.values(exp).reduce((a,b)=>a+b,0);
+    G.savings+=G.income;   // add income first
+    G.savings-=totalExp;   // subtract expenses — FIXED BUG
+
+    if(G.savings<0){
+      G.debtLevel++;
+      G.reputation=cl(G.reputation-8);
+      addEvent('💸','Financial Distress',`Expenses exceed income. Creditors are becoming impatient. Debt level: ${G.debtLevel}.`,'scandal');
+      if(G.debtLevel>=4){endGame('ruin');return;}
+    } else {
+      G.debtLevel=Math.max(0,G.debtLevel-1);
     }
-  } else {
-    G.debtLevel = Math.max(0, G.debtLevel - 1);
   }
 
-  // Natural stat drift
-  G.health = clamp(G.health - rand(0,3));
-  G.reputation = clamp(G.reputation - rand(0,2) + (Math.random()>0.6?rand(1,3):0));
-  G.scandal = clamp(G.scandal - rand(5,12), 0, 100);
-
-  // Death check
-  const deathChance = G.age < 40 ? 0.015 : G.age < 60 ? 0.04 : G.age < 70 ? 0.08 : 0.18;
-  const healthMod = G.health < 25 ? 0.15 : 0;
-  if(Math.random() < deathChance + healthMod){
-    endGame('death');
-    return;
-  }
-
-  // Scandal reckoning
-  if(G.scandal >= 90 && !G.exiled){
-    G.exiled = true;
-    G.reputation = clamp(G.reputation - 30);
-    addEvent('😱','Exiled from Society!',`The scandal has grown too great. You are no longer received in polite circles. Bath or Brighton may offer some refuge.`,'scandal');
+  // Stat drift
+  G.health=cl(G.health-rn(0,2));
+  if(G.age>=18){
+    G.reputation=cl(G.reputation-rn(0,1));
+    G.scandal=cl(G.scandal-rn(3,8),0,100);
   }
 
   // Marriage pressure
-  if(!G.married && G.age > 25){
-    const pressure = G.age - 25;
-    G.reputation = clamp(G.reputation - Math.floor(pressure/2));
+  if(!G.married&&G.age>25)G.reputation=cl(G.reputation-Math.floor((G.age-25)/4));
+
+  // Death check
+  const dc=G.age<40?.012:G.age<60?.035:G.age<70?.07:.15;
+  const hm=G.health<25?.12:0;
+  if(Math.random()<dc+hm){endGame('death');return;}
+
+  // Scandal reckoning
+  if(G.scandal>=90&&!G.exiled){G.exiled=true;G.reputation=cl(G.reputation-30);addEvent('😱','Exiled From Society',`The scandal is too great. You are no longer received.`,'scandal');}
+
+  // Children aging & events
+  if(G.married&&G.children.length<6&&Math.random()<.3){
+    const cname=pk(G.gender==='lady'?FN_M.concat(FN_F):FN_F);
+    G.children.push({name:cname,age:0,legitimate:true});
+    G.health=cl(G.health-rn(5,15));G.reputation=cl(G.reputation+4);
+    addEvent('👶','A Blessed Addition',`The nursery welcomes little ${cname}.`,'good');
   }
 
-  // Children event
-  if(G.married && G.children < 5 && Math.random() < 0.35){
-    G.children++;
-    const childName = G.gender==='lady'
-      ? (Math.random()>0.5 ? pick(NAMES_F) : pick(NAMES_M))
-      : pick(NAMES_F);
-    addEvent('👶','A Blessed Event',`Your family is increased. Little ${childName} has arrived safely. The nursery is full of joy.`,'good');
-    G.health = clamp(G.health - rand(5,15));
-    G.reputation = clamp(G.reputation + 5);
-  }
-
-  // Spouse income (if married up or down)
+  // Spouse relationship drift
   if(G.spouse){
-    G.income = Math.round((G.income + G.spouse.income) / 2);
+    G.marriageHappiness=cl((G.marriageHappiness||70)-rn(0,2));
+    if(G.marriageHappiness<20)addEvent('🌨️','Marital Coldness',`The distance between you and ${G.spouse.name} is felt by all.`,'scandal');
   }
 
-  // Random events
-  triggerRandomEvent();
+  // Reconciliation: letters
+  G.pendingLetters=G.pendingLetters||[];
+
+  // Random adult events
+  if(G.age>=18&&Math.random()<.65)triggerRandomEvent();
+  // Childhood events
+  if(G.age<18&&Math.random()<.8)triggerChildhoodEvent();
 
   renderAll();
   showTab('chronicle');
 }
 
+// ════════════════════════════════════════════════════════
+//  RANDOM ADULT EVENTS
+// ════════════════════════════════════════════════════════
+const SCANDAL_EVTS=[
+  {t:'was seen walking unchaperoned in Hyde Park.',sc:20,rep:-15},
+  {t:'was observed in secret correspondence.',sc:15,rep:-10},
+  {t:'was heard making a cutting remark about Lady Worthington.',sc:10,rep:-8},
+  {t:'was seen gambling until the small hours.',sc:18,rep:-12},
+  {t:'wore a gown of indecent transparency at the Hartley ball.',sc:22,rep:-18},
+  {t:'was heard speaking of the Prince Regent most improperly.',sc:25,rep:-20},
+  {t:'was seen leaving Lord Crawford\'s townhouse after dark.',sc:30,rep:-22},
+];
+const GOOD_EVTS=[
+  {t:'performed brilliantly at the pianoforte at the Pembridge assembly.',rep:8,charm:5},
+  {t:'was praised by the Duchess for exceptional accomplishments.',rep:12,charm:4},
+  {t:'nursed a sick neighbour, earning wide admiration.',rep:10,virtue:8},
+  {t:'delivered a celebrated bon mot repeated across three counties.',rep:8,wit:6},
+  {t:'was presented at Court and acquitted herself admirably.',rep:15,composure:4},
+  {t:'made a noted charitable donation to the parish poor.',rep:10,virtue:6},
+];
+
+const POPUP_EVENTS=[
+  // TEA EVENT
+  ()=>showModal('🫖','An Embarrassment at Tea',
+    `During afternoon tea, Lady Ashbourne loudly questions your family's finances in front of six guests. The room falls silent. All eyes are upon you.`,
+    [
+      {label:'Respond with wit (Wit check)',small:'Success: Rep +8, her Rep -5 | Fail: Rep -5',fn:()=>{
+        if(G.wit>=55){G.reputation=cl(G.reputation+8);addEvent('😏','A Witty Riposte',`Your reply silenced Lady Ashbourne entirely. The table applauded.`,'good');}
+        else{G.reputation=cl(G.reputation-5);addEvent('😳','A Failed Riposte',`Your attempt at wit fell flat. The awkward silence was dreadful.`,'scandal');}
+      }},
+      {label:'Laugh it off (Charm check)',small:'Success: Rep +5, Charm +3 | Fail: Rep -3',fn:()=>{
+        if(G.charm>=55){G.reputation=cl(G.reputation+5);G.charm=cl(G.charm+3);addEvent('😄','Grace Under Fire',`You laughed charmingly and changed the subject. Well managed.`,'good');}
+        else{G.reputation=cl(G.reputation-3);addEvent('😬','An Unconvincing Laugh',`The laugh rang false. Lady Ashbourne looked satisfied.`,'scandal');}
+      }},
+      {label:'Become indignant',small:'Rep -8, Composure -5, Scandal +10',fn:()=>{G.reputation=cl(G.reputation-8);G.composure=cl(G.composure-5);G.scandal=cl(G.scandal+10,0,100);addEvent('😠','A Most Undignified Scene',`Your anger confirmed every suspicion Lady Ashbourne had raised.`,'scandal');}},
+      {label:'Leave quietly (Composure check)',small:'Success: Virtue +5 | Fail: Rep -5',fn:()=>{
+        if(G.composure>=60){G.virtue=cl(G.virtue+5);addEvent('🚪','A Dignified Retreat',`You excused yourself with perfect composure. Very proper.`,'good');}
+        else{G.reputation=cl(G.reputation-5);addEvent('😢','A Hasty Retreat',`Your departure looked like flight. The gossips were delighted.`,'scandal');}
+      }},
+    ]),
+  // GARDEN EVENT
+  ()=>{
+    const mname=pk(FN_M)+' '+pk(SN);
+    showModal('🌹','Alone in the Garden',
+      `During the Pemberton garden party, ${mname} manoeuvres you into a secluded alcove, away from all eyes. His intentions are unclear.`,
+      [
+        {label:'Leave immediately (Virtue +8, safe)',fn:()=>{G.virtue=cl(G.virtue+8);addEvent('🌹','A Prudent Withdrawal',`You excused yourself firmly. ${mname} looked chastened.`,'good');}},
+        {label:'Flirt outrageously (Charm +5, Scandal +15)',fn:()=>{G.charm=cl(G.charm+5);G.scandal=cl(G.scandal+15,0,100);addEvent('🌹','A Dangerous Flirtation',`The dalliance was brief but observed. Tongues now wag.`,'scandal');}},
+        {label:'Call for help loudly (Scandal +5, Rep +3)',fn:()=>{G.scandal=cl(G.scandal+5,0,100);G.reputation=cl(G.reputation+3);addEvent('😤','Virtue Defended',`Your cry brought Mrs. Pemberton running. ${mname} was mortified.`,'good');}},
+        {label:'Stay and converse secretly (Wit check)',small:'Wit≥60: Romance begins | else: Scandal +20',fn:()=>{
+          if(G.wit>=60){
+            const p=G.prospects.find(p=>p.name===mname)||null;
+            addEvent('💌','A Secret Understanding',`You and ${mname} spoke privately. Something has begun.`,'neutral');
+          } else {
+            G.scandal=cl(G.scandal+20,0,100);addEvent('😱','Observed!',`You were seen. The scandal sheets will have a field day.`,'scandal');
+          }
+        }},
+      ]);
+  },
+  // BALL EVENT
+  ()=>showModal('💃','The Netherfield Ball',
+    `You arrive at the grandest ball of the Season. What is your strategy for the evening?`,
+    [
+      {label:'Dance every dance (Charm +8, Rep +6)',fn:()=>{G.charm=cl(G.charm+8);G.reputation=cl(G.reputation+6);G.savings-=15;addEvent('💃','A Triumphant Evening',`You danced until two in the morning and were spoken of favourably by all.`,'good');}},
+      {label:'Attach yourself to the highest-ranking guest',fn:()=>{
+        if(G.reputation>=65){G.reputation=cl(G.reputation+12);G.charm=cl(G.charm+4);addEvent('⭐','A Prestigious Alliance',`Your evening beside the Countess was noted by every ambitious mama in the room.`,'good');}
+        else{G.reputation=cl(G.reputation-5);addEvent('😬','Rebuffed',`The Countess barely acknowledged you. The humiliation was public.`,'scandal');}
+      }},
+      {label:'Observe and gather gossip (Wit +6, Scandal -5)',fn:()=>{G.wit=cl(G.wit+6);G.scandal=cl(G.scandal-5,0,100);addEvent('👀','A Watchful Evening',`You learned more by listening than most people learn by talking all year.`,'good');}},
+    ]),
+  // THEATRE EVENT
+  ()=>{
+    const amount=rn(200,800);
+    showModal('🎭','The Theatre Royal',
+      `A box at the Theatre Royal presents an opportunity — and Lord ${pk(SN)} is making eyes at you from across the house.`,
+      [
+        {label:'Acknowledge him with a smile',fn:()=>{G.charm=cl(G.charm+4);const p=G.prospects.find(pr=>pr.cls==='nobility');if(p){p.affection=cl(p.affection+8);}addEvent('🎭','A Theatrical Glance',`The exchange across the theatre was noted by several observers.`,'neutral');}},
+        {label:'Receive him in your box (Scandal risk)',fn:()=>{
+          if(G.composure>=55){G.reputation=cl(G.reputation+5);addEvent('🎭','A Distinguished Visitor',`His visit to your box raised your consequence considerably.`,'good');}
+          else{G.scandal=cl(G.scandal+12,0,100);addEvent('😱','Too Familiar!',`The visit was deemed improper. Lady Jersey raised an eyebrow.`,'scandal');}
+        }},
+        {label:'Ignore him completely (Virtue +5)',fn:()=>{G.virtue=cl(G.virtue+5);addEvent('🎭','Studied Indifference',`Your cool composure was the talk of the intermission.`,'good');}},
+      ]);
+  },
+  // CARRIAGE EVENT
+  ()=>{
+    const mname=pk(FN_M)+' '+pk(SN);
+    showModal('🐴','Carriage Ride Alone',
+      `${mname} offers to drive you home from the Hartley picnic. It is a fine day. No chaperone is available.`,
+      [
+        {label:'Accept (Romance chance, Scandal +10)',fn:()=>{
+          G.scandal=cl(G.scandal+10,0,100);
+          if(Math.random()<.5){addEvent('🌸','A Most Romantic Drive',`The conversation during the ride was unexpectedly delightful.`,'good');}
+          else{addEvent('🐴','Observed!',`Three separate parties saw you arrive together unchaperoned. The damage is done.`,'scandal');}
+        }},
+        {label:'Decline firmly (Virtue +6, safe)',fn:()=>{G.virtue=cl(G.virtue+6);addEvent('🚶','A Proper Refusal',`You walked. It was three miles. Entirely worth it for your reputation.`,'good');}},
+      ]);
+  },
+  // CHURCH EVENT
+  ()=>showModal('⛪','A Scene at Church',
+    `During Sunday service, the Reverend delivers a pointed sermon about vice in society. Several heads turn in your direction.`,
+    [
+      {label:'Bear it with composure (+Composure +5)',fn:()=>{G.composure=cl(G.composure+5);addEvent('⛪','Grace in Church',`You sat perfectly still. The vicar later apologised privately.`,'good');}},
+      {label:'Confront the Reverend after service',fn:()=>{G.confidence=cl(G.confidence+5);G.scandal=cl(G.scandal+12,0,100);addEvent('😤','A Public Confrontation',`Your exchange with the Reverend shocked the congregation.`,'scandal');}},
+      {label:'Make a public donation (Virtue +8, Rep +6, -£20)',fn:()=>{if(G.savings>=20){G.savings-=20;G.virtue=cl(G.virtue+8);G.reputation=cl(G.reputation+6);addEvent('🕊️','Charitable Display',`Your generous donation redirected all conversation from vice to virtue.`,'good');}else{addEvent('😬','Empty Pockets',`You reached for your purse and found it wanting.`,'neutral');}}},
+    ]),
+  // PICNIC EVENT
+  ()=>{
+    const fname2=pk(FN_F)+' '+pk(SN);
+    showModal('🧺','The Summer Picnic',
+      `At Mrs. Hartley's picnic, you overhear Miss ${fname2} telling everyone that your family is in serious debt. It is not entirely untrue.`,
+      [
+        {label:'Deny it gracefully (Charm check)',fn:()=>{
+          if(G.charm>=60){G.reputation=cl(G.reputation+5);addEvent('😊','A Graceful Denial',`Your calm denial was believed by most. Miss ${fname2} looked foolish.`,'good');}
+          else{G.scandal=cl(G.scandal+10,0,100);addEvent('😳','A Clumsy Defence',`Your denial was unconvincing. The rumour grows.`,'scandal');}
+        }},
+        {label:'Confront her privately (Wit check)',fn:()=>{
+          if(G.wit>=55){addEvent('💬','A Private Settlement',`You extracted a private apology from Miss ${fname2}. She will not repeat the story.`,'good');}
+          else{G.scandal=cl(G.scandal+8,0,100);addEvent('😤','An Escalating Scene',`The confrontation became heated. Others noticed.`,'scandal');}
+        }},
+        {label:'Spread a counter-rumour (Wit +4, risky)',fn:()=>{G.wit=cl(G.wit+4);if(Math.random()<.5){G.scandal=cl(G.scandal+15,0,100);addEvent('🤫','Rumours Spiralling',`Your counter-rumour only drew more attention to the original story.`,'scandal');}else{addEvent('🤫','A Rumour Well Planted',`Your whisper redirected Society\'s attention most effectively.`,'good');}}},
+      ]);
+  },
+];
+
 function triggerRandomEvent(){
-  const roll = Math.random();
-  if(roll < 0.25){
-    // Scandal
-    const ev = pick(SCANDAL_EVENTS);
-    const name = pick(NAMES_M)+' '+pick(SURNAMES);
-    const txt = ev.text.replace('{name}', name);
-    G.scandal = clamp(G.scandal + ev.scandal, 0, 100);
-    G.reputation = clamp(G.reputation + ev.rep);
-    addEvent('🗞️',`Whispers Circulate`,`${getTitle()} ${G.fname} ${txt}`,'scandal');
-    if(G.scandal >= 90) showModal('💀','Utter Ruin','The scandal sheets have published something most dreadful. Your name is on every tongue — and not approvingly.',[{label:'Endure it', fn:()=>{}}]);
-  } else if(roll < 0.55){
-    // Good event
-    const ev = pick(GOOD_EVENTS);
-    G.reputation = clamp(G.reputation + (ev.rep||0));
-    G.charm = clamp(G.charm + (ev.charm||0));
-    G.virtue = clamp(G.virtue + (ev.virtue||0));
-    G.wit = clamp(G.wit + (ev.wit||0));
-    addEvent('⭐','A Fine Distinction',`${getTitle()} ${G.fname} ${ev.text}`,'good');
-  } else if(roll < 0.70){
-    // Financial event
-    if(Math.random()<0.5 && G.savings>200){
-      const loss = rand(100, Math.min(500, Math.max(100, G.savings)));
-      G.savings -= loss;
-      addEvent('💸','An Unexpected Expense',`An unavoidable expenditure of £${loss} has arisen — a carriage repair, a family debt, a doctor's bill.`,'scandal');
+  const roll=Math.random();
+  if(roll<.18){
+    // scandal event
+    const ev=pk(SCANDAL_EVTS);
+    G.scandal=cl(G.scandal+ev.sc,0,100);
+    G.reputation=cl(G.reputation+ev.rep);
+    G.rumourLevel=(G.rumourLevel||0)+rn(2,5);
+    addEvent('🗞️','Whispers Circulate',`${getTitle()} ${G.fname} ${ev.t}`,'scandal');
+    // Affect family opinions
+    if(G.scandal>40)G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-rn(3,8));});
+  } else if(roll<.38){
+    // good event
+    const ev=pk(GOOD_EVTS);
+    G.reputation=cl(G.reputation+(ev.rep||0));
+    G.charm=cl(G.charm+(ev.charm||0));
+    G.virtue=cl(G.virtue+(ev.virtue||0));
+    G.wit=cl(G.wit+(ev.wit||0));
+    G.composure=cl(G.composure+(ev.composure||0));
+    addEvent('⭐','A Fine Distinction',`${getTitle()} ${G.fname} ${ev.t}`,'good');
+  } else if(roll<.55){
+    // popup event
+    pk(POPUP_EVENTS)();
+  } else if(roll<.68){
+    // financial
+    if(Math.random()<.45&&G.savings>100){
+      const loss=rn(50,Math.min(400,G.savings));
+      G.savings-=loss; // ACTUALLY deducts money
+      addEvent('💸','An Unexpected Expense',`An unavoidable outlay of £${loss} — doctor, carriage, social obligation.`,'scandal');
     } else {
-      const gain = rand(50, 400);
-      G.savings += gain;
-      addEvent('💰','A Welcome Windfall',`A legacy, a lucky investment, a grateful neighbour — £${gain} has come to you unexpectedly.`,'good');
+      const gain=rn(40,300);
+      G.savings+=gain;
+      addEvent('💰','A Welcome Windfall',`A legacy, a lucky investment — £${gain} arrives unexpectedly.`,'good');
     }
-  } else if(roll < 0.85){
-    // Health
-    if(Math.random()<0.4){
-      G.health = clamp(G.health - rand(10,25));
-      addEvent('🤒','An Indisposition',`A fever has laid ${getTitle()} ${G.fname} low for some weeks. Society proceeds without her.`,'scandal');
-    } else {
-      G.health = clamp(G.health + rand(5,15));
-      addEvent('🌿','The Country Air',`A sojourn in the country has done wonders for the constitution.`,'good');
-    }
+  } else if(roll<.8){
+    // health
+    if(Math.random()<.4){G.health=cl(G.health-rn(8,20));addEvent('🤒','An Indisposition',`A fortnight\'s fever has left you pale and weakened.`,'scandal');}
+    else{G.health=cl(G.health+rn(5,12));addEvent('🌿','Country Air',`A stay in the country has restored your constitution wonderfully.`,'good');}
   } else {
-    // Special narrative events
-    specialNarrativeEvent();
+    // special narrative
+    narrativeEvent();
   }
 }
 
-function specialNarrativeEvent(){
-  const events = [
+function narrativeEvent(){
+  const evts=[
     ()=>{
-      const sname = pick(NAMES_F)+' '+pick(SURNAMES);
-      showModal('💌','A Secret Revealed',`Your intimate friend Miss ${sname} has confided a most shocking secret — she is with child, and the father is already married. She begs your assistance and your silence.`,[
-        {label:'Help her discreetly (Virtue +10, Scandal +5)', fn:()=>{ G.virtue=clamp(G.virtue+10); G.scandal=clamp(G.scandal+5,0,100); addEvent('🤝','A Friend in Need',`You aided Miss ${sname} through her difficulty. Virtue gained; some whispers followed.`,'good'); }},
-        {label:'Advise her to confess (Reputation +8)', fn:()=>{ G.reputation=clamp(G.reputation+8); addEvent('📜','Counsel Given',`Your advice proved morally sound if socially costly for Miss ${sname}.`,'good'); }},
-        {label:'Distance yourself entirely (Scandal -5)', fn:()=>{ G.scandal=clamp(G.scandal-5,0,100); G.virtue=clamp(G.virtue-8); addEvent('😶','A Prudent Distance',`You withdrew from the friendship. Wise, perhaps. Unkind, certainly.`,'neutral'); }},
-      ]);
+      const sname=pk(FN_F)+' '+pk(SN);
+      showModal('💌','A Friend in Trouble',
+        `Your intimate friend Miss ${sname} confides she is with child — the father is already married. She begs your help and your silence.`,
+        [
+          {label:'Help her discreetly (Virtue +10, Scandal +8)',fn:()=>{G.virtue=cl(G.virtue+10);G.scandal=cl(G.scandal+8,0,100);addEvent('🤝','A Friend in Need',`You aided Miss ${sname}. Virtue gained; whispers followed.`,'good');}},
+          {label:'Advise her to confess (Rep +8)',fn:()=>{G.reputation=cl(G.reputation+8);addEvent('📜','Moral Counsel',`Your advice was sound if painful.`,'good');}},
+          {label:'Distance yourself entirely (Scandal -5, Virtue -8)',fn:()=>{G.scandal=cl(G.scandal-5,0,100);G.virtue=cl(G.virtue-8);addEvent('😶','A Prudent Distance',`You withdrew. Wise perhaps. Unkind certainly.`,'neutral');}},
+        ]);
     },
     ()=>{
-      const amount = rand(500,3000);
-      showModal('🎰','A Temptation at Cards',`An evening at Mrs. Pemberton's has turned to deep play. You might win £${amount} — or lose the same sum. Fortune is fickle.`,[
-        {label:`Gamble boldly (50% chance ±£${amount})`, fn:()=>{
-          if(Math.random()<0.5){ G.savings+=amount; G.reputation=clamp(G.reputation-5); addEvent('🃏','Fortune Favours',`An astonishing run of luck at cards brings £${amount}. People talk.`,'good'); }
-          else { G.savings=Math.max(0,G.savings-amount); G.scandal=clamp(G.scandal+15,0,100); addEvent('🃏','Ruinous Play',`The cards were cruel. £${amount} lost. The scandal sheets are delighted.`,'scandal'); }
-        }},
-        {label:'Decline decorously (safe)', fn:()=>{ G.virtue=clamp(G.virtue+3); addEvent('🎴','Virtuous Restraint',`You declined to play deep, earning quiet admiration from the more sober guests.`,'good'); }},
-      ]);
+      const amount=rn(300,2000);
+      showModal('🎰','Deep Play at Cards',
+        `An evening of cards turns serious. You might win or lose £${amount}. Fortune is fickle.`,
+        [
+          {label:`Gamble (50% chance ±£${amount}, Scandal +8)`,fn:()=>{
+            G.scandal=cl(G.scandal+8,0,100);
+            if(Math.random()<.5){G.savings+=amount;addEvent('🃏','Fortune Favours',`An astonishing run of luck brings £${amount}.`,'good');}
+            else{G.savings=Math.max(0,G.savings-amount);addEvent('🃏','Ruinous Play',`The cards were cruel. £${amount} lost.`,'scandal');}
+          }},
+          {label:'Decline (Virtue +4)',fn:()=>{G.virtue=cl(G.virtue+4);addEvent('🎴','Virtuous Restraint',`You declined to play deep.`,'good');}},
+        ]);
     },
     ()=>{
-      const sname = pick(TITLES);
-      showModal('💌','An Anonymous Letter',`A letter arrives, unsigned. It accuses Lord ${sname} of deceiving young ladies of quality. You know he has been paying court to you. What will you do?`,[
-        {label:'Investigate quietly (Wit check)', fn:()=>{
-          if(G.wit >= 55){ G.reputation=clamp(G.reputation+10); addEvent('🔍','The Truth Uncovered',`Your enquiries confirm the letter's substance. You withdraw from Lord ${sname}'s attentions, earning respect for your prudence.`,'good'); }
-          else { G.scandal=clamp(G.scandal+10,0,100); addEvent('🔍','A Clumsy Enquiry',`Your investigations were not subtle. Society talks.`,'scandal'); }
-        }},
-        {label:'Ignore the letter', fn:()=>{ addEvent('📩','Letters Unread',`You toss the letter into the fire. Ignorance may yet prove bliss.`,'neutral'); }},
-        {label:'Warn his other prospects (Virtue +8, Rep +5)', fn:()=>{ G.virtue=clamp(G.virtue+8); G.reputation=clamp(G.reputation+5); addEvent('🤝','A Charitable Warning',`Your discreet warning saved at least one young lady from a similar fate.`,'good'); }},
-      ]);
+      if(G.scandal>30){
+        // Family cuts ties
+        const cutFam=G.family.filter(f=>f.speaking&&f.opinion<40);
+        if(cutFam.length){
+          const f=pk(cutFam);f.speaking=false;f.lettersNeeded=rn(3,6);
+          showModal('💔','A Family Rupture',
+            `${f.displayName} has written to say they can no longer receive you in polite company given the recent scandals. The pain is considerable.`,
+            [{label:'Accept the blow stoically',fn:()=>{addEvent('💔','Cast Off',`${f.displayName} has cut you. Reconciliation will require patience and letters.`,'scandal');}},
+             {label:'Write immediately to apologise',fn:()=>{f.lettersSent=(f.lettersSent||0)+1;if(f.lettersSent>=f.lettersNeeded){f.speaking=true;addEvent('✉️','Reconciled',`After much letter-writing, ${f.displayName} has relented.`,'good');}else{addEvent('✉️','A Letter Sent',`You wrote. They have not yet replied.`,'neutral');}}},
+            ]);
+        }
+      }
     },
   ];
-  pick(events)();
+  pk(evts)();
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  SOCIETY TAB
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function renderSociety(){
-  const el = document.getElementById('society-choices');
-  const acts = [];
+  if(G.age<18){document.getElementById('society-content').innerHTML=`<p style="font-style:italic;color:var(--ink-light);">You are not yet out in society. Advance time to grow older.</p>`;return;}
+  const acts=[];
 
-  acts.push({ emoji:'🎵', label:'Attend the Assembly Ball', detail:'Dance, be seen, make connections. Reputation and Charm improve.', fn:()=>{
-    G.charm=clamp(G.charm+rand(3,8)); G.reputation=clamp(G.reputation+rand(3,7));
-    G.savings-=10;
-    addEvent('💃','A Successful Ball',`The evening was all dancing and laughter. Several heads were turned.`,'good');
-    renderAll();
-  }});
+  acts.push({e:'🎵',l:'Attend the Assembly Ball',d:'Dance, be seen. +Charm, +Rep. Costs £15.',fn:()=>{G.charm=cl(G.charm+rn(3,8));G.reputation=cl(G.reputation+rn(3,7));G.savings-=15;addEvent('💃','Assembly Ball',`An evening of dancing and society. Several heads turned.`,'good');renderAll();}});
+  acts.push({e:'📚',l:'Improve Accomplishments',d:'+Wit, +Charm. Free.',fn:()=>{G.wit=cl(G.wit+rn(2,5));G.charm=cl(G.charm+rn(1,3));addEvent('📖','Diligent Study',`Hours of practice at the pianoforte and French grammar.`,'good');renderAll();}});
+  acts.push({e:'🕊️',l:'Charitable Works',d:'+Virtue, +Rep.',fn:()=>{G.virtue=cl(G.virtue+rn(4,10));G.reputation=cl(G.reputation+rn(3,7));addEvent('🕊️','Charitable Soul',`Your visits to the cottagers are spoken of in church.`,'good');renderAll();}});
+  acts.push({e:'🏇',l:'Attend the Races',d:'Exciting but risky. Rep+5 or Scandal+12.',fn:()=>{if(Math.random()<.5){G.reputation=cl(G.reputation+5);G.charm=cl(G.charm+3);addEvent('🏇','A Merry Day',`The races were thrilling.`,'good');}else{G.scandal=cl(G.scandal+12,0,100);G.reputation=cl(G.reputation-5);addEvent('🏇','An Unfortunate Incident',`Something at the races has set tongues wagging.`,'scandal');}renderAll();}});
+  if(G.savings>=50)acts.push({e:'👗',l:'New Gowns & Fashion',d:'£50-200. +Charm, +Beauty, +Rep.',fn:()=>{const c=rn(50,200);G.savings-=c;G.charm=cl(G.charm+rn(4,10));G.beauty=cl(G.beauty+rn(2,6));G.reputation=cl(G.reputation+rn(2,5));addEvent('👗','New Wardrobe',`£${c} spent on silk and muslin. You are quite the most elegant.`,'good');renderAll();}});
+  if(G.savings>=200)acts.push({e:'🕯️',l:'Host a Dinner Party',d:'£80-200. +Rep greatly.',fn:()=>{const c=rn(80,200);G.savings-=c;G.reputation=cl(G.reputation+rn(8,18));G.charm=cl(G.charm+rn(3,6));addEvent('🕯️','A Celebrated Dinner',`Your table was spoken of for weeks.`,'good');renderAll();}});
+  acts.push({e:'🎭',l:'Theatre Royal',d:'Culture and society. +Wit, small Scandal risk.',fn:()=>{if(G.savings>=10)G.savings-=10;G.wit=cl(G.wit+rn(2,5));if(Math.random()<.2){G.scandal=cl(G.scandal+8,0,100);}addEvent('🎭','An Evening at the Theatre',`The performance was excellent. The company, variable.`,'neutral');renderAll();}});
+  acts.push({e:'🏊',l:'Sea Bathing at Brighton',d:'£30. +Health, +Confidence.',fn:()=>{if(G.savings>=30){G.savings-=30;G.health=cl(G.health+rn(5,12));G.confidence=cl(G.confidence+rn(4,8));addEvent('🌊','Brighton Holiday',`The sea air and bathing were most restorative.`,'good');}else{addEvent('💸','Insufficient Funds',`You cannot presently afford the Brighton season.`,'neutral');}renderAll();}});
+  if(G.savings>=50)acts.push({e:'🎲',l:'Squander on Frivolity',d:'Waste money recklessly. Scandal +8.',fn:()=>{const l=rn(50,Math.max(50,Math.floor(G.savings*.25)));G.savings-=l;G.scandal=cl(G.scandal+8,0,100);G.squanderCount++;addEvent('💸','Ruinous Extravagance',`£${l} dissipated on masquerades and worse.`,'scandal');renderAll();}});
 
-  acts.push({ emoji:'📚', label:'Improve Your Accomplishments', detail:'Practice languages, music, or drawing. Wit and Charm improve slowly.', fn:()=>{
-    G.wit=clamp(G.wit+rand(2,6)); G.charm=clamp(G.charm+rand(1,4));
-    addEvent('📖','Diligent Study',`Hours at the pianoforte and over French grammar have their reward.`,'good');
-    renderAll();
-  }});
+  // Make friends
+  acts.push({e:'🫖',l:'Seek New Acquaintance',d:'Meet someone new in society.',fn:()=>makeFriendChoice()});
 
-  acts.push({ emoji:'🕊️', label:'Charitable Works', detail:'Visit the poor and sick. Virtue soars; reputation improves.', fn:()=>{
-    G.virtue=clamp(G.virtue+rand(5,12)); G.reputation=clamp(G.reputation+rand(3,8));
-    addEvent('🕊️','A Virtuous Soul',`Your visits to the cottagers are spoken of approvingly in church.`,'good');
-    renderAll();
-  }});
+  if(G.socialClass==='poor'||G.socialClass==='middling')acts.push({e:'✍️',l:'Seek Employment',d:'Governess: +£30/yr. Rep -5.',fn:()=>{if(!G.employed){G.employed=true;G.position='Governess';G.income+=30;G.reputation=cl(G.reputation-5);G.wit=cl(G.wit+4);addEvent('📚','In Service',`You have accepted a position as governess. The children are tolerable.`,'neutral');}else{addEvent('📚','Already Employed',`You are employed as ${G.position}.`,'neutral');}renderAll();}});
 
-  acts.push({ emoji:'🏇', label:'Attend the Races', detail:'Exciting but risky. May improve reputation or cause scandal.', fn:()=>{
-    if(Math.random()<0.5){ G.reputation=clamp(G.reputation+5); G.charm=clamp(G.charm+3); addEvent('🏇','A Merry Afternoon',`The races were exhilarating and the company excellent.`,'good'); }
-    else { G.scandal=clamp(G.scandal+12,0,100); G.reputation=clamp(G.reputation-5); addEvent('🏇','An Unfortunate Incident',`Something at the races has set tongues wagging.`,'scandal'); }
-    renderAll();
-  }});
-
-  if(G.savings > 50) acts.push({ emoji:'🛍️', label:'Shop for New Gowns', detail:`Spend £50-200 for Charm and social standing.`, fn:()=>{
-    const cost = rand(50,200);
-    G.savings-=cost;
-    G.charm=clamp(G.charm+rand(5,12));
-    G.reputation=clamp(G.reputation+rand(2,5));
-    addEvent('👗','A New Wardrobe',`£${cost} well spent on muslin and silk. You are quite the most elegantly dressed at the next assembly.`,'good');
-    renderAll();
-  }});
-
-  if(G.socialClass==='poor'||G.socialClass==='middling') acts.push({ emoji:'✍️', label:'Seek a Position as Governess', detail:'Earn £30/yr. Reputation may suffer slightly.', fn:()=>{
-    if(!G.employed){
-      G.employed=true; G.position='Governess'; G.income+=30;
-      G.reputation=clamp(G.reputation-5); G.wit=clamp(G.wit+5);
-      addEvent('📚','A Governess\'s Life',`You have accepted a position in the Mortimer household. The children are tolerable; the pay less so.`,'neutral');
-    } else {
-      addEvent('📚','Already Employed',`You are already employed as ${G.position}.`,'neutral');
-    }
-    renderAll();
-  }});
-
-  acts.push({ emoji:'🍵', label:'Call Upon Neighbours', detail:'Strengthen social bonds. Relationships improve.', fn:()=>{
-    G.relationships.forEach(r=>{ r.affection=Math.min(100,r.affection+rand(2,6)); });
-    G.reputation=clamp(G.reputation+rand(1,4));
-    addEvent('☕','An Afternoon of Calls',`The rounds of calling have been most productive for your social connections.`,'good');
-    renderAll();
-  }});
-
-  if(G.savings > 300) acts.push({ emoji:'🎭', label:'Host a Dinner Party', detail:`Spend £${CLASS_DATA[G.socialClass].income>2000?200:80} to greatly boost reputation.`, fn:()=>{
-    const cost = G.income>2000?200:80;
-    G.savings-=cost;
-    G.reputation=clamp(G.reputation+rand(8,18));
-    G.charm=clamp(G.charm+rand(3,7));
-    addEvent('🕯️','A Celebrated Dinner',`Your table was spoken of for weeks. The turtle soup was pronounced divine.`,'good');
-    renderAll();
-  }});
-
-  if(G.squanderCount<3) acts.push({ emoji:'🎲', label:'Squander on Frivolity', detail:'Waste money recklessly on entertainments and fashion. Very bad idea.', fn:()=>{
-    const loss = rand(200, Math.max(200, Math.floor(G.savings*0.3)));
-    G.savings=Math.max(0,G.savings-loss);
-    G.scandal=clamp(G.scandal+8,0,100);
-    G.squanderCount++;
-    addEvent('💸','Ruinous Extravagance',`£${loss} dissipated on masquerades, trinkets, and things better left unmentioned.`,'scandal');
-    renderAll();
-  }});
-
-  el.innerHTML = acts.map((a,i)=>`
-    <button class="choice-btn" onclick="acts[${i}].fn()">
-      <span class="choice-emoji">${a.emoji}</span>
-      <span class="choice-info">${a.label}<small>${a.detail}</small></span>
-    </button>`).join('');
-  window.acts = acts;
+  document.getElementById('society-content').innerHTML=`<div class="choices-grid">${acts.map((a,i)=>`<button class="choice-btn" onclick="_acts[${i}].fn()"><span class="choice-emoji">${a.e}</span><span class="choice-info">${a.l}<small>${a.d}</small></span></button>`).join('')}</div>`;
+  window._acts=acts;
 }
 
-// ═══════════════════════════════════════════
-//  MARRIAGE TAB
-// ═══════════════════════════════════════════
-function renderMarriage(){
-  const el = document.getElementById('marriage-content');
-  if(G.married){
-    el.innerHTML = `
-      <div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-family:'IM Fell English',serif;font-size:1.1rem;color:var(--ink);margin-bottom:0.4rem;">Married to ${G.spouse.name}</div>
-        <div style="font-style:italic;font-size:0.88rem;color:var(--gold);">${G.spouse.class_label} · £${G.spouse.income.toLocaleString()}/yr</div>
-        <div style="font-size:0.85rem;color:var(--ink-light);margin-top:0.5rem;line-height:1.5;">${G.spouse.desc}</div>
-        <div style="margin-top:0.7rem;font-size:0.85rem;">Children: <strong>${G.children}</strong></div>
-        <div style="margin-top:0.3rem;font-size:0.85rem;">Marriage Happiness: <strong>${G.marriageHappiness||70}%</strong></div>
-      </div>
-      <div class="choices-grid">
-        <button class="choice-btn" onclick="maritalAction('romance')"><span class="choice-emoji">💌</span><span class="choice-info">Cultivate the Marriage<small>Spend an evening with your spouse. Marriage happiness +10.</small></span></button>
-        <button class="choice-btn" onclick="maritalAction('neglect')"><span class="choice-emoji">📰</span><span class="choice-info">Neglect Your Spouse<small>Pursue your own entertainments. Marriage happiness -15. Scandal risk.</small></span></button>
-        ${G.marriageHappiness < 30 ? `<button class="choice-btn" onclick="maritalAction('separate')" style="border-color:var(--burgundy)"><span class="choice-emoji">💔</span><span class="choice-info">Seek a Separation<small>A very scandalous and costly process. Reputation devastated.</small></span></button>` : ''}
-      </div>`;
-  } else {
-    const pool = G.gender==='lady' ? SUITOR_POOL : LADY_SUITOR_POOL;
-    const available = pool.filter(s=>!G.suitorsSeen.includes(s.name)).slice(0,4);
-    if(available.length===0){
-      el.innerHTML = `<p style="font-style:italic;color:var(--ink-light);font-size:0.95rem;">The available prospects have all been considered or declined. Perhaps next Season will bring new faces to Town.</p>`;
-      return;
-    }
-    el.innerHTML = `
-      <p style="font-style:italic;font-size:0.88rem;color:var(--ink-light);margin-bottom:1rem;">The following have been brought to your notice this Season. Consider them carefully — a hasty decision may be repented at leisure.</p>
-      ${available.map(s=>`
-        <div class="suitor-card" onclick="considerSuitor('${s.name}')">
-          <div class="suitor-name">${s.name}</div>
-          <div class="suitor-class">${CLASS_DATA[s.class].label} · £${s.income.toLocaleString()}/yr</div>
-          <div style="font-size:0.83rem;color:var(--ink-light);margin:0.3rem 0;font-style:italic;">"${s.desc}"</div>
-          <div class="suitor-chance">Likelihood of acceptance: ${calcMarriageChance(s)}% · Virtue: ${s.virtue}/100 · Charm: ${s.charm}/100</div>
-        </div>`).join('')}`;
-  }
-}
-
-function calcMarriageChance(suitor){
-  const myClass = ['poor','middling','gentry','nobility'].indexOf(G.socialClass);
-  const theirClass = ['poor','middling','gentry','nobility'].indexOf(suitor.class);
-  let chance = 50;
-  chance += (G.charm - 50) * 0.5;
-  chance += (G.reputation - 50) * 0.4;
-  chance += (G.virtue - 50) * 0.2;
-  const classDiff = theirClass - myClass;
-  if(classDiff > 0) chance -= classDiff * 15;
-  if(classDiff < 0) chance += Math.abs(classDiff) * 10;
-  if(G.scandal > 30) chance -= (G.scandal - 30) * 0.5;
-  return Math.max(5, Math.min(95, Math.round(chance)));
-}
-
-function considerSuitor(name){
-  const pool = G.gender==='lady' ? SUITOR_POOL : LADY_SUITOR_POOL;
-  const s = pool.find(x=>x.name===name);
-  if(!s) return;
-  G.suitorsSeen.push(s.name);
-  const chance = calcMarriageChance(s);
-  showModal('💌','A Proposal of Marriage',
-    `${s.name} has made you an offer of marriage.\n\n"${s.desc}"\n\nIncome: £${s.income.toLocaleString()}/yr · Class: ${CLASS_DATA[s.class].label}\nLikelihood they accept: ${chance}%`,
+function makeFriendChoice(){
+  showModal('🤝','Seek New Acquaintance',
+    'What sort of person do you hope to befriend this Season?',
     [
-      {label:`Accept (${chance}% chance of success)`, fn:()=>{
-        if(Math.random()*100 < chance){
-          G.married=true; G.spouse={...s, class_label: CLASS_DATA[s.class].label}; G.marriageHappiness=70;
-          G.income = Math.round((G.income + s.income)/2);
-          const classRank = ['poor','middling','gentry','nobility'];
-          if(classRank.indexOf(s.class) > classRank.indexOf(G.socialClass)) G.reputation=clamp(G.reputation+15);
-          addEvent('💍','A Match is Made!',`${getTitle()} ${G.fname} ${G.lname} is to marry ${s.name}. The engagement is announced with great joy.`,'good');
-          showAchievement('💍 Married!');
+      {label:'🏰 High Society — Aristocrats & wealthy families\nBenefits: Better invitations, marriage prospects. Risk: May reject you if rep is low.',fn:()=>tryMakeFriend('high')},
+      {label:'🎲 Risky Acquaintance — Gamblers, flirts, scandalous widows\nBenefits: Excitement, charm boosts. Risk: Scandal, reputation damage.',fn:()=>tryMakeFriend('risky')},
+      {label:'🌿 Low Society — Merchants, servants, artists\nBenefits: Loyal friendship, emotional support. Risk: High society judges you.',fn:()=>tryMakeFriend('low')},
+    ]);
+}
+
+function tryMakeFriend(type){
+  const pool=FRIEND_TEMPLATES.filter(f=>f.ftype===type&&!G.friends.find(x=>x.name===f.name));
+  if(!pool.length){addEvent('🤝','No New Acquaintances',`You found no new prospects of that sort this Season.`,'neutral');renderAll();return;}
+  const tmpl=pk(pool);
+
+  // Acceptance check
+  let chance=50;
+  if(type==='high'){
+    chance=G.reputation>=70?80:G.reputation>=50?55:30;
+    if(G.scandal>30)chance-=20;
+  } else if(type==='risky'){
+    chance=G.charm>=55?75:55;
+  } else {
+    chance=85; // low society usually accepts
+  }
+
+  if(Math.random()*100<chance){
+    G.friends.push({...tmpl,id:uid(),affection:rn(30,50),opinion:rn(30,50),speaking:true,lettersNeeded:0,lettersSent:0});
+    // rep penalty for low society friends
+    if(type==='low'&&G.socialClass!=='poor'){G.reputation=cl(G.reputation-3);}
+    addEvent('🤝','A New Friend',`You have made the acquaintance of ${tmpl.name}. ${type==='low'?'Some eyebrows were raised.':type==='risky'?'Exciting company, if a little dangerous.':'A most agreeable connexion.'}`,'good');
+    showAchievement(`🤝 New ${type==='high'?'High Society':type==='risky'?'Risky':'Low Society'} Friend!`);
+  } else {
+    addEvent('😬','A Rebuff',`${tmpl.name} was civil but clearly did not seek a closer acquaintance. Your reputation precedes you.`,'neutral');
+  }
+  renderAll();
+}
+
+// ════════════════════════════════════════════════════════
+//  CONNECTIONS TAB
+// ════════════════════════════════════════════════════════
+function renderConnections(){
+  const el=document.getElementById('connections-content');
+  let html='';
+
+  // FAMILY
+  if(G.family.length){
+    html+=`<div class="panel-title" style="margin-bottom:.5rem">👨‍👩‍👧 Family</div>`;
+    G.family.forEach(f=>{
+      html+=personCard(f,'family');
+    });
+  }
+
+  // FRIENDS
+  if(G.friends.length){
+    html+=`<div class="panel-title" style="margin-top:1rem;margin-bottom:.5rem">🤝 Friends & Acquaintances</div>`;
+    G.friends.forEach(f=>{
+      const badge=f.ftype==='high'?`<span class="friend-type-badge friend-high">High Society</span>`:f.ftype==='risky'?`<span class="friend-type-badge friend-risky">Risky</span>`:`<span class="friend-type-badge friend-low">Low Society</span>`;
+      html+=personCard(f,'friend',badge);
+    });
+  }
+
+  // ROMANTIC PROSPECTS
+  if(G.age>=16&&!G.married){
+    html+=`<div class="panel-title" style="margin-top:1rem;margin-bottom:.5rem">💌 Romantic Prospects</div>`;
+    html+=`<p style="font-size:.82rem;font-style:italic;color:var(--ink-light);margin-bottom:.6rem">These persons have been brought to your notice. Interact carefully — Society observes.</p>`;
+    G.prospects.forEach(p=>{
+      if(!p.refused)html+=personCard(p,'prospect');
+    });
+    if(G.prospects.filter(p=>!p.refused).length===0)html+=`<p style="font-size:.85rem;color:var(--ink-light);font-style:italic">No current prospects. The next Season may bring new faces.</p>`;
+  }
+
+  // CHILDREN
+  if(G.children.length){
+    html+=`<div class="panel-title" style="margin-top:1rem;margin-bottom:.5rem">👶 Children</div>`;
+    G.children.forEach((c,i)=>{
+      html+=`<div class="person-card"><div class="person-name">${c.name} ${G.lname} <span class="person-type">${c.legitimate?'Legitimate':'Bastard'}, Age ${G.age-c.birthYear||0}</span></div></div>`;
+    });
+  }
+
+  // ENEMIES
+  if((G.enemies||[]).length){
+    html+=`<div class="panel-title" style="margin-top:1rem;margin-bottom:.5rem">⚔️ Enemies & Rivals</div>`;
+    (G.enemies||[]).forEach(e=>{html+=personCard(e,'enemy');});
+  }
+
+  el.innerHTML=html||'<p style="font-style:italic;color:var(--ink-light)">No connections yet. Advance time or visit the Society tab.</p>';
+}
+
+function personCard(p,role,extraBadge=''){
+  const repBar=`<div class="rel-bar"><div class="rel-fill" style="width:${cl(p.affection||p.opinion||50)}%"></div></div>`;
+  const notSpeaking=p.speaking===false?`<span class="badge badge-red">Not Speaking</span>`:'';
+  const courting=p.courting?`<span class="badge badge-gold">Courting</span>`:'';
+
+  let actions='';
+  if(role==='family'){
+    actions=[
+      `<button class="p-action" onclick="personAction('${p.id}','family','letter')">✉️ Write</button>`,
+      p.speaking?`<button class="p-action" onclick="personAction('${p.id}','family','visit')">🫖 Visit</button>`:`<button class="p-action" onclick="personAction('${p.id}','family','reconcile')">🤝 Reconcile</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','family','gift')">🎁 Send Gift</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','family','ask_money')">💰 Ask for Money</button>`,
+    ].join('');
+  } else if(role==='friend'){
+    actions=[
+      `<button class="p-action" onclick="personAction('${p.id}','friend','letter')">✉️ Write</button>`,
+      p.speaking?`<button class="p-action" onclick="personAction('${p.id}','friend','tea')">🫖 Tea</button>`:`<button class="p-action" onclick="personAction('${p.id}','friend','reconcile')">🤝 Reconcile</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','friend','ball')">💃 Invite to Ball</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','friend','picnic')">🧺 Picnic</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','friend','gossip')">🗣️ Gossip</button>`,
+      p.ftype==='risky'?`<button class="p-action danger" onclick="personAction('${p.id}','friend','dangerous')">🎲 Risky Adventure</button>`:'',
+    ].join('');
+  } else if(role==='prospect'){
+    actions=[
+      `<button class="p-action love" onclick="personAction('${p.id}','prospect','encourage')">💌 Encourage</button>`,
+      `<button class="p-action love" onclick="personAction('${p.id}','prospect','flirt')">🌹 Flirt</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','prospect','call')">🫖 Ask to Call</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','prospect','dance')">💃 Dance Together</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','prospect','picnic')">🧺 Picnic</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','prospect','letter')">✉️ Write Secretly</button>`,
+      p.courting&&p.affection>=60?`<button class="p-action love" onclick="personAction('${p.id}','prospect','propose')">💍 Propose</button>`:'',
+      p.affection>=50&&!p.courting?`<button class="p-action love" onclick="personAction('${p.id}','prospect','court')">💐 Begin Courting</button>`:'',
+      G.age>=18&&p.affection>=65?`<button class="p-action danger" onclick="personAction('${p.id}','prospect','intimate')">🔒 Private Intimacy</button>`:'',
+    ].join('');
+  } else if(role==='enemy'){
+    actions=[
+      `<button class="p-action" onclick="personAction('${p.id}','enemy','ignore')">🙄 Ignore</button>`,
+      `<button class="p-action danger" onclick="personAction('${p.id}','enemy','retaliate')">⚔️ Retaliate</button>`,
+      `<button class="p-action" onclick="personAction('${p.id}','enemy','reconcile')">🕊️ Offer Peace</button>`,
+    ].join('');
+  }
+
+  const affDisplay=`Affection: ${cl(p.affection||p.opinion||50)}%`;
+  const incomeDisplay=p.income?`£${p.income.toLocaleString()}/yr`:'';
+  const clsDisplay=p.cls?CL[p.cls]?.label||p.cls:'';
+
+  return `<div class="person-card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><div class="person-name">${p.emoji||''} ${p.displayName||p.name} ${notSpeaking}${courting}${extraBadge}</div>
+      <div class="person-type">${p.rel||p.ftype||''} ${clsDisplay?'· '+clsDisplay:''} ${incomeDisplay?'· '+incomeDisplay:''}</div></div>
+    </div>
+    ${p.desc?`<div class="person-desc">"${p.desc}"</div>`:''}
+    <div style="font-size:.72rem;color:var(--ink-light)">${affDisplay}${p.lettersNeeded&&!p.speaking?' · Letters needed: '+p.lettersNeeded:''}</div>
+    ${repBar}
+    <div class="person-actions">${actions}</div>
+  </div>`;
+}
+
+function personAction(id,role,action){
+  // Find person
+  let p=null,arr=null;
+  if(role==='family'){arr=G.family;p=G.family.find(x=>x.id===id);}
+  else if(role==='friend'){arr=G.friends;p=G.friends.find(x=>x.id===id);}
+  else if(role==='prospect'){arr=G.prospects;p=G.prospects.find(x=>x.id===id);}
+  else if(role==='enemy'){arr=G.enemies||[];p=(G.enemies||[]).find(x=>x.id===id);}
+  if(!p)return;
+
+  const nm=p.displayName||p.name;
+
+  if(action==='letter'){
+    p.lettersSent=(p.lettersSent||0)+1;
+    if(!p.speaking&&p.lettersSent>=(p.lettersNeeded||3)){p.speaking=true;p.affection=cl((p.affection||50)+10);addEvent('✉️','Reconciled by Letters',`After ${p.lettersSent} letters, ${nm} has relented and restored the connexion.`,'good');}
+    else{p.affection=cl((p.affection||50)+rn(2,5));addEvent('✉️','A Letter Sent',`You wrote to ${nm}. The correspondence keeps the connexion warm.`,'neutral');}
+  } else if(action==='visit'||action==='tea'){
+    if(!p.speaking){addEvent('🚫','Refused',`${nm} is not currently receiving you.`,'scandal');renderConnections();return;}
+    p.affection=cl((p.affection||50)+rn(3,8));
+    if(role==='friend'&&p.ftype==='low'&&G.socialClass!=='poor'){G.reputation=cl(G.reputation-2);}
+    addEvent('🫖','A Social Call',`An enjoyable visit with ${nm}.`,'good');
+  } else if(action==='reconcile'){
+    p.lettersSent=(p.lettersSent||0)+1;
+    const need=p.lettersNeeded||3;
+    if(p.lettersSent>=need){p.speaking=true;p.affection=cl((p.affection||50)+15);addEvent('🤝','Reconciliation',`After patient effort, ${nm} has forgiven the breach.`,'good');showAchievement('🤝 Reconciled!');}
+    else{addEvent('✉️','Peace Overture',`You have made ${p.lettersSent} of ${need} required approaches. Patience is needed.`,'neutral');}
+  } else if(action==='gift'){
+    const cost=rn(10,50);if(G.savings<cost){addEvent('💸','Insufficient Funds',`You cannot afford a gift.`,'neutral');renderConnections();return;}
+    G.savings-=cost;p.affection=cl((p.affection||50)+rn(5,12));
+    addEvent('🎁','A Thoughtful Gift',`You sent ${nm} a gift of £${cost}. Their opinion of you warms.`,'good');
+  } else if(action==='ask_money'){
+    const amt=rn(20,100);
+    showModal('💰','Asking for Financial Help',`You approach ${nm} for assistance of £${amt}. Will they help?`,[
+      {label:'Ask humbly',fn:()=>{
+        const chance=((p.affection||50)>60)?65:35;
+        if(Math.random()*100<chance){G.savings+=amt;p.affection=cl((p.affection||50)-8);addEvent('💰','Financial Relief',`${nm} lent you £${amt}. The debt creates an obligation.`,'good');}
+        else{p.affection=cl((p.affection||50)-5);addEvent('😬','Request Refused',`${nm} declined. The awkwardness lingers.`,'neutral');}
+      }},
+      {label:'Do not ask',fn:()=>{}},
+    ]);return;
+  } else if(action==='ball'){
+    const cost=rn(20,60);if(G.savings<cost){addEvent('💸','Insufficient Funds',`You cannot afford the ball expenses.`,'neutral');renderConnections();return;}
+    G.savings-=cost;p.affection=cl((p.affection||50)+rn(5,10));G.reputation=cl(G.reputation+rn(2,5));
+    if(p.ftype==='low'&&G.socialClass!=='poor'){G.reputation=cl(G.reputation-4);addEvent('💃','A Questionable Invitation',`You brought ${nm} to the assembly. Some eyebrows were raised.`,'scandal');}
+    else{addEvent('💃','A Delightful Evening',`You attended the ball with ${nm}. A most agreeable evening.`,'good');}
+  } else if(action==='picnic'){
+    p.affection=cl((p.affection||50)+rn(3,8));G.savings-=5;
+    addEvent('🧺','A Summer Picnic',`A charming afternoon with ${nm} in the grounds.`,'good');
+  } else if(action==='gossip'){
+    G.wit=cl(G.wit+rn(1,4));
+    if(Math.random()<.3){G.scandal=cl(G.scandal+rn(3,8),0,100);addEvent('🗣️','Dangerous Gossip',`The gossip with ${nm} went a little too far. Something may leak.`,'scandal');}
+    else{addEvent('🗣️','Drawing Room Talk',`A delightful exchange of intelligence with ${nm}.`,'neutral');}
+  } else if(action==='dangerous'){
+    showModal('🎲','A Risky Adventure',`${nm} proposes a daring evening — a masked ball, gambling den, or something worse. Do you go?`,[
+      {label:'Embrace it fully! (+Confidence +8, +Charm +5, Scandal +20)',fn:()=>{G.confidence=cl(G.confidence+8);G.charm=cl(G.charm+5);G.scandal=cl(G.scandal+20,0,100);p.affection=cl((p.affection||50)+12);addEvent('🎲','A Wild Night',`The adventure with ${nm} was everything they promised — and more.`,'scandal');}},
+      {label:'Go but remain cautious (+Charm +3, Scandal +8)',fn:()=>{G.charm=cl(G.charm+3);G.scandal=cl(G.scandal+8,0,100);p.affection=cl((p.affection||50)+6);addEvent('🎲','A Cautious Adventure',`You went, but kept your wits about you.`,'neutral');}},
+      {label:'Decline (+Virtue +5)',fn:()=>{G.virtue=cl(G.virtue+5);addEvent('🙅','A Principled Refusal',`You declined ${nm}\'s invitation. Perhaps wisely.`,'good');}},
+    ]);return;
+  }
+  // PROSPECT ACTIONS
+  else if(action==='encourage'){
+    p.affection=cl((p.affection||30)+rn(4,8));G.scandal=cl(G.scandal+2,0,100);
+    addEvent('💌','Encouragement Given',`You gave ${nm} reason to hope. The connexion deepens.`,'neutral');
+  } else if(action==='flirt'){
+    if(G.charm>=50){p.affection=cl((p.affection||30)+rn(5,12));G.charm=cl(G.charm+2);addEvent('🌹','Successful Flirtation',`Your flirtation with ${nm} was well received.`,'good');}
+    else{G.scandal=cl(G.scandal+6,0,100);addEvent('😬','Clumsy Flirtation',`Your attempt at flirtation fell rather flat.`,'neutral');}
+  } else if(action==='call'){
+    p.affection=cl((p.affection||30)+rn(4,8));addEvent('🫖','A Formal Call',`${nm} called upon you. The visit was most pleasant.`,'good');
+  } else if(action==='dance'){
+    p.affection=cl((p.affection||30)+rn(5,10));G.charm=cl(G.charm+rn(1,3));
+    if(Math.random()<.2){G.scandal=cl(G.scandal+5,0,100);addEvent('💃','Too Many Dances',`You danced more than two dances with ${nm}. Society noticed.`,'scandal');}
+    else{addEvent('💃','A Dance Together',`The dance was delightful. The connexion grows.`,'good');}
+  } else if(action==='letter'){
+    p.affection=cl((p.affection||30)+rn(3,7));G.scandal=cl(G.scandal+4,0,100);
+    addEvent('✉️','A Secret Letter',`You and ${nm} have begun a private correspondence. Delicious — and dangerous.`,'neutral');
+  } else if(action==='court'){
+    p.courting=true;p.affection=cl((p.affection||30)+rn(5,10));
+    addEvent('💐','Courtship Begun',`A formal understanding is developing between you and ${nm}.`,'good');showAchievement('💐 Courting!');
+  } else if(action==='propose'){
+    proposeToProspect(p);return;
+  } else if(action==='intimate'){
+    intimacyEvent(p);return;
+  }
+  // ENEMY ACTIONS
+  else if(action==='ignore'){addEvent('🙄','Studied Indifference',`You ignored ${nm} completely at the Cavendish ball.`,'neutral');}
+  else if(action==='retaliate'){
+    showModal('⚔️','Retaliation',`How do you strike back at ${nm}?`,[
+      {label:'Spread damaging rumours (Wit check, Scandal +10)',fn:()=>{G.scandal=cl(G.scandal+10,0,100);if(G.wit>=60){p.affection=cl((p.affection||50)-15);addEvent('🗣️','A Devastating Rumour',`Your whispered intelligence damaged ${nm}\'s reputation.`,'good');}else{G.scandal=cl(G.scandal+8,0,100);addEvent('😬','Rumour Backfired',`The rumour was traced back to you.`,'scandal');}},},
+      {label:'Social exclusion campaign',fn:()=>{p.affection=cl((p.affection||50)-10);addEvent('🚫','Social Sabotage',`You have systematically excluded ${nm} from invitations.`,'neutral');}},
+    ]);return;
+  } else if(action==='reconcile'){
+    if(Math.random()<.5){(G.enemies||[]).splice((G.enemies||[]).indexOf(p),1);addEvent('🕊️','Peace Made',`You and ${nm} have reached an uneasy truce.`,'good');}
+    else{addEvent('😤','Offer Rejected',`${nm} was not interested in reconciliation.`,'scandal');}
+  }
+
+  renderAll();showTab('connections');
+}
+
+// ════════════════════════════════════════════════════════
+//  MARRIAGE & INTIMACY
+// ════════════════════════════════════════════════════════
+function calcMarriageChance(s){
+  const myRank=CLASS_RANK[G.socialClass];
+  const theirRank=CLASS_RANK[s.cls];
+  let c=50;
+  c+=(G.charm-50)*.5;
+  c+=(G.reputation-50)*.4;
+  c+=(G.virtue-50)*.2;
+  c+=(G.beauty-50)*.3;
+  const diff=theirRank-myRank;
+  if(diff>0)c-=diff*15;
+  if(diff<0)c+=Math.abs(diff)*10;
+  if(G.scandal>30)c-=(G.scandal-30)*.5;
+  return Math.max(5,Math.min(95,Math.round(c)));
+}
+
+function proposeToProspect(s){
+  const chance=calcMarriageChance(s);
+  const theirRank=CLASS_RANK[s.cls];
+  const myRank=CLASS_RANK[G.socialClass];
+  showModal('💍','A Proposal of Marriage',
+    `${s.name} — ${CL[s.cls]?.label}, £${s.income.toLocaleString()}/yr\n\n"${s.desc}"\n\nYour chance of acceptance: ${chance}%\n\n${theirRank>myRank?'This would be marrying up — your family gains status.':theirRank<myRank?'This would be marrying down — your family loses some standing.':'A match of equal station.'}`,
+    [
+      {label:`Accept & Propose (${chance}% chance)`,fn:()=>{
+        if(Math.random()*100<chance){
+          // Marriage!
+          G.married=true;G.spouse={...s,class_label:CL[s.cls]?.label};G.marriageHappiness=70;
+          G.income=Math.round((G.income+s.income)/2);
+          // Class effects
+          if(theirRank>myRank){G.reputation=cl(G.reputation+15);G.familyPrestige=(G.familyPrestige||50)+10;addEvent('💍','A Brilliant Match!',`${getTitle()} ${G.fname} is to wed ${s.name}. Society approves — it is an excellent connexion.`,'good');}
+          else if(theirRank<myRank){G.reputation=cl(G.reputation-10);G.familyPrestige=(G.familyPrestige||50)-8;G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-8);});addEvent('💍','A Match Below Your Station',`The engagement to ${s.name} is announced. Your family is displeased; the gossips are delighted.`,'scandal');}
+          else{addEvent('💍','A Respectable Match',`You are engaged to ${s.name}. A perfectly suitable connexion.`,'good');}
+          showAchievement('💍 Engaged!');
         } else {
-          G.reputation=clamp(G.reputation-8);
-          addEvent('💔','A Rejection',`${s.name} has — most unexpectedly — declined the connection. The embarrassment is considerable.`,'scandal');
+          G.reputation=cl(G.reputation-8);addEvent('💔','A Refusal',`${s.name} has declined the proposal. The humiliation is considerable.`,'scandal');
         }
         renderAll();
       }},
-      {label:'Decline (safe)', fn:()=>{ addEvent('📜','A Refusal','You declined the offer with appropriate civility.','neutral'); renderAll(); }},
-      {label:'Encourage but do not commit', fn:()=>{
-        G.charm=clamp(G.charm+2);
-        addEvent('🌹','A Flirtation Maintained',`You neither accepted nor rejected. The gentleman remains hopeful; your reputation remains intact — just.`,'neutral');
-        renderAll();
-      }},
-    ]
-  );
-}
-
-function maritalAction(type){
-  if(type==='romance'){
-    G.marriageHappiness=clamp((G.marriageHappiness||70)+10);
-    addEvent('💌','Domestic Felicity',`An evening of conversation and music with your spouse. The marriage flourishes.`,'good');
-  } else if(type==='neglect'){
-    G.marriageHappiness=clamp((G.marriageHappiness||70)-15);
-    G.scandal=clamp(G.scandal+5,0,100);
-    addEvent('🌨️','Marital Coldness',`The distance between you and your spouse grows. Servants gossip.`,'scandal');
-  } else if(type==='separate'){
-    showModal('💔','A Legal Separation',`This will destroy your reputation utterly and cost a great deal. Are you quite certain?`,[
-      {label:'Proceed (Scandal +40, Rep -35)', fn:()=>{
-        G.scandal=clamp(G.scandal+40,0,100); G.reputation=clamp(G.reputation-35);
-        G.married=false;
-        const spouseName=G.spouse.name; G.spouse=null;
-        addEvent('💔','A Most Scandalous Separation',`The separation from ${spouseName} is the talk of every drawing room from Bath to Edinburgh.`,'scandal');
-        renderAll();
-      }},
-      {label:'Reconsider', fn:()=>{}},
+      {label:'Withdraw for now',fn:()=>{}},
     ]);
-    return;
-  }
-  renderAll();
 }
 
-// ═══════════════════════════════════════════
+function intimacyEvent(p){
+  const myRank=CLASS_RANK[G.socialClass];
+  const theirRank=CLASS_RANK[p.cls];
+  showModal('🔒','A Private Moment',
+    `You find yourself alone with ${p.name}. The attraction is undeniable. To proceed would be deeply improper — and potentially ruinous.`,
+    [
+      {label:'Yield to temptation',fn:()=>{
+        p.seduced=true;G.scandal=cl(G.scandal+15,0,100);
+        const pregChance=G.gender==='lady'?G.fertility/100*.4:0;
+        if(G.gender==='lady'&&Math.random()<pregChance){
+          G.pregnancies=(G.pregnancies||0)+1;
+          // Pregnancy consequences by class
+          if(theirRank>myRank){
+            // High-status man, low-status woman (or equal)
+            showModal('😱','With Child',
+              `You find yourself with child. The father is ${p.name} of the ${CL[p.cls]?.label}.\n\nYour options are limited and all of them terrible.`,
+              [
+                {label:'Demand he marry you',fn:()=>{
+                  const marryChance=p.affection>=70?55:25;
+                  if(Math.random()*100<marryChance){
+                    G.married=true;G.spouse={...p,class_label:CL[p.cls]?.label};G.marriageHappiness=40;
+                    G.income=Math.round((G.income+p.income)/2);
+                    if(theirRank>myRank){G.family.forEach(f=>{f.opinion=cl((f.opinion||50)+5);});}
+                    else{G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-10);});}
+                    addEvent('💍','A Hasty Marriage',`${p.name} did the honourable thing. The timing raised eyebrows.`,'scandal');
+                  } else {
+                    G.scandal=cl(G.scandal+30,0,100);G.reputation=cl(G.reputation-25);
+                    const child={name:pk(FN_M.concat(FN_F)),age:0,legitimate:false,birthYear:G.age,fatherName:p.name};
+                    G.children.push(child);G.bastards=(G.bastards||0)+1;
+                    G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-20);});
+                    addEvent('😱','Abandoned & Ruined',`${p.name} refused marriage. The child will bear the stain of bastardy. Your family is devastated.`,'scandal');
+                    if(theirRank>myRank){
+                      showModal('💔','The Consequences',
+                        `As a ${CL[myRank<=1?'poor':'middling']?.label} woman bearing a child by ${p.name} of the ${CL[p.cls]?.label}, you have two remaining paths.`,
+                        [
+                          {label:'Become his mistress (secret income +£100/yr, permanent scandal)',fn:()=>{G.income+=100;G.scandal=cl(G.scandal+20,0,100);addEvent('💔','A Kept Woman',`You entered into an arrangement with ${p.name}. Society would be horrified.`,'scandal');}},
+                          {label:'Raise the child alone (poverty & exclusion)',fn:()=>{G.reputation=cl(G.reputation-15);addEvent('💔','Alone',`You chose to raise the child alone. It will be desperately hard.`,'neutral');}},
+                        ]);
+                    }
+                  }
+                }},
+                {label:'Leave quietly — raise child as widow (Scandal +20)',fn:()=>{G.scandal=cl(G.scandal+20,0,100);G.reputation=cl(G.reputation-20);const child={name:pk(FN_M.concat(FN_F)),age:0,legitimate:false,birthYear:G.age,fatherName:'unknown'};G.children.push(child);G.bastards=(G.bastards||0)+1;addEvent('😔','A Secret Shame',`You withdrew from society and raised the child in obscurity.`,'scandal');}},
+              ]);
+          } else {
+            // Same or lower class — still scandalous
+            G.scandal=cl(G.scandal+20,0,100);G.reputation=cl(G.reputation-15);
+            G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-15);});
+            proposeToProspect(p); // pressure to marry
+          }
+        } else {
+          addEvent('🔒','A Secret Transgression',`The encounter was passionate and deeply improper. You can only hope no one discovers it.`,'scandal');
+          p.affection=cl((p.affection||50)+10);
+        }
+        renderAll();
+      }},
+      {label:'Come to your senses (+Virtue +8)',fn:()=>{G.virtue=cl(G.virtue+8);addEvent('🙏','Virtue Preserved',`You drew back at the last moment. The temptation was great; so was your virtue.`,'good');renderAll();}},
+    ]);
+}
+
+function renderMarriage(){
+  const el=document.getElementById('marriage-content');
+  if(G.age<16){el.innerHTML=`<p style="font-style:italic;color:var(--ink-light)">You are too young yet for such matters.</p>`;return;}
+  if(G.married&&G.spouse){
+    el.innerHTML=`
+      <div class="person-card">
+        <div class="person-name">${G.spouse.name}</div>
+        <div class="person-type">${G.spouse.class_label} · £${G.spouse.income.toLocaleString()}/yr</div>
+        <div class="person-desc">"${G.spouse.desc}"</div>
+        <div style="margin:.5rem 0;font-size:.85rem">Marriage Happiness: <strong>${cl(G.marriageHappiness||70)}%</strong> · Children: <strong>${G.children.length}</strong></div>
+        <div class="rel-bar"><div class="rel-fill" style="width:${cl(G.marriageHappiness||70)}%"></div></div>
+      </div>
+      <div class="choices-grid" style="margin-top:.8rem">
+        <button class="choice-btn" onclick="maritalAction('romance')"><span class="choice-emoji">💌</span><span class="choice-info">Cultivate the Marriage<small>Spend time with spouse. Happiness +10.</small></span></button>
+        <button class="choice-btn" onclick="maritalAction('gift')"><span class="choice-emoji">🎁</span><span class="choice-info">Send a Thoughtful Gift<small>£20. Happiness +8.</small></span></button>
+        <button class="choice-btn" onclick="maritalAction('neglect')"><span class="choice-emoji">📰</span><span class="choice-info">Neglect Your Spouse<small>Happiness -15. Scandal risk.</small></span></button>
+        ${G.marriageHappiness<30?`<button class="choice-btn" onclick="maritalAction('separate')" style="border-color:var(--burgundy)"><span class="choice-emoji">💔</span><span class="choice-info">Seek a Separation<small>Devastating to reputation and finances.</small></span></button>`:''}
+      </div>`;
+  } else {
+    el.innerHTML=`<p style="font-style:italic;font-size:.88rem;color:var(--ink-light);margin-bottom:1rem">Visit the <strong>Connections</strong> tab to court prospects and propose marriage.</p>
+    <div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:1rem;">
+      <div style="font-size:.85rem;color:var(--ink-light);line-height:1.7">
+        <strong>Marriage & Class Rules:</strong><br>
+        • Marrying above your station: Your reputation rises. Your family gains prestige. Their family may object.<br>
+        • Marrying below your station: Reputation falls. Family is displeased. Children carry a social stain.<br>
+        • Pregnancy before marriage: A devastating scandal. Consequences depend on the father's class and willingness.<br>
+        • Scandal level affects all prospects' willingness to consider you.
+      </div>
+    </div>`;
+  }
+}
+
+function maritalAction(t){
+  if(t==='romance'){G.marriageHappiness=cl((G.marriageHappiness||70)+10);addEvent('💌','Domestic Felicity',`A pleasant evening with your spouse restores warmth between you.`,'good');}
+  else if(t==='gift'){if(G.savings>=20){G.savings-=20;G.marriageHappiness=cl((G.marriageHappiness||70)+8);addEvent('🎁','A Thoughtful Gift',`Your spouse was touched by the attention.`,'good');}else{addEvent('💸','Insufficient Funds',`You cannot afford the gesture.`,'neutral');}}
+  else if(t==='neglect'){G.marriageHappiness=cl((G.marriageHappiness||70)-15);G.scandal=cl(G.scandal+5,0,100);addEvent('🌨️','Marital Neglect',`The distance between you grows. Servants notice.`,'scandal');}
+  else if(t==='separate'){
+    showModal('💔','A Legal Separation',`This will destroy your reputation and cost enormously. Certain?`,[
+      {label:'Proceed (Scandal +40, Rep -35, very costly)',fn:()=>{
+        const cost=rn(500,2000);G.savings=Math.max(0,G.savings-cost);
+        G.scandal=cl(G.scandal+40,0,100);G.reputation=cl(G.reputation-35);
+        G.family.forEach(f=>{f.opinion=cl((f.opinion||50)-20);f.speaking=f.opinion>20;if(!f.speaking)f.lettersNeeded=rn(4,8);});
+        const sn=G.spouse.name;G.married=false;G.spouse=null;
+        addEvent('💔','A Scandalous Separation',`The separation from ${sn} is the talk of every drawing room. Your family is horrified.`,'scandal');
+        renderAll();
+      }},
+      {label:'Reconsider',fn:()=>{}},
+    ]);return;
+  }
+  renderAll();showTab('marriage');
+}
+
+// ════════════════════════════════════════════════════════
 //  HOUSEHOLD TAB
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function renderHousehold(){
-  const exp = HOUSEHOLD_EXPENSES[G.socialClass];
-  const totalExp = Object.values(exp).reduce((a,b)=>a+b,0);
-  const net = G.income - totalExp;
-  const el = document.getElementById('household-content');
-  el.innerHTML = `
-    <div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:1rem;margin-bottom:1rem;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.88rem;">
-        <div><span style="color:var(--ink-light)">Annual Income:</span> <strong>£${G.income.toLocaleString()}</strong></div>
-        <div><span style="color:var(--ink-light)">Savings:</span> <strong>£${G.savings.toLocaleString()}</strong></div>
-        <div><span style="color:var(--ink-light)">Total Expenses:</span> <strong style="color:var(--burgundy)">£${totalExp.toLocaleString()}</strong></div>
-        <div><span style="color:var(--ink-light)">Annual Net:</span> <strong style="color:${net>=0?'var(--sage)':'var(--burgundy)'}">£${net.toLocaleString()}</strong></div>
+  const exp=EXPENSES_PER_YEAR[G.socialClass];
+  const totalExp=Object.values(exp).reduce((a,b)=>a+b,0);
+  const net=G.income-totalExp;
+  document.getElementById('household-content').innerHTML=`
+    <div class="person-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.85rem">
+        <div>Annual Income: <strong>£${G.income.toLocaleString()}</strong></div>
+        <div>Savings: <strong>£${G.savings.toLocaleString()}</strong></div>
+        <div>Annual Expenses: <strong style="color:var(--burgundy)">£${totalExp.toLocaleString()}</strong></div>
+        <div>Net/Year: <strong style="color:${net>=0?'var(--sage)':'var(--burgundy)'}">£${net.toLocaleString()}</strong></div>
       </div>
-      <hr style="border:none;border-top:1px solid var(--dark-parchment);margin:0.7rem 0;">
-      <div style="font-size:0.83rem;color:var(--ink-light);">
-        ${Object.entries(exp).map(([k,v])=>`<div style="display:flex;justify-content:space-between;"><span>${k.charAt(0).toUpperCase()+k.slice(1)}:</span><span>£${v}</span></div>`).join('')}
+      <hr style="border:none;border-top:1px solid var(--dark-parchment);margin:.6rem 0">
+      <div style="font-size:.78rem;color:var(--ink-light)">
+        ${Object.entries(exp).map(([k,v])=>`<div style="display:flex;justify-content:space-between"><span>${k.charAt(0).toUpperCase()+k.slice(1)}</span><span>£${v}</span></div>`).join('')}
       </div>
-      ${G.debtLevel>0?`<div style="color:var(--burgundy);font-size:0.85rem;margin-top:0.5rem;font-style:italic;">⚠ Debt level: ${G.debtLevel}/4. Further ruin may follow.</div>`:''}
+      ${G.debtLevel>0?`<div style="color:var(--burgundy);font-size:.82rem;margin-top:.5rem;font-style:italic">⚠ Debt level: ${G.debtLevel}/4</div>`:''}
     </div>
-    <div class="choices-grid">
-      ${G.socialClass!=='poor'?`<button class="choice-btn" onclick="retrench()"><span class="choice-emoji">✂️</span><span class="choice-info">Retrench the Household<small>Dismiss servants, sell horses. Reduce expenses but reputation suffers.</small></span></button>`:''}
-      ${G.savings>500?`<button class="choice-btn" onclick="invest()"><span class="choice-emoji">📈</span><span class="choice-info">Invest in the Funds<small>Risk £500 in the Consols. May earn 5-8% annually.</small></span></button>`:''}
-      ${G.savings>1000?`<button class="choice-btn" onclick="improveEstate()"><span class="choice-emoji">🏡</span><span class="choice-info">Improve the Estate<small>Spend £1000 on improvements. Income and reputation both rise.</small></span></button>`:''}
-      <button class="choice-btn" onclick="sellJewels()"><span class="choice-emoji">💎</span><span class="choice-info">Sell Family Jewels<small>A last resort. Raises funds but invites questions.</small></span></button>
+    <div class="choices-grid" style="margin-top:.8rem">
+      ${G.socialClass!=='poor'?`<button class="choice-btn" onclick="hhAction('retrench')"><span class="choice-emoji">✂️</span><span class="choice-info">Retrench<small>Reduce expenses. Rep -8.</small></span></button>`:''}
+      ${G.savings>=500?`<button class="choice-btn" onclick="hhAction('invest')"><span class="choice-emoji">📈</span><span class="choice-info">Invest in the Funds<small>Risk £500. May yield income.</small></span></button>`:''}
+      ${G.savings>=1000?`<button class="choice-btn" onclick="hhAction('improve')"><span class="choice-emoji">🏡</span><span class="choice-info">Improve the Estate<small>£1000. Income +12%, Rep +10.</small></span></button>`:''}
+      <button class="choice-btn" onclick="hhAction('jewels')"><span class="choice-emoji">💎</span><span class="choice-info">Sell Family Jewels<small>Emergency funds. Raises questions.</small></span></button>
     </div>`;
 }
 
-function retrench(){
-  G.income=Math.round(G.income*0.85);
-  G.reputation=clamp(G.reputation-8);
-  addEvent('✂️','Economies Made',`Staff dismissed, horses sold. The neighbours notice and draw their conclusions.`,'scandal');
-  renderAll();
-}
-function invest(){
-  G.savings-=500;
-  const r=Math.random();
-  if(r<0.15){ G.savings=Math.max(0,G.savings-300); addEvent('📉','An Ill Investment',`The Funds have not performed as hoped. £300 is lost.`,'scandal'); }
-  else if(r<0.7){ const gain=rand(30,50); G.income+=gain; addEvent('📈','A Sound Investment',`The Consols return a modest £${gain}/yr.`,'good'); }
-  else { const gain=rand(50,100); G.income+=gain; addEvent('📈','An Excellent Return',`Your investment yields £${gain}/yr — quite above expectations.`,'good'); }
-  renderAll();
-}
-function improveEstate(){
-  G.savings-=1000;
-  G.income=Math.round(G.income*1.12);
-  G.reputation=clamp(G.reputation+10);
-  addEvent('🏡','A Tasteful Improvement',`The new plantations and repaired roof have made the estate quite admired. Income rises.`,'good');
-  renderAll();
-}
-function sellJewels(){
-  const gain=rand(100,600);
-  G.savings+=gain;
-  G.reputation=clamp(G.reputation-5);
-  G.scandal=clamp(G.scandal+5,0,100);
-  addEvent('💎','Family Heirlooms Sold',`£${gain} raised — but certain observant persons notice the absence of Grandmama's necklace.`,'scandal');
-  renderAll();
+function hhAction(t){
+  if(t==='retrench'){G.income=Math.round(G.income*.85);G.reputation=cl(G.reputation-8);addEvent('✂️','Household Economies',`Staff dismissed, horses sold. Neighbours draw conclusions.`,'scandal');}
+  else if(t==='invest'){G.savings-=500;const r=Math.random();if(r<.15){G.savings=Math.max(0,G.savings-200);addEvent('📉','Poor Investment',`£200 lost in a bad venture.`,'scandal');}else if(r<.7){const g=rn(25,45);G.income+=g;addEvent('📈','Modest Return',`The Consols yield £${g}/yr.`,'good');}else{const g=rn(50,90);G.income+=g;addEvent('📈','Excellent Return',`Your investment yields £${g}/yr.`,'good');}}
+  else if(t==='improve'){G.savings-=1000;G.income=Math.round(G.income*1.12);G.reputation=cl(G.reputation+10);addEvent('🏡','Estate Improved',`The new works have raised income and reputation.`,'good');}
+  else if(t==='jewels'){const g=rn(80,500);G.savings+=g;G.reputation=cl(G.reputation-4);G.scandal=cl(G.scandal+4,0,100);addEvent('💎','Heirlooms Sold',`£${g} raised. Certain persons notice Grandmama\'s necklace is absent.`,'scandal');}
+  renderAll();showTab('household');
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  GOSSIP TAB
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+const GOSSIP_POOL=[
+  ()=>`"I hear ${mkName('f')} is quite ruined — the estate is mortgaged to the hilt."`,
+  ()=>`"They say ${mkName('f')} eloped with a soldier. Her poor mother!"`,
+  ()=>`"Have you heard? ${mkName('f')} refused Lord ${pk(SN)}! She must be quite mad or very rich."`,
+  ()=>`"The new ${pk(['parson','captain','surgeon'])} at ${pk(SN)} Park is quite handsome, though unfortunately without a penny."`,
+  ()=>`"Lady ${pk(SN)} was seen at the theatre with — but I shall say no more."`,
+  ()=>`"The ${pk(SN)}s are declared bankrupt. The daughters are desperate."`,
+  ()=>`"I am told ${mkName('f')} has forty thousand pounds. Every mama in London is scheming."`,
+  ()=>`"That wedding was very sudden. Very sudden indeed."`,
+  ()=>`"Poor Miss ${pk(SN)} — four seasons and no offer. It is most unfortunate."`,
+  ()=>`"${mkName('m')} was caught cheating at cards at White\'s. His reputation is in tatters."`,
+  ()=>`"I heard ${mkName('f')} is with child and the father is already married. Dreadful."`,
+  ()=>`"${mkName('m')} has a natural child — a shop girl\'s — tucked away in Hampshire."`,
+  ()=>`"The ${pk(SN)} girl married a tradesman. Her family has not spoken to her since."`,
+  ()=>`"${mkName('m')} gambled away his entire estate at Watier\'s in a single evening."`,
+];
+
 function renderGossip(){
-  const el = document.getElementById('gossip-content');
-  const lines = [];
-  for(let i=0;i<6;i++){
-    let line = pick(GOSSIP_LINES);
-    line = line.replace('{name}', pick(NAMES_F)+' '+pick(SURNAMES));
-    line = line.replace('{title}', pick(TITLES));
-    lines.push(line);
-  }
-  el.innerHTML = `
-    <p style="font-style:italic;font-size:0.88rem;color:var(--ink-light);margin-bottom:1rem;">What they are saying in the drawing rooms this season…</p>
-    ${lines.map(l=>`<div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:0.8rem;margin-bottom:0.5rem;font-size:0.9rem;font-style:italic;color:var(--ink-light);line-height:1.5;">${l}</div>`).join('')}
-    <button class="choice-btn" style="margin-top:0.5rem" onclick="renderGossip()"><span class="choice-emoji">🗣️</span><span class="choice-info">Listen for More Gossip<small>The drawing rooms are never silent.</small></span></button>
-    <button class="choice-btn" onclick="spreadRumour()"><span class="choice-emoji">🤫</span><span class="choice-info">Spread a Rumour<small>Direct attention elsewhere. Wit check required. Scandal risk.</small></span></button>`;
+  const lines=Array.from({length:7},()=>pk(GOSSIP_POOL)());
+  document.getElementById('gossip-content').innerHTML=`
+    <p style="font-style:italic;font-size:.85rem;color:var(--ink-light);margin-bottom:.8rem">What they are saying in the drawing rooms this season…</p>
+    ${lines.map(l=>`<div class="person-card" style="font-style:italic;font-size:.88rem">${l}</div>`).join('')}
+    <div class="choices-grid" style="margin-top:.6rem">
+      <button class="choice-btn" onclick="renderGossip();showTab('gossip')"><span class="choice-emoji">🗣️</span><span class="choice-info">Listen for More<small>The drawing rooms are never silent.</small></span></button>
+      <button class="choice-btn" onclick="spreadRumour()"><span class="choice-emoji">🤫</span><span class="choice-info">Spread a Rumour<small>Wit check. Redirect attention from yourself.</small></span></button>
+    </div>`;
 }
 function spreadRumour(){
-  if(G.wit>=65){
-    G.scandal=clamp(G.scandal-8,0,100);
-    G.reputation=clamp(G.reputation+3);
-    addEvent('🤫','A Clever Deflection',`A well-placed whisper has turned Society's attention elsewhere. Masterfully done.`,'good');
-  } else {
-    G.scandal=clamp(G.scandal+10,0,100);
-    addEvent('🤫','A Rumour Mishandled',`Your attempt at misdirection was too obvious. The gossips have added your name to their list.`,'scandal');
-  }
-  renderAll();
+  if(G.wit>=65){G.scandal=cl(G.scandal-8,0,100);G.reputation=cl(G.reputation+3);addEvent('🤫','Clever Deflection',`Your well-placed whisper directed Society\'s attention elsewhere.`,'good');}
+  else{G.scandal=cl(G.scandal+10,0,100);addEvent('🤫','Rumour Mishandled',`Your attempt at misdirection was too obvious.`,'scandal');}
+  renderAll();showTab('gossip');
 }
 
-// ═══════════════════════════════════════════
-//  SIDE PANEL
-// ═══════════════════════════════════════════
-function renderRelationships(){
-  const el=document.getElementById('relationships-list');
-  if(!G.relationships.length){ el.innerHTML='<p style="font-size:0.82rem;color:var(--ink-light);font-style:italic;">None of note.</p>'; return; }
-  el.innerHTML=G.relationships.slice(0,5).map(r=>`
-    <div class="relationship-card">
-      <div class="rel-name">${r.name} <span class="rel-type">${r.type}</span></div>
-      <div class="rel-bar"><div class="rel-fill" style="width:${r.affection}%"></div></div>
+// ════════════════════════════════════════════════════════
+//  RENDER ALL
+// ════════════════════════════════════════════════════════
+function renderStats(){
+  const stats=[
+    {k:'health',l:'Health',cls:'fill-health'},
+    {k:'reputation',l:'Reputation',cls:'fill-rep'},
+    {k:'charm',l:'Charm',cls:'fill-charm'},
+    {k:'virtue',l:'Virtue',cls:'fill-virtue'},
+    {k:'wit',l:'Wit',cls:'fill-wit'},
+    {k:'beauty',l:'Beauty',cls:'fill-beauty'},
+    {k:'composure',l:'Composure',cls:'fill-composure'},
+    {k:'confidence',l:'Confidence',cls:'fill-confidence'},
+  ];
+  document.getElementById('stat-block').innerHTML=stats.map(s=>`
+    <div class="stat-row">
+      <span class="stat-name">${s.l}</span>
+      <div class="stat-track"><div class="stat-fill ${s.cls}" style="width:${cl(G[s.k])}%"></div></div>
+      <span class="stat-num">${cl(G[s.k])}</span>
     </div>`).join('');
 }
 
 function renderStatus(){
-  const el=document.getElementById('status-block');
-  const age=G.age;
-  const title=getTitle();
-  const married=G.married?`Married to ${G.spouse.name}`:'Unmarried';
-  const children=G.children>0?`${G.children} child${G.children>1?'ren':''}`:null;
-  const employed=G.employed?`Employed as ${G.position}`:null;
-  el.innerHTML=[
-    `<span class="season-badge">${G.year}</span>`,
-    `Age: ${age}`,
-    married,
-    children,
-    employed,
-    `Class: ${CLASS_DATA[G.socialClass].label}`,
-    G.exiled?`<span style="color:var(--burgundy)">Exiled from Society</span>`:null,
-    G.debtLevel>0?`<span style="color:var(--burgundy)">In Debt (${G.debtLevel}/4)</span>`:null,
-  ].filter(Boolean).join(' · ');
+  const parts=[
+    G.year+' · Age '+G.age,
+    G.lifeStage.charAt(0).toUpperCase()+G.lifeStage.slice(1),
+    CL[G.socialClass]?.label,
+    G.married?'Married to '+G.spouse.name:'Unmarried',
+    G.children.length>0?G.children.length+' child'+(G.children.length>1?'ren':''):'',
+    G.employed?'Employed as '+G.position:'',
+    G.exiled?'⚠ Exiled':'',
+    G.debtLevel>0?'💸 Debt Lv.'+G.debtLevel:'',
+    G.bastards>0?G.bastards+' natural child'+(G.bastards>1?'ren':''):'',
+  ].filter(Boolean);
+  document.getElementById('status-block').innerHTML=parts.join('<br>');
 }
 
-// ═══════════════════════════════════════════
-//  RENDER ALL
-// ═══════════════════════════════════════════
 function renderAll(){
-  // Header
   document.getElementById('hdr-name').textContent=`${getTitle()} ${G.fname} ${G.lname}`;
-  document.getElementById('hdr-meta').textContent=`Year ${G.year} · ${G.seasonCount===0?'Debut Season':G.seasonCount+' Seasons'} · ${CLASS_DATA[G.socialClass].label}`;
-  document.getElementById('hdr-health').textContent=Math.round(G.health);
-  document.getElementById('hdr-rep').textContent=Math.round(G.reputation);
+  document.getElementById('hdr-meta').textContent=`${G.year} · ${G.socialClass==='nobility'||G.socialClass==='gentry'?CL[G.socialClass].label:CL[G.socialClass].label}`;
+  document.getElementById('hdr-health').textContent=cl(G.health);
+  document.getElementById('hdr-rep').textContent=cl(G.reputation);
   document.getElementById('hdr-money').textContent=G.savings.toLocaleString();
-  document.getElementById('hdr-age').textContent=G.age;
-  // Stats
-  ['health','reputation','charm','virtue','wit'].forEach(k=>{
-    const el=document.getElementById('fill-'+k.replace('reputation','rep'));
-    const ne=document.getElementById('num-'+k.replace('reputation','rep'));
-    if(el) el.style.width=clamp(G[k])+'%';
-    if(ne) ne.textContent=Math.round(G[k]);
-  });
-  document.getElementById('fill-rep').style.width=clamp(G.reputation)+'%';
-  document.getElementById('num-rep').textContent=Math.round(G.reputation);
-  document.getElementById('scandal-fill').style.width=clamp(G.scandal,0,100)+'%';
-  document.getElementById('money-val').textContent=G.income.toLocaleString();
-  renderLog();
-  renderRelationships();
-  renderStatus();
-  // Active tab
+  document.getElementById('hdr-age').textContent='Age '+G.age;
+  document.getElementById('money-val').textContent=G.savings.toLocaleString();
+  document.getElementById('income-val').textContent=G.income.toLocaleString();
+  document.getElementById('scandal-fill').style.width=cl(G.scandal,0,100)+'%';
+  renderStats();renderLog();renderStatus();
+  // Re-render active tab
   const activeTab=document.querySelector('.tab.active');
-  if(activeTab) showTab(activeTab.dataset.tab||'chronicle', true);
-}
-
-// ═══════════════════════════════════════════
-//  TABS
-// ═══════════════════════════════════════════
-function showTab(name, silent=false){
-  document.querySelectorAll('.tab').forEach(t=>{
-    t.classList.toggle('active', t.textContent.toLowerCase().includes(name.toLowerCase().replace('tab-','')));
-    if(t.classList.contains('active')) t.dataset.tab=name;
-  });
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  const el=document.getElementById('tab-'+name);
-  if(el) el.classList.add('active');
-  if(!silent){
-    if(name==='society') renderSociety();
-    if(name==='marriage') renderMarriage();
-    if(name==='household') renderHousehold();
-    if(name==='gossip') renderGossip();
+  if(activeTab){
+    const tid=activeTab.textContent.toLowerCase().trim();
+    if(tid==='society')renderSociety();
+    else if(tid==='connections')renderConnections();
+    else if(tid==='marriage')renderMarriage();
+    else if(tid==='household')renderHousehold();
+    else if(tid==='gossip')renderGossip();
   }
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+//  TAB SYSTEM
+// ════════════════════════════════════════════════════════
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase().trim()===name));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  const el=document.getElementById('tab-'+name);
+  if(el)el.classList.add('active');
+  if(name==='society')renderSociety();
+  else if(name==='connections')renderConnections();
+  else if(name==='marriage')renderMarriage();
+  else if(name==='household')renderHousehold();
+  else if(name==='gossip')renderGossip();
+}
+
+// ════════════════════════════════════════════════════════
 //  MODAL
-// ═══════════════════════════════════════════
-function showModal(deco, title, body, choices){
+// ════════════════════════════════════════════════════════
+function showModal(deco,title,body,choices){
   document.getElementById('modal-deco').textContent=deco;
   document.getElementById('modal-title').textContent=title;
   document.getElementById('modal-body').textContent=body;
-  const ch=document.getElementById('modal-choices');
-  ch.innerHTML=choices.map((c,i)=>`<button class="modal-btn ${i===0?'primary':''}" onclick="modalChoice(${i})">${c.label}</button>`).join('');
-  document.getElementById('modal').classList.remove('hidden');
-  window._modalChoices=choices;
+  document.getElementById('modal-choices').innerHTML=choices.map((c,i)=>`
+    <button class="modal-btn ${i===0?'primary':''}" onclick="_mc(${i})">
+      ${c.label}${c.small?`<small>${c.small}</small>`:''}
+    </button>`).join('');
+  document.getElementById('modal').style.display='flex';
+  window._mch=choices;
 }
-function modalChoice(i){
-  document.getElementById('modal').classList.add('hidden');
-  if(window._modalChoices && window._modalChoices[i]) window._modalChoices[i].fn();
-}
+window._mc=function(i){document.getElementById('modal').style.display='none';if(window._mch&&window._mch[i])window._mch[i].fn();};
 
-// ═══════════════════════════════════════════
-//  ACHIEVEMENTS
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+//  ACHIEVEMENT
+// ════════════════════════════════════════════════════════
 function showAchievement(text){
-  const el=document.createElement('div');
-  el.className='achievement-popup';
-  el.textContent=text;
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 4000);
+  const el=document.createElement('div');el.className='achievement-popup';el.textContent=text;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),4100);
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  END GAME
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function endGame(type){
   G.dead=true;
   let deco,title,body;
   if(type==='death'){
-    deco='🕯️'; title='The End of All Things';
-    const causes=['a sudden fever','complications following childbirth','a riding accident','a decline of the lungs','a broken heart, some said'];
-    body=`${getTitle()} ${G.fname} ${G.lname} passed from this world in the year ${G.year}, aged ${G.age}, of ${pick(causes)}.\n\nShe left behind £${G.savings.toLocaleString()} and ${G.children} child${G.children!==1?'ren':''}.\n\nReputation at death: ${Math.round(G.reputation)}/100. She was ${G.married?'married to '+G.spouse.name:'never married'}.`;
+    deco='🕯️';title='The End of All Things';
+    const causes=['a sudden fever','a decline of the lungs','a riding accident','complications following childbirth','a broken heart, some said','a mysterious wasting illness'];
+    body=`${getTitle()} ${G.fname} ${G.lname} passed from this world in ${G.year}, aged ${G.age}, of ${pk(causes)}.\n\nSavings at death: £${G.savings.toLocaleString()}\nReputation: ${cl(G.reputation)}/100\nChildren: ${G.children.length}\n${G.married?'Married to '+G.spouse.name:'Never married'}\nScandals endured: ${G.scandalCount||'many'}`;
   } else {
-    deco='💸'; title='Total Ruin';
-    body=`The creditors have finally claimed everything. ${getTitle()} ${G.fname} ${G.lname} is forced to quit the estate and retire to a modest lodging in Bath.\n\nFortune: £0. Reputation: ${Math.round(G.reputation)}/100. An unhappy conclusion to a tale that might have been otherwise.`;
+    deco='💸';title='Total Ruin';
+    body=`The creditors have claimed everything. ${getTitle()} ${G.fname} ${G.lname} is forced to quit and retire in poverty.\n\nReputation: ${cl(G.reputation)}/100. Debt destroyed all.`;
   }
-  showModal(deco, title, body, [{label:'Begin a New Life', fn:()=>{ document.getElementById('game-shell').style.display='none'; document.getElementById('splash').style.display='flex'; }}]);
+  showModal(deco,title,body,[{label:'Begin a New Life',fn:()=>{document.getElementById('game-shell').style.display='none';document.getElementById('splash').style.display='flex';}}]);
 }
 </script>
 </body>
