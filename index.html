@@ -309,6 +309,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
     <div class="header-btns">
       <button class="save-btn" onclick="saveGame()">💾 Save</button>
       <button class="year-btn" onclick="advanceYear()">⏳ Age One Year</button>
+      <button class="save-btn" onclick="leaveLife()" style="background:rgba(74,103,65,0.25);border-color:var(--sage);color:var(--sage-light)">🚪 Leave Life</button>
       <button class="endlife-btn" onclick="confirmEndLife()">✝ End Life</button>
     </div>
   </div>
@@ -320,6 +321,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
         <div class="tab" data-tab="life" onclick="showTab('life')">🌱 Life</div>
         <div class="tab" data-tab="society" onclick="showTab('society')">🎭 Society</div>
         <div class="tab" data-tab="connections" onclick="showTab('connections')">🤝 Connections</div>
+        <div class="tab" data-tab="friends" onclick="showTab('friends')">👥 Friends</div>
         <div class="tab" data-tab="romance" onclick="showTab('romance')">💌 Romance</div>
         <div class="tab" data-tab="family" onclick="showTab('family')">👨‍👩‍👧 Family</div>
         <div class="tab" data-tab="career" onclick="showTab('career')">📋 Career</div>
@@ -327,6 +329,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
         <div class="tab" data-tab="property" onclick="showTab('property')">🏡 Property</div>
         <div class="tab" data-tab="household" onclick="showTab('household')">💰 Finances</div>
         <div class="tab" data-tab="dynasty" onclick="showTab('dynasty')">🏰 Dynasty</div>
+        <div class="tab" data-tab="familytree" onclick="showTab('familytree')">🌳 Family Tree</div>
         <div class="tab" data-tab="gossip" onclick="showTab('gossip')">📰 Gazette</div>
         <div class="tab" data-tab="travel" onclick="showTab('travel')">🌍 Travel</div>
       </div>
@@ -334,6 +337,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
       <div class="tab-content" id="tab-life"><div id="life-content"></div></div>
       <div class="tab-content" id="tab-society"><div class="choices-grid" id="society-choices"></div></div>
       <div class="tab-content" id="tab-connections"><div id="connections-content"></div></div>
+      <div class="tab-content" id="tab-friends"><div id="friends-content"></div></div>
       <div class="tab-content" id="tab-romance"><div id="romance-content"></div></div>
       <div class="tab-content" id="tab-family"><div id="family-content"></div></div>
       <div class="tab-content" id="tab-career"><div id="career-content"></div></div>
@@ -341,6 +345,7 @@ body{background:var(--ink);background-image:repeating-linear-gradient(0deg,trans
       <div class="tab-content" id="tab-property"><div id="property-content"></div></div>
       <div class="tab-content" id="tab-household"><div id="household-content"></div></div>
       <div class="tab-content" id="tab-dynasty"><div id="dynasty-content"></div></div>
+      <div class="tab-content" id="tab-familytree"><div id="familytree-content"></div></div>
       <div class="tab-content" id="tab-gossip"><div id="gossip-content"></div></div>
       <div class="tab-content" id="tab-travel"><div id="travel-content"></div></div>
     </div>
@@ -525,6 +530,33 @@ const FEMALE_CAREERS={
   ],
 };
 const UNIV_SUBJECTS_M=['Law','Medicine','Politics & History','Theology','Literature','Natural Philosophy','Military Science','Architecture'];
+const MALE_SELF_STUDY={
+  nobility:[
+    {title:'Grand Tour Reading',cost:0,wit:8,education:10,desc:'Prepare your mind with history, classical literature and philosophy.'},
+    {title:'Fencing & Swordsmanship',cost:40,confidence:10,charm:5,desc:'The art of the gentleman-soldier. Admired in society.'},
+    {title:'Classical Languages',cost:50,wit:10,education:12,desc:'Latin and Greek, the mark of a truly educated mind.'},
+    {title:'Music & Fine Arts',cost:35,charm:8,education:5,desc:'A gentleman of accomplishment plays and appreciates music.'},
+    {title:'Natural Philosophy',cost:30,wit:12,education:10,desc:'Science, botany, astronomy — the gentleman scholar.'},
+    {title:'Riding & Horsemanship',cost:60,confidence:8,charm:5,desc:'Superior horsemanship impresses at every meet.'},
+  ],
+  gentry:[
+    {title:'Private Reading',cost:0,wit:7,education:8,desc:'The lending library and personal study. Free and invaluable.'},
+    {title:'Mathematics & Accounts',cost:20,wit:8,education:8,desc:'Useful for estate management and business.'},
+    {title:'French Language',cost:25,wit:6,education:7,charm:3,desc:'French remains the language of polite society.'},
+    {title:'Fencing',cost:30,confidence:7,charm:4,desc:'An essential gentlemanly art.'},
+    {title:'Music',cost:20,charm:6,education:4,desc:'The pianoforte and singing open social doors.'},
+  ],
+  middling:[
+    {title:'Self-Study',cost:0,wit:9,education:8,desc:'Books from the circulating library. Determination costs nothing.'},
+    {title:'Bookkeeping & Commerce',cost:15,wit:6,education:7,desc:'Practical knowledge for a professional man.'},
+    {title:'Essay Writing',cost:0,wit:8,education:6,desc:'Sharpens the mind and improves written expression.'},
+    {title:'Drawing & Draughtsmanship',cost:15,charm:4,education:5,desc:'Useful for architecture, engineering, and gentlemanly diversion.'},
+  ],
+  poor:[
+    {title:'Parish Library',cost:0,wit:5,education:5,desc:'Whatever books can be found. Knowledge is never wasted.'},
+    {title:'Self-Study',cost:0,wit:8,education:6,desc:'A willing mind needs only opportunity.'},
+  ],
+};
 
 // ═══════════════════════════════════════════════════
 //  HOBBIES
@@ -602,12 +634,15 @@ const PROPERTIES=[
 //  WORLD TRAVEL DESTINATIONS (Male)
 // ═══════════════════════════════════════════════════
 const TRAVEL_DESTINATIONS=[
-  {name:'France — Paris',emoji:'🇫🇷',cost:300,duration:1,desc:'The salons of Paris. Culture, intrigue, and perhaps a romance.',events:['parisian_romance','foreign_scandal','cultural_inspiration','robbery']},
-  {name:'Italy — Rome & Florence',emoji:'🇮🇹',cost:400,duration:2,desc:'The Grand Tour. Art, antiquity, and Continental refinement.',events:['cultural_inspiration','foreign_romance','illness','robbery']},
-  {name:'Greece — Athens',emoji:'🏛️',cost:500,duration:2,desc:'The cradle of civilisation. Philosophy and adventure await.',events:['cultural_inspiration','duel_abroad','illness','political_opportunity']},
-  {name:'India — Calcutta',emoji:'🌏',cost:600,duration:3,desc:'Service with the East India Company. Riches and danger.',events:['military_glory','illness','foreign_romance','robbery']},
-  {name:'America — New York',emoji:'🇺🇸',cost:450,duration:2,desc:'The new republic. A world without rank — or so they say.',events:['political_opportunity','foreign_romance','cultural_inspiration','injury']},
-  {name:'Ottoman Empire — Constantinople',emoji:'🕌',cost:550,duration:2,desc:'The crossroads of worlds. Mystery and peril in equal measure.',events:['robbery','cultural_inspiration','illness','duel_abroad']},
+  {id:'france',name:'France — Paris',emoji:'🇫🇷',cost:300,duration:1,desc:'The salons of Paris. Culture, intrigue, and perhaps a romance.',events:['parisian_romance','foreign_scandal','cultural_inspiration','robbery']},
+  {id:'italy',name:'Italy — Rome & Florence',emoji:'🇮🇹',cost:400,duration:2,desc:'The Grand Tour. Art, antiquity, and Continental refinement.',events:['cultural_inspiration','foreign_romance','illness','robbery']},
+  {id:'greece',name:'Greece — Athens',emoji:'🏛️',cost:500,duration:2,desc:'The cradle of civilisation. Philosophy and adventure await.',events:['cultural_inspiration','duel_abroad','illness','political_opportunity']},
+  {id:'india',name:'India — Calcutta',emoji:'🌏',cost:600,duration:3,desc:'Service with the East India Company. Riches and danger.',events:['military_glory','illness','foreign_romance','robbery']},
+  {id:'america',name:'America — New York',emoji:'🇺🇸',cost:450,duration:2,desc:'The new republic. A world without rank — or so they say.',events:['political_opportunity','foreign_romance','cultural_inspiration','injury']},
+  {id:'ottoman',name:'Ottoman Empire — Constantinople',emoji:'🕌',cost:550,duration:2,desc:'The crossroads of worlds. Mystery and peril in equal measure.',events:['robbery','cultural_inspiration','illness','duel_abroad']},
+  {id:'bath',name:'Bath — Pump Room & Assemblies',emoji:'🏛️',cost:80,duration:1,desc:'England\'s premier spa town. Society, gossip, and mineral waters.',events:['parisian_romance','cultural_inspiration','foreign_scandal','political_opportunity']},
+  {id:'brighton',name:'Brighton — The Seaside',emoji:'🌊',cost:60,duration:1,desc:'The Prince Regent\'s favourite resort. Sea air and fashionable company.',events:['cultural_inspiration','foreign_romance','robbery','illness']},
+  {id:'scotland',name:'Scotland — The Highlands',emoji:'🏔️',cost:100,duration:1,desc:'Wild and magnificent. Hunting, solitude, and romantic scenery.',events:['military_glory','injury','cultural_inspiration','duel_abroad']},
 ];
 
 const TRAVEL_EVENTS={
@@ -640,11 +675,65 @@ const BG_DATA={
   scholarly:{desc:'An unusually bookish youth — Latin, history, natural philosophy.',repMod:3,charmMod:-3,virtMod:8,witMod:20,confMod:5,healthMod:0,savingsMod:0,educMod:35,traitMod:'Scholarly'},
 };
 const HOUSEHOLD_EXPENSES={
-  nobility:{servants:1200,estate:2000,carriages:400,clothing:800,entertainment:600},
-  gentry:{servants:300,estate:400,carriages:120,clothing:200,entertainment:150},
-  middling:{servants:60,estate:100,carriages:0,clothing:80,entertainment:50},
-  poor:{servants:0,estate:30,carriages:0,clothing:20,entertainment:10},
+  nobility:{base:5000},
+  gentry:{base:1200},
+  middling:{base:290},
+  poor:{base:60},
 };
+
+// Full 5-tier spending policies — costs are ANNUAL £
+const SPENDING_POLICIES={
+  servants:{
+    none:      {label:'No Servants',        annualCost:0,    rep:-5, health:0,  desc:'Doing entirely without staff.'},
+    minimal:   {label:'Minimal Staff',      annualCost:180,  rep:-2, health:0,  desc:'A cook and a maid only.'},
+    standard:  {label:'Standard Household', annualCost:600,  rep:0,  health:2,  desc:'A respectable domestic staff.'},
+    large:     {label:'Large Staff',        annualCost:1500, rep:6,  health:3,  desc:'Butler, footmen, housemaids.'},
+    grand:     {label:'Grand Estate Staff', annualCost:3200, rep:12, health:4,  desc:'Full aristocratic household.'},
+  },
+  clothing:{
+    ragged:    {label:'Ragged Wardrobe',         annualCost:30,   rep:-10, charm:-8, desc:'Threadbare and noticed.'},
+    simple:    {label:'Simple Clothing',         annualCost:120,  rep:-3,  charm:0,  desc:'Plain but respectable.'},
+    fashionable:{label:'Fashionable Dress',      annualCost:450,  rep:4,   charm:5,  desc:'Current London fashion.'},
+    highfash:  {label:'High Fashion',            annualCost:1200, rep:8,   charm:10, desc:'Modiste-made. Society notices.'},
+    court:     {label:'Extravagant Court Fashion',annualCost:2800,rep:15,  charm:15, desc:'Fit for royal presentation.'},
+  },
+  estate:{
+    neglected: {label:'Neglected Estate',    annualCost:50,   rep:-8,  desc:'Peeling paint and broken fences.'},
+    basic:     {label:'Basic Maintenance',   annualCost:280,  rep:-2,  desc:'Serviceable but unimpressive.'},
+    respectable:{label:'Respectable Estate', annualCost:800,  rep:3,   desc:'Well-kept grounds.'},
+    elegant:   {label:'Elegant Estate',      annualCost:2000, rep:8,   desc:'Admired by all visitors.'},
+    magnificent:{label:'Magnificent Estate', annualCost:4500, rep:15,  desc:'The talk of the county.'},
+  },
+  entertainment:{
+    reclusive: {label:'Reclusive Lifestyle',    annualCost:0,    rep:-6,  charm:-3, desc:'You attend nothing.'},
+    occasional:{label:'Occasional Socializing', annualCost:180,  rep:0,   charm:0,  desc:'A few events per season.'},
+    active:    {label:'Active Social Life',     annualCost:550,  rep:5,   charm:4,  desc:'Regular balls and dinners.'},
+    elite:     {label:'Elite Entertaining',     annualCost:1600, rep:10,  charm:8,  desc:'Grand events at your house.'},
+    legendary: {label:'Legendary Social Season',annualCost:3600, rep:18,  charm:15, desc:'Balls the whole county attends.'},
+  },
+  transport:{
+    walking:   {label:'Walking Everywhere',    annualCost:0,    rep:-4,  desc:'No carriage. Considered unfortunate.'},
+    shared:    {label:'Shared Transport',      annualCost:90,   rep:0,   desc:'Hire as needed.'},
+    personal:  {label:'Personal Carriage',     annualCost:480,  rep:4,   desc:'Your own carriage and horses.'},
+    elegant:   {label:'Elegant Carriage Fleet',annualCost:1400, rep:9,   desc:'Matched bays and a coachman.'},
+    aristocratic:{label:'Aristocratic Transport',annualCost:3200,rep:15, desc:'Six horses. Footmen in livery.'},
+  },
+};
+
+// Default policies by class
+function getDefaultPolicies(sc){
+  if(sc==='nobility') return {servants:'large',clothing:'fashionable',estate:'elegant',entertainment:'active',transport:'elegant'};
+  if(sc==='gentry')   return {servants:'standard',clothing:'fashionable',estate:'respectable',entertainment:'occasional',transport:'personal'};
+  if(sc==='middling') return {servants:'minimal',clothing:'simple',estate:'basic',entertainment:'occasional',transport:'walking'};
+  return                     {servants:'none',clothing:'simple',estate:'neglected',entertainment:'reclusive',transport:'walking'};
+}
+
+function calcTotalExpenses(){
+  if(!G.spendingPolicies)G.spendingPolicies=getDefaultPolicies(G.socialClass);
+  return Object.entries(G.spendingPolicies).reduce((sum,[cat,key])=>{
+    return sum+(SPENDING_POLICIES[cat]?.[key]?.annualCost||0);
+  },0);
+}
 const ESTATE_IMPROVEMENTS=[
   {name:'Rose Garden',cost:400,prestige:5,income:0,desc:'A fragrant addition guests admire.',emoji:'🌹'},
   {name:'Library Wing',cost:800,prestige:8,income:0,desc:'Five hundred volumes; wit improves.',emoji:'📚'},
@@ -863,6 +952,7 @@ function pickN(arr,n){const a=[...arr];const r=[];for(let i=0;i<n&&a.length;i++)
 function generateNPCPool(count,forGender){
   const pool=[];
   const classes=['nobility','nobility','gentry','gentry','gentry','middling','middling','poor'];
+  const playerAge=G&&G.age?G.age:20;
   for(let i=0;i<count;i++){
     const sc=pick(classes);
     const isM=forGender==='lady';
@@ -878,12 +968,24 @@ function generateNPCPool(count,forGender){
     }
     let income=Math.round(cd.income*(0.5+Math.random()));
     if(npcRank)income=Math.round(NOBLE_RANK_INCOME[npcRank.rank]*(0.7+Math.random()*0.6));
+    let npcAge;
+    if(playerAge<17&&playerAge>0){
+      npcAge=rand(Math.max(4,playerAge-4),Math.min(20,playerAge+4));
+    } else if(i<40){
+      // First 40 NPCs: romantic prospects — tightly age-matched to player (±7 years)
+      const minAge=Math.max(17,playerAge-7);
+      const maxAge=Math.min(55,playerAge+7);
+      npcAge=rand(minAge,maxAge);
+    } else {
+      // Rest: broader spread of ages for society acquaintances
+      npcAge=rand(17,65);
+    }
     pool.push({
       id:`npc_${i}_${Math.random().toString(36).slice(2,6)}`,
       name:npcName,fname,lname,isMale:isM,
       class:sc,classLabel:cd.label,
       nobleRank:npcRank,
-      income,age:rand(17,38),
+      income,age:npcAge,
       charm:rand(40,92),virtue:rand(38,90),wit:rand(38,88),
       health:rand(60,95),fertility:rand(45,88),
       desc:genNPCDesc(sc,isM),
@@ -894,6 +996,16 @@ function generateNPCPool(count,forGender){
     });
   }
   return pool;
+}
+
+function refreshRomanticProspects(){
+  // Replace NPCs not currently in courtship with fresh age-appropriate prospects
+  const activeIds=new Set([...(G.courtships||[]).map(c=>c.id),...(G.secretRelationships||[]).map(r=>r.id),...(G.lovers||[]).map(l=>l.id)]);
+  const freshPool=generateNPCPool(50,G.gender);
+  // Keep active NPCs, replace the rest
+  WORLD_NPCS=WORLD_NPCS.filter(n=>activeIds.has(n.id)).concat(freshPool.filter(n=>!activeIds.has(n.id)));
+  addEvent('🌸','A New Season',`The social season brings fresh faces to the neighbourhood.`,'good');
+  renderAll();
 }
 
 function assignNobleRank(){
@@ -1030,7 +1142,7 @@ function beginGame(){
     employed:false,position:null,jobIncome:0,jobPromotion:0,
     atUniversity:false,universitySubject:null,universityYear:0,universityDone:false,
     dead:false,exiled:false,hasDebuted:false,
-    estate:{name:lname+' House',prestige:cd.startRep/10,improvements:[]},
+    estate:(selectedClass==='poor'||selectedClass==='middling')?{name:'Rented Lodgings',prestige:1,improvements:[]}:{name:lname+' House',prestige:cd.startRep/10,improvements:[]},
     estateIncome:0,pendingLetters:[],secrets:[],
     traits:startTraits.slice(0,4),
     traitChangedYear:year,
@@ -1046,7 +1158,7 @@ function beginGame(){
   };
 
   generateFamily();
-  WORLD_NPCS=generateNPCPool(40,gender);
+  WORLD_NPCS=generateNPCPool(80,gender);
 
   const titleStr=nobleRank?nobleRank.titleStr:`${gender==='lady'?'Miss':'Mr.'} ${fname} ${lname}`;
   addEvent('👶','Born into the World',`${titleStr} enters the world on a ${pick(['crisp autumn','mild spring','cold winter','warm summer'])} morning in ${year}.\n\n${bg.desc}${nobleRank?`\n\nYou are born to the rank of ${nobleRank.rank.charAt(0).toUpperCase()+nobleRank.rank.slice(1)} — ${getRankNote(nobleRank.rank)}`:''}`,'good');
@@ -1074,8 +1186,14 @@ function generateFamily(){
     else if(rank==='baronet'){fTitle=`Sir ${pick(NAMES_M)} ${ln}`;mTitle=`Lady ${ln}`;}
   }
 
-  const fatherAlive=Math.random()>0.12;
-  const motherAlive=Math.random()>0.08;
+  // Tragic background: force one parent deceased
+  let fatherAlive=Math.random()>0.12;
+  let motherAlive=Math.random()>0.08;
+  if(G.background==='tragic'){
+    if(Math.random()<0.5){fatherAlive=false;}
+    else{motherAlive=false;}
+    if(fatherAlive&&motherAlive){fatherAlive=false;}
+  }
   const fatherName=`${pick(NAMES_M)} ${ln}`;
   const motherName=`${pick(NAMES_F)} ${ln}`;
 
@@ -1161,20 +1279,75 @@ function advanceYear(){
   if(G.dead||G.lifeEnded)return;
   G.age++;G.year++;
 
-  // Advance season
-  G.seasonIndex=(G.seasonIndex+1)%4;
-  G.season=SEASONS[G.seasonIndex];
+  // No season cycling — seasons removed from year advancement
+
+  // RESET ANNUAL ACTION COUNTERS
+  G.farmActionsThisYear={};
 
   // AGE ALL NPCs and family
   G.relationships.forEach(r=>{if(r.age&&r.alive)r.age++;});
   G.children.forEach(c=>c.age++);
-  WORLD_NPCS.forEach(n=>n.age=Math.min(90,n.age+1));
+
+  // GRANDCHILDREN — betrothed/married adult children may have children
+  G.grandchildren=G.grandchildren||[];
+  G.children.filter(c=>c.betrothed&&c.age>=20&&c.betrothedYear&&(G.year-c.betrothedYear)>=1).forEach(child=>{
+    if(Math.random()<0.25){
+      const gcIsMale=Math.random()<0.5;
+      const gcFname=pick(gcIsMale?NAMES_M:NAMES_F);
+      const gcName=`${gcFname} ${child.lname||G.lname}`;
+      G.grandchildren.push({name:gcName,fname:gcFname,lname:child.lname||G.lname,isMale:gcIsMale,age:0,parent:child.name,parentId:child.id,year:G.year});
+      addEvent('👶','A Grandchild!',`Your ${child.isMale?'son':'daughter'} ${child.name} has welcomed ${gcName} into the world. You are now a grandparent!`,'good');
+      addMemory(`Became a grandparent — ${gcName} born in ${G.year}`,'positive');
+      G.dynasty.prestige+=5;
+      checkAchievements();
+    }
+  });
+  // Age grandchildren
+  G.grandchildren.forEach(gc=>gc.age++);
+  WORLD_NPCS.forEach(n=>{
+    n.age=Math.min(90,n.age+1);
+    // NPC marriages
+    if(!n.married&&n.age>=18&&n.age<=35&&Math.random()<0.07){
+      n.married=true;
+      n.spouseName=pick(n.isMale?NAMES_F:NAMES_M)+' '+pick(SURNAMES);
+    }
+    // NPC children
+    if(n.married&&n.age>=18&&n.age<=38&&!n.children)n.children=0;
+    if(n.married&&n.age>=18&&n.age<=38&&Math.random()<0.09){n.children=(n.children||0)+1;}
+    // NPC death from old age
+    if(n.age>70&&Math.random()<0.04){n.dead=true;}
+  });
+  // Remove dead NPCs from courtships / secret relationships
+  WORLD_NPCS=WORLD_NPCS.filter(n=>!n.dead);
+  G.courtships=G.courtships.filter(c=>!WORLD_NPCS.find(n=>n.id===c.id&&n.dead));
+  G.secretRelationships=G.secretRelationships.filter(r=>!WORLD_NPCS.find(n=>n.id===r.id&&n.dead));
 
   // Age & health decline for family members
   G.relationships.filter(r=>r.category==='Family'&&r.alive).forEach(r=>{
-    if(r.age>70&&Math.random()<0.06){
+    const deathChance=r.age>80?0.12:r.age>70?0.06:r.age>60?0.02:0;
+    if(deathChance>0&&Math.random()<deathChance){
       addEvent('💔',`${r.type} Has Passed Away`,`Your ${r.type.toLowerCase()}, ${r.name}, has passed away peacefully.`,'scandal');
       addMemory(`Lost ${r.type.toLowerCase()} ${r.name} in ${G.year}`,'negative');
+      // Inheritance: if father dies and player is male heir, inherit title
+      if(r.type==='Father'&&G.gender==='gentleman'){
+        const fatherRank=r.nobleRank||G.nobleRank||null;
+        // Only inherit if player doesn't already have an equal or higher title
+        if(fatherRank&&(!G.nobleRank||G.nobleRank.tier>fatherRank.tier)){
+          G.nobleRank=fatherRank;
+          G.income=Math.max(G.income,NOBLE_RANK_INCOME[fatherRank.rank]||G.income);
+          addEvent('👑','A Title Inherited',`Upon your father\'s death, you inherit his rank of ${fatherRank.rank.charAt(0).toUpperCase()+fatherRank.rank.slice(1)} and his estates.`,'good');
+          addMemory(`Inherited title of ${fatherRank.rank} from father in ${G.year}`,'positive');
+          G.dynasty.prestige+=20;
+          showAchievement('👑 Title Inherited!');
+        } else if(!fatherRank){
+          // No title but inherit estate income boost
+          const bonus=rand(100,600);
+          G.income+=Math.round(bonus/10);
+          addEvent('🏡','The Estate Passes to You',`As the eldest son, the family estate and responsibilities now fall to you.`,'good');
+        }
+      }
+      // Savings boost from inheritance
+      if(r.type==='Father'){const inh=rand(200,1500);G.savings+=inh;addEvent('📜','An Inheritance',`You inherit £${inh} following your father\'s passing.`,'good');}
       r.alive=false;r.type=r.type+' (Deceased)';
       G.relationships=G.relationships.filter(x=>x.id!==r.id);
     } else if(r.health){
@@ -1187,6 +1360,31 @@ function advanceYear(){
     G.pregnancyMonth=(G.pregnancyMonth||0)+9;
     if(G.pregnancyMonth>=9){resolvePregnancy();return;}
   }
+
+  // SPOUSE PREGNANCY (male player) — show naming popup
+  if(G.spousePregnant&&G.gender==='gentleman'){
+    G.spousePregnant=false;
+    const miscarriage=Math.random()<((G.spouse.age||25)>36?0.18:0.09);
+    if(miscarriage){
+      G.marriageHappiness=clamp((G.marriageHappiness||70)-10);
+      addEvent('💔','A Tragic Loss','The child was lost before it could be born.','scandal');
+    } else {
+      G.pregnancyFather=G.spouse;
+      nameNewChild(G.spouse,true,Math.random()<0.04);
+      return;
+    }
+  }
+
+  // SPOUSE AFFAIR — chance of spouse having an illegitimate child
+  if(G.married&&G.spouse&&!G.spousePregnant&&Math.random()<(G.gender==='gentleman'?0.03:0.01)){
+    triggerSpouseAffairEvent();
+  }
+
+  // AGE ACTIVE COURTSHIPS each year
+  G.courtships.forEach(c=>{if(c.age!==undefined)c.age++;});
+
+  // AUTO-REFRESH ROMANTIC PROSPECTS every year (remove aged-out NPCs and replenish)
+  if(G.year%1===0)refreshRomanticProspects();
 
   // TRAVELLING
   if(G.travellingTo&&G.travelYearsLeft>0){
@@ -1217,22 +1415,23 @@ function advanceYear(){
     renderAll();return;
   }
 
-  // CHILDHOOD (age 0-17)
-  if(G.age<18){
+  // CHILDHOOD (age 0-16, debut triggers at 17)
+  if(G.age<17){
     triggerChildhoodEvent();
     if(G.age>=4&&Math.random()<0.35)triggerChildhoodFriendship();
+    // Male education progression events
+    if(G.gender==='gentleman'){triggerMaleSchooling();}
     const hr=G.age<5?0.04:G.age<12?0.02:0.015;
     if(Math.random()<hr){G.health=clamp(G.health-rand(5,15));addEvent('🤒','A Childhood Illness','A fever struck. You recover slowly.','scandal');}
     else G.health=clamp(G.health+rand(0,3));
     renderAll();return;
   }
 
-  // DEBUT
-  if(G.age===18&&!G.hasDebuted){
+  // DEBUT — at 17 for ladies of quality, 18 for others
+  const debutAge=(G.gender==='lady'&&(G.socialClass==='nobility'||G.socialClass==='gentry'))?17:18;
+  if(G.age===debutAge&&!G.hasDebuted){
     G.hasDebuted=true;
-    G.charm=clamp(G.charm+10);G.confidence=clamp(G.confidence+10);
-    addEvent('🌸','Your Debut',`${getShortTitle(G.gender,false)} ${G.fname} ${G.lname} makes their entrance into Society.`,'good');
-    addMemory('Made my debut in Society in '+G.year,'positive');
+    triggerDebut();
   }
 
   // HEALTH & DEATH — natural only
@@ -1244,14 +1443,34 @@ function advanceYear(){
   const aging=G.age>50?-rand(1,3):G.age>38?-rand(0,2):rand(-1,2);
   G.health=clamp(G.health+aging);
 
-  // FERTILITY
+  // FERTILITY — realistic decline
+  if(G.age>28)G.fertility=clamp(G.fertility-rand(0,2));
   if(G.age>32)G.fertility=clamp(G.fertility-rand(1,3));
-  if(G.age>42)G.fertility=clamp(G.fertility-rand(2,5));
+  if(G.age>38)G.fertility=clamp(G.fertility-rand(3,7));
+  if(G.age>42)G.fertility=clamp(G.fertility-rand(5,12));
+  if(G.age>=43)G.fertility=Math.min(G.fertility,5);
+  // Age spouse too
+  if(G.spouse){G.spouse.age=(G.spouse.age||25)+1;if(G.spouse.age>38)G.spouse.fertility=Math.max(0,(G.spouse.fertility||65)-rand(3,8));
+    // Spouse death chance
+    const spouseAge=G.spouse.age||25;
+    const spouseDeathChance=spouseAge>80?0.12:spouseAge>70?0.06:spouseAge>60?0.02:0.003;
+    if(Math.random()<spouseDeathChance){
+      const deadSpouseName=G.spouse.name;
+      G.married=false;G.isWidow=true;G.marriageHappiness=0;
+      addEvent('💔',`${deadSpouseName} Has Passed Away`,`Your beloved spouse has died. Society extends its condolences. You enter a period of mourning.`,'scandal');
+      addMemory(`Widowed — ${deadSpouseName} died in ${G.year}`,'negative');
+      G.scandal=clamp(G.scandal+5,0,100);
+      G.reputation=clamp(G.reputation+5); // Widows get some sympathy
+      G.exSpouses=G.exSpouses||[];G.exSpouses.push({...G.spouse,diedYear:G.year,deceased:true});
+      G.spouse=null;
+      showAchievement('💔 Widowed');
+    }
+  }
 
-  // FINANCES — no game over on debt
-  const exp=HOUSEHOLD_EXPENSES[G.socialClass];
-  const totalExp=Object.values(exp).reduce((a,b)=>a+b,0);
-  const propIncome=G.ownedProperties.reduce((s,p)=>s+(p.income||0),0);
+  // FINANCES — policy-driven expenses
+  if(!G.spendingPolicies)G.spendingPolicies=getDefaultPolicies(G.socialClass);
+  const totalExp=calcTotalExpenses();
+  const propIncome=(G.ownedProperties||[]).reduce((s,p)=>s+(p.income||0),0);
   const net=G.income+G.estateIncome+G.jobIncome+propIncome-totalExp;
   G.savings+=net;
   if(G.savings<0){
@@ -1341,6 +1560,42 @@ function triggerScandalConsequences(){
 }
 
 // ═══════════════════════════════════════════════════
+//  MALE EDUCATION STAGES
+// ═══════════════════════════════════════════════════
+function triggerMaleSchooling(){
+  if(G.gender!=='gentleman')return;
+  if(G.age===6&&!G.hadGoverness){
+    G.hadGoverness=true;
+    const cost=(G.socialClass==='nobility'||G.socialClass==='gentry')?80:40;
+    showModal('📖','A Governess Engaged',`At age six, it is time to begin your education. A governess comes to the house to instruct you.`,
+      [{label:`Engage a governess (£${cost})`,fn:()=>{if(G.savings>=cost){G.savings-=cost;G.wit=clamp(G.wit+8);G.education=clamp(G.education+10);addEvent('📖','A Governess Engaged','Your lessons have begun in earnest.','good');}else{G.wit=clamp(G.wit+3);addEvent('📖','Self-Taught','Without a governess, you read what you can.','neutral');}renderAll();}},
+       {label:'No governess (self-study)',fn:()=>{G.wit=clamp(G.wit+3);addEvent('📖','Self-Directed Study','You learn what you can without formal instruction.','neutral');renderAll();}}]);
+    return;
+  }
+  if(G.age===9&&!G.hadPrep&&(G.socialClass==='nobility'||G.socialClass==='gentry')){
+    G.hadPrep=true;
+    showModal('🏫','Preparatory School',`At nine, boys of good family are typically sent away to a preparatory school to prepare for public school.`,
+      [{label:'Send to preparatory school (£120)',fn:()=>{if(G.savings>=120){G.savings-=120;G.wit=clamp(G.wit+10);G.education=clamp(G.education+12);G.confidence=clamp(G.confidence+5);addEvent('🏫','Away at Preparatory School','Life at school. Lonely at first, then formative.','good');}else addEvent('💸','Cannot Afford','','neutral');renderAll();}},
+       {label:'Continue at home',fn:()=>{G.wit=clamp(G.wit+5);addEvent('📖','Home Lessons Continue','The governess perseveres.','neutral');renderAll();}}]);
+    return;
+  }
+  if(G.age===13&&!G.hadBoardingSchool&&(G.socialClass==='nobility'||G.socialClass==='gentry')){
+    G.hadBoardingSchool=true;
+    showModal('🏛️','A Public School Place','At thirteen, a gentleman\'s son is expected to attend a proper public school — Eton, Harrow, or Winchester.',
+      [{label:'Attend Eton (£300)',fn:()=>{if(G.savings>=300){G.savings-=300;G.wit=clamp(G.wit+15);G.education=clamp(G.education+20);G.reputation=clamp(G.reputation+10);G.confidence=clamp(G.confidence+8);addEvent('🏛️','At Eton College','The finest education in England. Connections formed here last a lifetime.','good');addMemory('Attended Eton College from age 13','positive');}else addEvent('💸','Cannot Afford Eton','','neutral');renderAll();}},
+       {label:'Grammar school (£80)',fn:()=>{if(G.savings>=80){G.savings-=80;G.wit=clamp(G.wit+10);G.education=clamp(G.education+14);addEvent('🏫','Grammar School','A solid education at a respectable grammar school.','good');}else addEvent('💸','Cannot Afford','','neutral');renderAll();}},
+       {label:'Continue at home',fn:()=>{G.wit=clamp(G.wit+5);addEvent('📖','Home Schooling','You study under a tutor at home.','neutral');renderAll();}}]);
+    return;
+  }
+  if(G.age===13&&!G.hadBoardingSchool&&G.socialClass==='middling'){
+    G.hadBoardingSchool=true;
+    showModal('📚','A Grammar School Place','At thirteen, boys of the professional classes attend grammar school.',
+      [{label:'Grammar school (£60)',fn:()=>{if(G.savings>=60){G.savings-=60;G.wit=clamp(G.wit+10);G.education=clamp(G.education+12);addEvent('🏫','Grammar School','A decent education.','good');}else addEvent('💸','Cannot Afford','','neutral');renderAll();}},
+       {label:'Apprenticeship instead',fn:()=>{G.wit=clamp(G.wit+4);G.confidence=clamp(G.confidence+5);addEvent('🔧','Apprenticeship Begun','You are bound to learn a trade.','neutral');renderAll();}}]);
+  }
+}
+
+// ═══════════════════════════════════════════════════
 //  ARRANGED MARRIAGE
 // ═══════════════════════════════════════════════════
 function triggerArrangedMarriage(){
@@ -1393,11 +1648,46 @@ function triggerArrangedMarriage(){
 }
 
 // ═══════════════════════════════════════════════════
+//  DEBUT SYSTEM
+// ═══════════════════════════════════════════════════
+function triggerDebut(){
+  G.charm=clamp(G.charm+10);G.confidence=clamp(G.confidence+10);
+  if(G.gender!=='lady'){
+    addEvent('🌸','Your Debut',`${getShortTitle(G.gender,false)} ${G.fname} ${G.lname} makes their entrance into Society.`,'good');
+    addMemory('Made my debut in Society in '+G.year,'positive');
+    renderAll();return;
+  }
+  // Lady's debut — noble/gentry get the full Season treatment
+  const isQuality=G.socialClass==='nobility'||G.socialClass==='gentry';
+  if(!isQuality){
+    addEvent('🌸','Your Debut',`Miss ${G.fname} ${G.lname} enters Society and is warmly received.`,'good');
+    addMemory('Made my debut in Society in '+G.year,'positive');
+    renderAll();return;
+  }
+  // Diamond of the Season check
+  const diamondChance=Math.min(15,(G.charm*0.08)+(G.reputation*0.05)+(G.wit*0.03));
+  const isDiamond=Math.random()*100<diamondChance;
+  const debutDesc=isDiamond
+    ?`Miss ${G.fname} ${G.lname} is presented at Court and makes a sensation. The whispers begin immediately: she may be this Season's Diamond.`
+    :`Miss ${G.fname} ${G.lname} is presented at Court and makes a very creditable appearance. Society takes note.`;
+  G.reputation=clamp(G.reputation+(isDiamond?18:8));
+  if(isDiamond){G.diamondOfSeason=true;G.charm=clamp(G.charm+5);G.confidence=clamp(G.confidence+8);showAchievement('💎 Diamond of the Season!');}
+  addEvent('🌸',isDiamond?'The Diamond of the Season!':'Your Presentation at Court',debutDesc,'good');
+  addMemory(`Made my debut in Society in ${G.year}${isDiamond?' — named the Diamond of the Season':''}`, 'positive');
+  // Generate fresh prospects now she is out
+  WORLD_NPCS=generateNPCPool(80,G.gender);
+  showModal('🌸',isDiamond?'A Most Triumphant Debut':'Your First Season',
+    debutDesc+`\n\nYou are now out in Society. The marriage market is open to you.\n\n${isDiamond?'As Diamond of the Season, every eligible gentleman in London knows your name.':'Your reputation opens the doors of several fine houses.'}`,
+    [{label:'Enter Society with grace',fn:()=>{renderAll();}}]);
+}
+
+// ═══════════════════════════════════════════════════
 //  MARRIAGE SURNAME / HOUSEHOLD CHANGE
 // ═══════════════════════════════════════════════════
 function handleMarriageChange(npc){
   G.spouse={...npc,class_label:CLASS_DATA[npc.class]?.label||npc.class};
   G.courtships=G.courtships.filter(x=>x.id!==npc.id);
+  G.secretRelationships=G.secretRelationships.filter(x=>x.id!==npc.id);
   if(G.gender==='lady'){
     const oldLname=G.lname;
     const newLname=npc.lname||pick(SURNAMES);
@@ -1407,15 +1697,25 @@ function handleMarriageChange(npc){
       G.nobleRank=npc.nobleRank;
     }
     addEvent('💍','A New Name',`${G.fname} ${oldLname} is now ${getShortTitle(G.gender,true)} ${G.fname} ${newLname}.`,'good');
+  } else {
+    // Male marriage: spouse takes player's name, income merges, male inherits nothing new from wife's rank
+    const spouseName=npc.fname||pick(NAMES_F);
+    G.spouse.displayName=`${spouseName} ${G.lname}`;
+    G.spouse.name=`${spouseName} ${G.lname}`;
+    // If wife has more income, it contributes but player keeps his
+    G.income=Math.round(G.income+(npc.income||0)*0.3);
+    addEvent('💍','A Wedding',`${G.fname} ${G.lname} and ${spouseName} are wed. The household rejoices.`,'good');
   }
   if(npc.class){
     const classRanks=['poor','middling','gentry','nobility'];
     if(classRanks.indexOf(npc.class)>classRanks.indexOf(G.socialClass)){
       G.socialClass=npc.class;
       G.reputation=clamp(G.reputation+10);
-      addEvent('👑','A Rise in Station',`Marriage has elevated your position in society.`,'good');
+      addEvent('👑','A Rise in Station','Marriage has elevated your position in society.','good');
     }
   }
+  // Spouse fertility for pregnancy purposes
+  if(!G.spouse.fertility)G.spouse.fertility=rand(45,85);
 }
 
 // ═══════════════════════════════════════════════════
@@ -1425,6 +1725,22 @@ function triggerChildhoodFriendship(){
   const eligible=CHILDHOOD_FRIEND_EVENTS.filter(e=>G.age>=e.age[0]&&G.age<=e.age[1]);
   if(!eligible.length)return;
   const ev=pick(eligible);
+  // Make friendship events interactive with choices
+  if(ev.fn&&(ev.icon==='🌿'||ev.icon==='🏫')){
+    const friendName=pick(G.gender==='lady'?NAMES_F:NAMES_M)+' '+pick(SURNAMES);
+    showModal(ev.icon,ev.headline,ev.detail+'\n\nYou have a chance to forge a lasting bond.',
+      [{label:'Embrace the friendship',fn:()=>{
+        ev.fn(G);
+        G.childhoodFriends=G.childhoodFriends||[];
+        const existing=G.childhoodFriends.find(f=>f.name===friendName);
+        if(!existing)G.childhoodFriends.push({name:friendName,type:ev.icon==='🏫'?'school_friend':'childhood_friend',since:G.year,affection:55+rand(0,20),outcome:'friend'});
+        addEvent(ev.icon,ev.headline,ev.detail,'good');
+        renderAll();}},
+      {label:'Keep your distance',fn:()=>{
+        addEvent(ev.icon,'A Missed Connection','The moment passed without connection.','neutral');
+        renderAll();}}]);
+    return;
+  }
   addEvent(ev.icon,ev.headline,ev.detail,'neutral');
   ev.fn(G);
 }
@@ -1502,6 +1818,8 @@ function triggerSeasonEvents(){
     else specialNarrativeEvent();
   }
   if(G.married&&Math.random()<0.28)triggerMarriageEvent();
+  // Annual natural conception attempt for married ladies
+  if(G.married&&G.gender==='lady'&&!G.pregnant&&G.spouse&&Math.random()<0.35)attemptPregnancy(G.spouse);
   if(G.secretRelationships.length>0&&Math.random()<0.35)triggerSecretScandalRisk();
   if(G.courtships.length>0)progressCourtships();
   if(G.nobleRank&&G.nobleRank.tier<=2&&Math.random()<0.2)triggerNobleRankEvent();
@@ -1607,7 +1925,7 @@ function triggerMainEvent(){
 // ═══════════════════════════════════════════════════
 function addGossipEntry(header,text,type='neutral'){
   G.gossipLog=G.gossipLog||[];
-  G.gossipLog.unshift({year:G.year,season:G.season,header,text,type});
+  G.gossipLog.unshift({year:G.year,header,text,type});
   if(G.gossipLog.length>40)G.gossipLog.pop();
 }
 
@@ -1624,7 +1942,7 @@ function generateGossipEntry(){
     {type:'neutral',header:'Political Intelligence',text:`Lord ${pick(SURNAMES)} is said to be canvassing support for a most controversial proposal in the Commons.`},
   ];
   const chosen=pick(templates);
-  G.gossipLog.unshift({year:G.year,season:G.season,...chosen});
+  G.gossipLog.unshift({year:G.year,...chosen});
   if(G.gossipLog.length>40)G.gossipLog.pop();
 }
 
@@ -1692,6 +2010,19 @@ function showProfileModal(person,type){
       if(courtshipPct>=70)actions.push({label:'💍 Propose / Elope',cls:'romance',fn:`proposeOrElope('${person.id}')`});
     }
   }
+  if(type==='secretRomance'){
+    const rid=person.id||person.name;
+    actions.push({label:'🌹 Secret Meeting (+affection)',cls:'romance',fn:`secretRomanceAction('${rid}','meet')`});
+    actions.push({label:'💌 Write a Secret Letter',cls:'',fn:`secretRomanceAction('${rid}','letter')`});
+    actions.push({label:'💋 Intimate Liaison (Scandal risk)',cls:'romance',fn:`secretRomanceAction('${rid}','sex')`});
+    actions.push({label:'💔 End the Connection',cls:'',fn:`secretRomanceAction('${rid}','end')`});
+  }
+  if(type==='lover'){
+    const lid=person.id||person.name;
+    actions.push({label:'🌹 Arrange a Tryst',cls:'romance',fn:`loverAction('${lid}','meet')`});
+    actions.push({label:'💌 Send a Secret Letter',cls:'',fn:`loverAction('${lid}','letter')`});
+    actions.push({label:'💔 End the Affair',cls:'',fn:`endAffair('${lid}')`});
+  }
   if(type==='family'){
     actions.push({label:'❤️ Bond',cls:'',fn:`familyMemberAction('${person.id}','bond')`});
     actions.push({label:'✉️ Letter',cls:'',fn:`familyMemberAction('${person.id}','letter')`});
@@ -1749,7 +2080,7 @@ function courtshipAction(npcId,action){
   c.affection=Math.min(100,c.affection+a.affection);
   c.trust=Math.min(100,c.trust+a.trust);
   if(a.scandal>0&&Math.random()<0.55)G.scandal=clamp(G.scandal+a.scandal,0,100);
-  if(a.pregnancyRisk)attemptPregnancy(c);
+  if(a.pregnancyRisk)attemptPregnancy(c,true);
   addNPCMemory(npcId,`${action} interaction with ${G.fname} in ${G.year}`);
   addEvent('💌',`With ${c.name}`,a.desc,action==='sex'||action==='kiss'?'scandal':'good');
 }
@@ -1811,7 +2142,7 @@ function secretRomanceAction(id,action){
     if(Math.random()<r.scandalRisk/100){G.scandal=clamp(G.scandal+20,0,100);addEvent('😱','Discovered!',`You were seen with ${r.name}.`,'scandal');}
     else addEvent('🌹','A Secret Tryst',`A clandestine meeting with ${r.name}.`,'neutral');
   } else if(action==='letter'){r.affection=Math.min(100,r.affection+rand(3,7));addEvent('💌','A Secret Letter',`A letter in secret to ${r.name}.`,'neutral');}
-  else if(action==='sex'){r.affection=Math.min(100,r.affection+rand(10,20));G.scandal=clamp(G.scandal+rand(12,22),0,100);attemptPregnancy(r);addEvent('💋','A Passionate Liaison',`An act of reckless passion with ${r.name}.`,'scandal');}
+  else if(action==='sex'){r.affection=Math.min(100,r.affection+rand(10,20));G.scandal=clamp(G.scandal+rand(12,22),0,100);attemptPregnancy(r,true);addEvent('💋','A Passionate Liaison',`An act of reckless passion with ${r.name}.`,'scandal');}
   else if(action==='end'){G.secretRelationships=G.secretRelationships.filter(x=>x.id!==r.id);addEvent('💔','The Secret Ended','You broke off the secret connection.','neutral');}
   renderAll();
 }
@@ -1819,15 +2150,44 @@ function secretRomanceAction(id,action){
 // ═══════════════════════════════════════════════════
 //  PREGNANCY — EXPANDED
 // ═══════════════════════════════════════════════════
-function attemptPregnancy(partner){
+function attemptPregnancy(partner,forceHighChance){
   if(G.pregnant||G.gender!=='lady')return;
-  const fc=(G.fertility/100)*(partner.fertility?partner.fertility/100:0.65);
-  if(Math.random()<fc*0.32){
+  const ageF=G.age;
+  let ageFactor=1;
+  if(ageF>=43)ageFactor=0.01;
+  else if(ageF>=41)ageFactor=0.03;
+  else if(ageF>=38)ageFactor=0.12;
+  else if(ageF>=35)ageFactor=0.35;
+  else if(ageF>=30)ageFactor=0.65;
+  const fc=(G.fertility/100)*(partner&&partner.fertility?partner.fertility/100:0.65)*ageFactor;
+  // Liaison/affair has higher base pregnancy chance (reflects risk of unprotected intimacy)
+  const baseChance=forceHighChance?(G.health>70?0.70:G.health>50?0.55:0.40):(G.health>70?0.45:G.health>50?0.32:0.20);
+  if(Math.random()<fc*baseChance){
     G.pregnant=true;G.pregnancyMonth=1;G.pregnancyFather=partner;
-    const legit=G.married&&(G.spouse?.id===partner.id||G.spouse?.name===partner.name);
+    const legit=G.married&&partner&&(G.spouse?.id===partner.id||G.spouse?.name===partner.name);
     addEvent('🤰','Signs of a Blessed Event',`You suspect you may be with child. ${legit?'The news will be most welcome.':'This situation is... complicated.'}`,legit?'good':'scandal');
   }
 }
+
+// For male players — spouse can become pregnant
+function attemptSpousePregnancy(spouse){
+  if(!spouse||G.gender!=='gentleman')return;
+  const spouseAge=spouse.age||25;
+  let ageFactor=1;
+  if(spouseAge>=43)ageFactor=0.01;
+  else if(spouseAge>=41)ageFactor=0.03;
+  else if(spouseAge>=38)ageFactor=0.12;
+  else if(spouseAge>=35)ageFactor=0.35;
+  else if(spouseAge>=30)ageFactor=0.65;
+  const spFertility=spouse.fertility||65;
+  const fc=(spFertility/100)*ageFactor*0.4;
+  if(Math.random()<fc){
+    // Spouse becomes pregnant — child born next year
+    G.spousePregnant=true;
+    addEvent('🤰','Joyful News',`Your wife is expecting a child. The household is full of anticipation.`,'good');
+  }
+}
+
 
 function resolvePregnancy(){
   G.pregnant=false;G.pregnancyMonth=0;
@@ -1878,16 +2238,31 @@ function resolvePregnancy(){
 function nameNewChild(father,legitimate,twins){
   const isMale=Math.random()<0.5;
   const defaultName=pick(isMale?NAMES_M:NAMES_F);
-  const lname=G.married&&G.spouse?G.spouse.lname||G.lname:G.lname;
+  // For male players the child's surname is the player's surname
+  const lname=G.gender==='gentleman'?G.lname:(G.married&&G.spouse?G.spouse.lname||G.lname:G.lname);
+  const motherOrFather=G.gender==='gentleman'?father:G.pregnancyFather||father;
+  const inheritedCharm=clamp(Math.round((G.charm+(motherOrFather?.charm||55))/2+rand(-10,10)));
+  const inheritedWit=clamp(Math.round((G.wit+(motherOrFather?.wit||55))/2+rand(-10,10)));
+  const inheritedHealth=clamp(Math.round((G.health+(motherOrFather?.health||70))/2+rand(-8,8)),40,95);
+  const genderEmoji=isMale?'👦':'👧';
+  const nameListHtml=(isMale?NAMES_M:NAMES_F).slice(0,12).map(n=>`<option value="${n}">${n}</option>`).join('');
+  // Context-appropriate birth announcement
+  const birthMsg=G.gender==='gentleman'
+    ?`Your wife has been safely delivered of a healthy ${isMale?'boy':'girl'}${legitimate?'. The household rejoices at this joyful news!':'. The circumstances surrounding the birth have raised some questions.'}`
+    :`${G.fname} has been delivered of a healthy ${isMale?'boy':'girl'}${legitimate?'. The family rejoices.':'. The circumstances are complicated.'}`;
 
-  // Child naming popup
   document.getElementById('modal-deco').textContent='👶';
-  document.getElementById('modal-title').textContent=`A ${isMale?'Son':'Daughter'} is Born!`;
-  document.getElementById('modal-body').textContent=`${G.fname} has been delivered of a healthy ${isMale?'boy':'girl'}${legitimate?'. The family rejoices.':'. The circumstances are complicated.'}\n\nPlease name your child:`;
-  document.getElementById('modal-input-area').innerHTML=`<input class="modal-input" id="child-name-input" placeholder="${defaultName}" value="${defaultName}" maxlength="30">`;
+  document.getElementById('modal-title').textContent=`A ${isMale?'Son':'Daughter'} is Born! ${genderEmoji}`;
+  document.getElementById('modal-body').textContent=`${birthMsg}\n\nWit: ${inheritedWit} · Charm: ${inheritedCharm} · Health: ${inheritedHealth}\n\nName your child or choose from the list:`;
+  document.getElementById('modal-input-area').innerHTML=`
+    <input class="modal-input" id="child-name-input" placeholder="${defaultName}" value="${defaultName}" maxlength="30" style="margin-bottom:0.4rem">
+    <select class="modal-input" style="margin-top:0.3rem" onchange="document.getElementById('child-name-input').value=this.value">
+      <option value="">— Or pick a name —</option>${nameListHtml}
+    </select>`;
+  const fatherNameSafe=father?father.name.replace(/'/g,'').replace(/"/g,''):(G.gender==='gentleman'?G.fname:'');
   document.getElementById('modal-choices').innerHTML=`
-    <button class="modal-btn primary" onclick="confirmChildName('${isMale}','${lname}','${father?father.name.replace(/'/g,'').replace(/"/g,''):''}','${legitimate}','${twins}')">✦ Name This Child</button>
-    <button class="modal-btn" onclick="confirmChildName('${isMale}','${lname}','${father?father.name.replace(/'/g,'').replace(/"/g,''):''}','${legitimate}','${twins}','random')">🎲 Random Name</button>`;
+    <button class="modal-btn primary" onclick="confirmChildName('${isMale}','${lname}','${fatherNameSafe}','${legitimate}','${twins}')">✦ Name This Child</button>
+    <button class="modal-btn" onclick="confirmChildName('${isMale}','${lname}','${fatherNameSafe}','${legitimate}','${twins}','random')">🎲 Random Name</button>`;
   document.getElementById('modal').classList.remove('hidden');
 }
 
@@ -1941,7 +2316,7 @@ function triggerMarriageEvent(){
   if(Math.random()<0.3){
     const evs=[
       ()=>{G.marriageHappiness=clamp((G.marriageHappiness||70)+rand(5,12));addEvent('❤️','A Happy Evening',`An agreeable evening with ${G.spouse.name}.`,'good');},
-      ()=>{if(G.gender==='lady')attemptPregnancy(G.spouse);else addEvent('🌹','An Intimate Evening','','good');G.marriageHappiness=clamp((G.marriageHappiness||70)+5);},
+      ()=>{if(G.gender==='lady')attemptPregnancy(G.spouse);else attemptSpousePregnancy(G.spouse);G.marriageHappiness=clamp((G.marriageHappiness||70)+5);addEvent('🌹','An Intimate Evening','','good');},
     ];
     pick(evs)();
   } else if(Math.random()<0.55){
@@ -1992,6 +2367,23 @@ function triggerFriendEvent(){
 // ═══════════════════════════════════════════════════
 //  CHILD EVENTS
 // ═══════════════════════════════════════════════════
+function makeChildProspect(childIsMale){
+  // Generate a single prospect of the opposite gender from the child.
+  // WORLD_NPCS is biased toward the player's gender preference, so we
+  // build a bespoke prospect pool when needed.
+  const existingProspect=WORLD_NPCS.find(n=>n.isMale!==childIsMale);
+  if(existingProspect)return existingProspect;
+  // Generate on the fly
+  const sc=pick(['nobility','gentry','gentry','middling']);
+  const cd=CLASS_DATA[sc];
+  const fname=childIsMale?pick(NAMES_F):pick(NAMES_M);
+  const lname=pick(SURNAMES);
+  const isM=!childIsMale;
+  const npcRank=sc==='nobility'?assignNobleRank():null;
+  const name=npcRank?formatNPCTitle(npcRank,isM?'gentleman':'lady',fname,lname):`${isM?'Mr.':'Miss'} ${fname} ${lname}`;
+  return{id:`child_prospect_${rand(1000,9999)}`,name,fname,lname,isMale:isM,class:sc,classLabel:cd.label,nobleRank:npcRank,income:Math.round(cd.income*(0.5+Math.random())),age:rand(18,30),charm:rand(40,80),wit:rand(40,80),health:rand(60,90),desc:'A respectable person of good family.',traits:pickN(NPC_TRAITS_LIST,2)};
+}
+
 function triggerChildEvent(){
   const children=G.children.filter(c=>c.age>0);if(!children.length)return;
   const child=pick(children);
@@ -2000,11 +2392,12 @@ function triggerChildEvent(){
     triggerChildTraitEvent(child);return;
   }
   if(adult&&!child.betrothed&&Math.random()<0.4){
-    const prospect=pick(WORLD_NPCS.filter(n=>n.isMale!==child.isMale));
-    showModal('💍','A Match for '+child.name,`${child.name} (${child.age}) has attracted the attention of ${prospect.name}.`,
-      [{label:'Encourage (+8 Rep)',fn:()=>{child.betrothed=true;child.betrothedTo=prospect.name;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement Arranged',`${child.name} is engaged to ${prospect.name}.`,'good');renderAll();}},
+    const prospect=makeChildProspect(child.isMale);
+    if(!prospect)return;
+    showModal('💍','A Match for '+child.name,`${child.name} (${child.age}, ${child.isMale?'son':'daughter'}) has attracted the attention of ${prospect.name}.`,
+      [{label:'Encourage (+8 Rep)',fn:()=>{child.betrothed=true;child.betrothedTo=prospect.name;child.betrothedYear=G.year;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement Arranged',`${child.name} is engaged to ${prospect.name}.`,'good');renderAll();}},
        {label:'Disapprove — seek better',fn:()=>{child.relationship=clamp(child.relationship-10);addEvent('💬','Parental Veto','Your child accepted your judgment, distressed.','neutral');renderAll();}},
-       {label:'Let them choose',fn:()=>{child.relationship=clamp(child.relationship+10);child.betrothed=Math.random()<0.5;addEvent('💍','The Child\'s Choice','',child.betrothed?'good':'neutral');renderAll();}}]);
+       {label:'Let them choose',fn:()=>{child.relationship=clamp(child.relationship+10);child.betrothed=Math.random()<0.5;if(child.betrothed){child.betrothedTo=prospect.name;child.betrothedYear=G.year;}addEvent('💍','The Child\'s Choice','',child.betrothed?'good':'neutral');renderAll();}}]);
   } else if(teen&&Math.random()<0.4){
     showModal('📝','Education for '+child.name,`${child.name} (${child.age}) would benefit from instruction.`,
       [{label:'Hire tutor (£50)',fn:()=>{if(G.savings>=50){G.savings-=50;child.wit=clamp(child.wit+10);child.charm=clamp(child.charm+5);addEvent('📚','Tutored',`${child.name} thrives.`,'good');}else addEvent('💸','Cannot Afford','','neutral');renderAll();}},
@@ -2075,10 +2468,10 @@ function specialNarrativeEvent(){
 // ═══════════════════════════════════════════════════
 function renderTravel(){
   const el=document.getElementById('travel-content');
-  if(G.gender==='lady'){
-    el.innerHTML=`<div class="info-box">As a lady, independent foreign travel is not considered proper. You may accompany your husband abroad, or read of others\' adventures.</div>
+  if(G.gender==='lady'&&!G.married){
+    el.innerHTML=`<div class="info-box">As an unmarried lady, independent foreign travel is not considered proper. Marriage may open doors to the Continent — you may then accompany your husband abroad.</div>
     <div class="sub-header">Letters from Abroad</div>
-    ${G.gossipLog&&G.gossipLog.length?G.gossipLog.slice(0,3).map(g=>`<div class="gazette-entry"><div class="gazette-header">${g.season} ${g.year}</div><div class="gazette-text">${g.text}</div></div>`).join(''):'<p class="info-box">No letters arrived this season.</p>'}`;
+    ${G.gossipLog&&G.gossipLog.length?G.gossipLog.slice(0,3).map(g=>`<div class="gazette-entry"><div class="gazette-header">${g.year}</div><div class="gazette-text">${g.text}</div></div>`).join(''):'<p class="info-box">No letters arrived this season.</p>'}`;
     return;
   }
   if(G.travellingTo){
@@ -2086,13 +2479,43 @@ function renderTravel(){
     <div class="warn-box">You cannot conduct home affairs while abroad. Advance years to continue your journey.</div>`;
     return;
   }
-  let html=`<p class="info-box">A gentleman of quality travels to broaden his mind and expand his connections. Each journey brings opportunity — and risk.</p>
+  const travellerLabel=G.gender==='lady'?'A married lady of quality may accompany her husband abroad, broadening her understanding of the world.':'A gentleman of quality travels to broaden his mind and expand his connections.';
+
+  // Family travel companion options
+  const spouseName=G.spouse?G.spouse.name:null;
+  const numChildren=G.children.filter(c=>c.age>=3).length;
+  let familyHtml='';
+  if(G.married&&(spouseName||numChildren>0)){
+    familyHtml=`<div class="sub-header">👨‍👩‍👧 Travel with Family</div>
+    <div class="info-box">Bring family members along for an extra £50 per person. Creates lasting bonds and cherished memories.</div>
+    <div class="choices-grid">`;
+    if(spouseName){
+      familyHtml+=`<button class="choice-btn" onclick="setFamilyTravel('spouse')"><span class="choice-emoji">💑</span><span class="choice-info">Travel with ${spouseName} (+£50)<small>Strengthens your marriage bond.</small></span></button>`;
+    }
+    if(numChildren>0){
+      familyHtml+=`<button class="choice-btn" onclick="setFamilyTravel('children')"><span class="choice-emoji">👨‍👧</span><span class="choice-info">Travel with Children (+£${numChildren*50})<small>${numChildren} eligible children. Memorable family adventure.</small></span></button>`;
+    }
+    if(spouseName&&numChildren>0){
+      const totalExtra=50+numChildren*50;
+      familyHtml+=`<button class="choice-btn" onclick="setFamilyTravel('all')"><span class="choice-emoji">👨‍👩‍👧‍👦</span><span class="choice-info">Travel with the Whole Family (+£${totalExtra})<small>Spouse + ${numChildren} children. Full family adventure.</small></span></button>`;
+    }
+    familyHtml+=`<button class="choice-btn" onclick="setFamilyTravel('none')"><span class="choice-emoji">🚶</span><span class="choice-info">Travel Alone<small>No additional companions.</small></span></button>`;
+    familyHtml+=`</div>`;
+    if(G.familyTravelChoice&&G.familyTravelChoice!=='none'){
+      familyHtml+=`<div class="info-box" style="border-color:var(--sage)">✓ Travelling with: ${G.familyTravelChoice==='spouse'?spouseName:G.familyTravelChoice==='children'?`your ${numChildren} children`:`the whole family`}</div>`;
+    }
+  }
+
+  let html=`<p class="info-box">${travellerLabel} Each journey brings opportunity — and risk.</p>
+  ${familyHtml}
   <div class="sub-header">🌍 Travel Destinations</div><div class="choices-grid">`;
   TRAVEL_DESTINATIONS.forEach(dest=>{
-    const canAfford=G.savings>=dest.cost;
+    const familyExtra=calcFamilyTravelExtra(dest.cost);
+    const totalCost=dest.cost+familyExtra;
+    const canAfford=G.savings>=totalCost;
     html+=`<button class="choice-btn" onclick="beginTravel('${dest.id}')" ${!canAfford?'style="opacity:0.5"':''}>
       <span class="choice-emoji">${dest.emoji}</span>
-      <span class="choice-info">${dest.name} — £${dest.cost} (${dest.duration} year${dest.duration!==1?'s':''})<small>${dest.desc}</small></span>
+      <span class="choice-info">${dest.name} — £${totalCost}${familyExtra>0?` (base £${dest.cost} +£${familyExtra} family)`:''} (${dest.duration} year${dest.duration!==1?'s':''})<small>${dest.desc}</small></span>
     </button>`;
   });
   html+=`</div>`;
@@ -2103,11 +2526,34 @@ function renderTravel(){
   el.innerHTML=html;
 }
 
+function setFamilyTravel(choice){
+  G.familyTravelChoice=choice;
+  renderTravel();
+}
+
+function calcFamilyTravelExtra(baseCost){
+  if(!G.married||!G.familyTravelChoice||G.familyTravelChoice==='none')return 0;
+  const numChildren=G.children.filter(c=>c.age>=3).length;
+  if(G.familyTravelChoice==='spouse')return 50;
+  if(G.familyTravelChoice==='children')return numChildren*50;
+  if(G.familyTravelChoice==='all')return 50+numChildren*50;
+  return 0;
+}
+
 function beginTravel(destId){
   const dest=TRAVEL_DESTINATIONS.find(d=>d.id===destId);if(!dest)return;
-  if(G.savings<dest.cost){addEvent('💸','Cannot Afford Travel','','neutral');renderAll();return;}
-  showModal(dest.emoji,`Depart for ${dest.name}`,`You are planning a journey to ${dest.name}.\n\nCost: £${dest.cost}\nDuration: ${dest.duration} year${dest.duration!==1?'s':''}\n\n"${dest.desc}"`,
-    [{label:'Depart immediately',fn:()=>{G.savings-=dest.cost;G.travellingTo=dest;G.travelYearsLeft=dest.duration;addEvent('⛵','Departed for Abroad',`You have set off for ${dest.name}.`,'good');addMemory(`Departed for ${dest.name} in ${G.year}`,'positive');renderAll();}},
+  const familyExtra=calcFamilyTravelExtra(dest.cost);
+  const totalCost=dest.cost+familyExtra;
+  if(G.savings<totalCost){addEvent('💸','Cannot Afford Travel','','neutral');renderAll();return;}
+  const familyNote=familyExtra>0?`\nTravelling with: ${G.familyTravelChoice==='spouse'?G.spouse?.name:G.familyTravelChoice==='children'?'your children':'the whole family'} (+£${familyExtra})`:'';
+  showModal(dest.emoji,`Depart for ${dest.name}`,`You are planning a journey to ${dest.name}.\n\nCost: £${totalCost}${familyNote}\nDuration: ${dest.duration} year${dest.duration!==1?'s':''}\n\n"${dest.desc}"`,
+    [{label:'Depart immediately',fn:()=>{
+      G.savings-=totalCost;G.travellingTo=dest;G.travelYearsLeft=dest.duration;
+      const who=familyExtra>0?(G.familyTravelChoice==='spouse'?` with ${G.spouse?.name}`:G.familyTravelChoice==='children'?' with the children':' with the whole family'):'';
+      addEvent('⛵','Departed for Abroad',`You have set off for ${dest.name}${who}.`,'good');
+      addMemory(`Departed for ${dest.name}${who} in ${G.year}`,'positive');
+      if(familyExtra>0){G.marriageHappiness=clamp((G.marriageHappiness||70)+10);}
+      renderAll();}},
      {label:'Perhaps another time',fn:()=>renderAll()}]);
 }
 
@@ -2203,6 +2649,19 @@ function renderProperty(){
   const el=document.getElementById('property-content');
   let html='';
   const owned=G.ownedProperties||[];
+  // Show current rental
+  if(G.rentedProperty){
+    html+=`<div class="sub-header">🏠 Current Rental</div>`;
+    html+=`<div class="property-card owned" style="border-left:3px solid var(--sage)">
+      <div class="property-name">${G.rentedProperty.name} <span style="font-size:0.72rem;color:var(--sage);font-style:italic">Rented</span></div>
+      <div class="property-location">📍 ${G.rentedProperty.location}</div>
+      <div class="property-features">${G.rentedProperty.features.join(' · ')}</div>
+      <div class="property-price">Rent: £${G.rentedProperty.rent}/yr · Prestige: ${G.rentedProperty.prestige}/30</div>
+      <div class="friend-actions">
+        <button class="friend-btn" onclick="unrentProperty()">🚪 Give Up Rental</button>
+      </div>
+    </div>`;
+  }
   if(owned.length>0){
     html+=`<div class="sub-header">🏡 Your Properties</div>`;
     html+=owned.map(p=>`<div class="property-card owned">
@@ -2215,12 +2674,12 @@ function renderProperty(){
         <button class="friend-btn" onclick="sellProperty('${p.id}')">💰 Sell (£${Math.round(p.price*0.7).toLocaleString()})</button>
       </div>
     </div>`).join('');
-  } else {
+  } else if(!G.rentedProperty){
     html+=`<div class="info-box">You do not currently own additional properties. Your estate is ${G.estate.name}.</div>`;
   }
   html+=`<div class="sub-header">🏘️ Properties Available</div>`;
   html+=`<div class="location-badge">📍 Currently: ${G.currentLocation||'Countryside'}</div>`;
-  const available=PROPERTIES.filter(p=>!owned.find(o=>o.id===p.id));
+  const available=PROPERTIES.filter(p=>!owned.find(o=>o.id===p.id)&&!(G.rentedProperty&&G.rentedProperty.id===p.id));
   html+=available.map(p=>`<div class="property-card">
     <div class="property-name">${p.name}</div>
     <div class="property-location">📍 ${p.location}</div>
@@ -2237,17 +2696,57 @@ function renderProperty(){
 
 function purchaseProperty(id){
   const prop=PROPERTIES.find(p=>p.id===id);if(!prop)return;
+  // Gender restriction: unmarried women cannot purchase independently
+  if(G.gender==='lady'&&!G.married&&!G.isWidow){
+    showModal('🚫','Purchase Not Permitted',`As an unmarried lady, you cannot purchase property independently. Marriage or widowhood would grant you this right.`,
+      [{label:'Understood',fn:()=>renderAll()}]);return;
+  }
+  // Class restriction: poor/middling advised to rent
+  if((G.socialClass==='poor'||G.socialClass==='middling')&&prop.prestige>8){
+    showModal('😔','Above Your Station',`A property of this prestige is beyond the expectations of your class. Consider renting instead.`,
+      [{label:'Purchase anyway',fn:()=>doPurchaseProperty(id)},
+       {label:'Perhaps not',fn:()=>renderAll()}]);return;
+  }
   if(G.savings<prop.price){addEvent('💸','Cannot Afford','','neutral');renderAll();return;}
   showModal('🏡','Purchase Property',`Are you certain you wish to purchase ${prop.name} in ${prop.location} for £${prop.price.toLocaleString()}?\n\n${prop.desc}`,
-    [{label:'Purchase',fn:()=>{G.savings-=prop.price;G.ownedProperties=G.ownedProperties||[];G.ownedProperties.push({...prop});G.reputation=clamp(G.reputation+Math.round(prop.prestige/3));G.dynasty.prestige+=prop.prestige*0.5;addEvent('🏡','Property Purchased',`You are now the owner of ${prop.name}.`,'good');addMemory(`Purchased ${prop.name} in ${G.year}`,'positive');renderAll();renderProperty();}},
+    [{label:'Purchase',fn:()=>doPurchaseProperty(id)},
      {label:'Perhaps not',fn:()=>renderAll()}]);
+}
+function doPurchaseProperty(id){
+  const prop=PROPERTIES.find(p=>p.id===id);if(!prop)return;
+  if(G.savings<prop.price){addEvent('💸','Cannot Afford','','neutral');renderAll();return;}
+  G.savings-=prop.price;G.ownedProperties=G.ownedProperties||[];G.ownedProperties.push({...prop});
+  G.reputation=clamp(G.reputation+Math.round(prop.prestige/3));G.dynasty.prestige+=prop.prestige*0.5;
+  addEvent('🏡','Property Purchased',`You are now the owner of ${prop.name}.`,'good');
+  addMemory(`Purchased ${prop.name} in ${G.year}`,'positive');renderAll();renderProperty();
 }
 
 function rentProperty(id){
   const prop=PROPERTIES.find(p=>p.id===id);if(!prop)return;
+  if(G.age<17){addEvent('🚫','Too Young','You cannot rent property at your age.','neutral');renderAll();return;}
+  if(G.gender==='lady'&&!G.married&&!G.isWidow&&G.socialClass!=='poor'&&G.socialClass!=='middling'){
+    showModal('🚫','Permission Required','As an unmarried lady of quality, renting property independently is not considered proper without permission from a male guardian.',
+      [{label:'Seek permission anyway',fn:()=>doRentProperty(id)},
+       {label:'Decline',fn:()=>renderAll()}]);return;
+  }
+  doRentProperty(id);
+}
+function doRentProperty(id){
+  const prop=PROPERTIES.find(p=>p.id===id);if(!prop)return;
   if(G.savings<prop.rent*2){addEvent('💸','Cannot Afford','','neutral');renderAll();return;}
+  // Unrent previous rental if any
+  if(G.rentedProperty){G.savings+=Math.round(G.rentedProperty.rent*0.5);} // partial refund
   G.savings-=prop.rent;G.currentLocation=prop.location;G.reputation=clamp(G.reputation+Math.round(prop.prestige/5));
-  addEvent('🏡','Rented Property',`You have taken a rental in ${prop.location}: ${prop.name}.`,'good');
+  G.rentedProperty={...prop};
+  addEvent('🏡','Rented Property',`You have taken a rental in ${prop.location}: ${prop.name}. Annual rent: £${prop.rent}.`,'good');
+  renderAll();renderProperty();
+}
+
+function unrentProperty(){
+  if(!G.rentedProperty)return;
+  const name=G.rentedProperty.name;
+  G.rentedProperty=null;
+  addEvent('🏠','Rental Vacated',`You have given up the rental of ${name}.`,'neutral');
   renderAll();renderProperty();
 }
 
@@ -2415,62 +2914,77 @@ function friendAction(fname,action){
 // ═══════════════════════════════════════════════════
 function renderRomance(){
   const el=document.getElementById('romance-content');
-  if(G.age<14){el.innerHTML=`<div class="info-box">You are too young for romantic considerations.</div>`;return;}
+  if(G.age<16){el.innerHTML=`<div class="info-box">You are too young for romantic considerations. Romance becomes available at age 16.</div>`;return;}
   let html='';
+
+  // ── Marriage section (always shown when married) ──
   if(G.married){
     html+=renderMarriagePanel();
     if((G.marriageHappiness||70)<40)html+=`<div class="sub-header">⚠ Desperate Measures</div><button class="choice-btn danger" onclick="showLoverOptions()"><span class="choice-emoji">💋</span><span class="choice-info">Seek a Lover<small>An affair. Enormous scandal.</small></span></button>`;
-    if(G.lovers.length){
+    if(G.lovers&&G.lovers.length){
       html+=`<div class="sub-header">💋 Secret Lovers</div>`;
-      html+=G.lovers.map(l=>`<div class="person-card"><div class="person-name">🌹 ${l.name}</div>
-        <div class="friend-actions">
-          <button class="friend-btn" onclick="loverAction('${l.id||l.name}','meet')">🌹 Tryst</button>
-          <button class="friend-btn" onclick="loverAction('${l.id||l.name}','letter')">💌 Letter</button>
-          <button class="friend-btn" onclick="endAffair('${l.id||l.name}')">💔 End It</button>
-        </div></div>`).join('');
+      html+=G.lovers.map(l=>`<div class="person-card" style="cursor:pointer;border-left:3px solid var(--rose)" onclick="openLoverProfile('${l.id||l.name}')">
+        <div class="person-name">🌹 ${l.name} <span style="font-size:0.72rem;color:var(--rose);font-style:italic">Lover — click to interact</span></div>
+        <div style="font-size:0.72rem;color:var(--ink-light)">Affection: ${l.affection||50}</div>
+      </div>`).join('');
     }
-    el.innerHTML=html;return;
   }
+
+  // ── Secret connections (shown always) ──
   if(G.secretRelationships.length){
     html+=`<div class="sub-header">🌹 Secret Connections</div>`;
-    html+=G.secretRelationships.map(r=>`<div class="person-card" style="border-left:3px solid var(--burgundy)">
-      <div class="person-name">🌹 ${r.name} <span style="color:var(--burgundy);font-style:italic;font-size:0.77rem">Secret Romance</span></div>
+    html+=G.secretRelationships.map(r=>`<div class="person-card" style="border-left:3px solid var(--burgundy);cursor:pointer;" onclick="openSecretRomanceProfile('${r.id||r.name}')">
+      <div class="person-name">🌹 ${r.name} <span style="color:var(--burgundy);font-style:italic;font-size:0.77rem">Secret Romance — click to interact</span></div>
       <div class="rel-bar"><div class="rel-fill" style="width:${r.affection}%;background:var(--burgundy)"></div></div>
       <div class="rel-sub">Attraction: ${r.affection} · Scandal risk: ${r.scandalRisk}%</div>
-      <div class="friend-actions">
-        <button class="friend-btn" onclick="secretRomanceAction('${r.id||r.name}','meet')">🌹 Meet</button>
-        <button class="friend-btn" onclick="secretRomanceAction('${r.id||r.name}','letter')">💌 Letter</button>
-        <button class="friend-btn" onclick="secretRomanceAction('${r.id||r.name}','sex')">💋 Liaison</button>
-        <button class="friend-btn" onclick="secretRomanceAction('${r.id||r.name}','end')">💔 End It</button>
-      </div></div>`).join('');
+    </div>`).join('');
   }
+
+  // ── Active courtships (always shown, clickable to profile modal) ──
   if(G.courtships.length){
     html+=`<div class="sub-header">💌 Active Courtships</div>`;
-    html+=G.courtships.map(c=>`<div class="person-card">
-      <div class="person-name">${c.isMale?'👨':'👩'} ${c.name}${c.nobleRank?`<span class="header-title-badge rank-${c.nobleRank.rank}">${c.nobleRank.rank}</span>`:''}</div>
+    html+=G.courtships.map(c=>`<div class="person-card" style="cursor:pointer;" onclick="openProspectProfile('${c.id}')">
+      <div class="person-name">${c.isMale?'👨':'👩'} ${c.name}${c.nobleRank?`<span class="header-title-badge rank-${c.nobleRank.rank}">${c.nobleRank.rank}</span>`:''} <span style="font-size:0.72rem;color:var(--gold);font-style:italic">click to interact</span></div>
       <div class="person-class">${c.classLabel||''} · Age ${c.age} · £${(c.income||0).toLocaleString()}/yr</div>
       <div class="courtship-progress" style="margin-top:0.35rem">
         <div style="font-size:0.74rem;margin-bottom:0.18rem">💌 Courtship: ${c.courtship}/100</div>
         <div class="courtship-bar"><div class="courtship-fill" style="width:${c.courtship}%"></div></div>
       </div>
-      <div class="friend-actions" onclick="event.stopPropagation()">
-        <button class="friend-btn" onclick="courtshipAction('${c.id}','letter');renderAll()">✉️ Letter</button>
-        <button class="friend-btn" onclick="courtshipAction('${c.id}','promenade');renderAll()">🚶 Walk</button>
-        <button class="friend-btn" onclick="courtshipAction('${c.id}','dance');renderAll()">💃 Dance</button>
-        <button class="friend-btn" onclick="courtshipAction('${c.id}','kiss');renderAll()">🌹 Kiss</button>
-        ${c.courtship>=50?`<button class="friend-btn" onclick="courtshipAction('${c.id}','sex');renderAll()">💋 Liaison</button>`:''}
-        ${c.courtship>=70?`<button class="friend-btn" onclick="proposeOrElope('${c.id}')">💍 Propose</button>`:''}
-      </div></div>`).join('');
+    </div>`).join('');
   }
-  const available=WORLD_NPCS.filter(n=>n.isMale!==(G.gender==='gentleman')&&!G.courtships.find(c=>c.id===n.id)&&!G.secretRelationships.find(r=>r.id===n.id)).slice(0,6);
-  html+=`<div class="sub-header">💌 Romantic Prospects</div>`;
-  html+=available.map(n=>`<div class="person-card" onclick="openProspectProfile('${n.id}')">
-    <div class="person-name">${n.isMale?'👨':'👩'} ${n.name}${n.nobleRank?`<span class="header-title-badge rank-${n.nobleRank.rank}">${n.nobleRank.rank}</span>`:''}</div>
-    <div class="person-class">${n.classLabel} · Age ${n.age} · £${(n.income||0).toLocaleString()}/yr</div>
-    <div class="person-desc">${n.desc.substring(0,80)}…</div>
-    <div class="person-traits">${(n.traits||[]).slice(0,3).join(' · ')}</div>
-  </div>`).join('');
+
+  // ── Romantic prospects (always shown, age 16+ only) ──
+  const available=WORLD_NPCS.filter(n=>
+    n.isMale!==(G.gender==='gentleman')&&
+    (n.age||0)>=16&&
+    !G.courtships.find(c=>c.id===n.id)&&
+    !G.secretRelationships.find(r=>r.id===n.id)
+  ).slice(0,G.married?4:6);
+  html+=`<div class="sub-header">💌 ${G.married?'People of Note — Society':'Romantic Prospects'}</div>`;
+  html+=`<div class="info-box" style="font-style:italic;font-size:0.8rem;">✨ Romantic prospects refresh automatically each year as new faces enter your social circle.</div>`;
+  if(available.length){
+    html+=available.map(n=>`<div class="person-card" onclick="openProspectProfile('${n.id}')">
+      <div class="person-name">${n.isMale?'👨':'👩'} ${n.name}${n.nobleRank?`<span class="header-title-badge rank-${n.nobleRank.rank}">${n.nobleRank.rank}</span>`:''}</div>
+      <div class="person-class">${n.classLabel} · Age ${n.age} · £${(n.income||0).toLocaleString()}/yr</div>
+      <div class="person-desc">${n.desc.substring(0,80)}…</div>
+      <div class="person-traits">${(n.traits||[]).slice(0,3).join(' · ')}</div>
+    </div>`).join('');
+  } else {
+    html+=`<div class="info-box">No notable persons available at present. Prospects refresh next year.</div>`;
+  }
   el.innerHTML=html;
+}
+
+function openSecretRomanceProfile(idOrName){
+  const r=G.secretRelationships.find(x=>x.id===idOrName||x.name===idOrName);
+  if(!r)return;
+  showProfileModal({...r,classLabel:r.classLabel||r.category||'Secret Connection',desc:r.desc||`A secret romance. Scandal risk: ${r.scandalRisk}%.`},'secretRomance');
+}
+
+function openLoverProfile(idOrName){
+  const l=(G.lovers||[]).find(x=>x.id===idOrName||x.name===idOrName);
+  if(!l)return;
+  showProfileModal({...l,classLabel:l.classLabel||'Secret Lover',desc:l.desc||'A secret lover. Great care must be taken.'},'lover');
 }
 
 function renderMarriagePanel(){
@@ -2482,7 +2996,33 @@ function renderMarriagePanel(){
     <div class="dynasty-motto">Class: ${G.spouse.class_label||'?'} · Income: £${(G.spouse.income||0).toLocaleString()}/yr</div>
     <div style="margin-top:0.45rem;font-size:0.8rem;color:var(--ink-light)">Marriage happiness: ${hLabel} (${h}/100)</div>
     <div class="rel-bar" style="margin-top:0.3rem"><div class="rel-fill" style="width:${h}%;background:${h>=60?'var(--sage)':'var(--burgundy)'}"></div></div>
+  </div>
+  <div class="sub-header">Spouse Interactions</div>
+  <div class="choices-grid">
+    <button class="choice-btn" onclick="spouseInteraction('time')"><span class="choice-emoji">❤️</span><span class="choice-info">Spend Time Together<small>Happiness +10.</small></span></button>
+    <button class="choice-btn" onclick="spouseInteraction('gift')"><span class="choice-emoji">🎁</span><span class="choice-info">Send a Gift (£20)<small>Happiness +12, Affection +8.</small></span></button>
+    <button class="choice-btn" onclick="spouseInteraction('intimate')"><span class="choice-emoji">💋</span><span class="choice-info">An Intimate Evening<small>Happiness +8. May conceive.</small></span></button>
+    <button class="choice-btn" onclick="spouseInteraction('travel')"><span class="choice-emoji">🌍</span><span class="choice-info">Plan a Journey Together<small>Opens travel tab.</small></span></button>
+    <button class="choice-btn" onclick="spouseInteraction('discuss')"><span class="choice-emoji">💬</span><span class="choice-info">Discuss the Family<small>Happiness +5, Virtue +2.</small></span></button>
+    <button class="choice-btn" onclick="spouseInteraction('argue')"><span class="choice-emoji">😤</span><span class="choice-info">A Heated Argument<small>Confidence +5, Happiness -12.</small></span></button>
+    ${h<50?`<button class="choice-btn" onclick="spouseInteraction('reconcile')"><span class="choice-emoji">🤝</span><span class="choice-info">Attempt Reconciliation<small>Happiness +18.</small></span></button>`:''}
+    ${h<30?`<button class="choice-btn" onclick="spouseInteraction('insult')"><span class="choice-emoji">💢</span><span class="choice-info">A Terrible Insult<small>Happiness -20. Very bad.</small></span></button>`:''}
+    ${h<25?`<button class="choice-btn danger" onclick="seekDivorce()"><span class="choice-emoji">⚖️</span><span class="choice-info">Seek a Separation or Divorce<small>Enormous scandal. Legal and financial ruin.</small></span></button>`:''}
   </div>`;
+}
+
+function spouseInteraction(action){
+  if(!G.spouse)return;
+  const sp=G.spouse;
+  if(action==='time'){G.marriageHappiness=clamp((G.marriageHappiness||70)+10);addEvent('❤️','A Pleasant Evening',`An agreeable evening with ${sp.name}. The bonds are strengthened.`,'good');}
+  else if(action==='gift'){if(G.savings<20){addEvent('💸','Cannot Afford','','neutral');return;}G.savings-=20;G.marriageHappiness=clamp((G.marriageHappiness||70)+12);addEvent('🎁','A Gift for Your Spouse',`${sp.name} was delighted by the gift.`,'good');}
+  else if(action==='intimate'){G.marriageHappiness=clamp((G.marriageHappiness||70)+8);if(G.gender==='lady')attemptPregnancy(G.spouse);else attemptSpousePregnancy(G.spouse);addEvent('💋','An Intimate Evening',`A tender evening with ${sp.name}.`,'good');}
+  else if(action==='travel'){showTab('travel');return;}
+  else if(action==='discuss'){G.marriageHappiness=clamp((G.marriageHappiness||70)+5);G.virtue=clamp(G.virtue+2);addEvent('💬','A Family Discussion',`You and ${sp.name} spoke earnestly of family matters.`,'good');}
+  else if(action==='argue'){G.confidence=clamp(G.confidence+5);G.marriageHappiness=clamp((G.marriageHappiness||70)-12);addEvent('😤','A Quarrel',`You and ${sp.name} had words. The atmosphere is frosty.`,'neutral');}
+  else if(action==='reconcile'){G.marriageHappiness=clamp((G.marriageHappiness||70)+18);addEvent('🤝','A Reconciliation',`After long estrangement, you and ${sp.name} have made your peace.`,'good');}
+  else if(action==='insult'){G.marriageHappiness=clamp((G.marriageHappiness||70)-20);G.scandal=clamp(G.scandal+5,0,100);addEvent('💢','A Terrible Scene',`You said something unforgivable to ${sp.name}.`,'scandal');}
+  renderAll();renderRomance();
 }
 
 function showLoverOptions(){
@@ -2500,6 +3040,85 @@ function loverAction(id,action){
 }
 
 function endAffair(id){G.lovers=G.lovers.filter(l=>l.id!==id&&l.name!==id);addEvent('💔','An Affair Ended','The connection is severed.','neutral');renderAll();}
+
+// ═══════════════════════════════════════════════════
+//  SPOUSE AFFAIR EVENT
+// ═══════════════════════════════════════════════════
+function triggerSpouseAffairEvent(){
+  if(!G.spouse)return;
+  const spouseName=G.spouse.name;
+  const affairPersonName=G.gender==='gentleman'
+    ?`${pick(NAMES_M)} ${pick(SURNAMES)}`
+    :`${pick(NAMES_F)} ${pick(SURNAMES)}`;
+  const hasChild=G.gender==='gentleman'?Math.random()<0.20:Math.random()<0.05;
+  if(hasChild){
+    const gcIsMale=Math.random()<0.5;
+    const gcName=`${pick(gcIsMale?NAMES_M:NAMES_F)} ${G.lname}`;
+    showModal('😱','A Shocking Discovery',
+      `You have discovered evidence that your ${G.gender==='gentleman'?'wife':'husband'} ${spouseName} has been conducting an affair with ${affairPersonName}. What is more — ${G.gender==='gentleman'?'she':'he'} has borne an illegitimate child, ${gcName}.`,
+      [{label:'Accept the child — raise as your own',fn:()=>{
+        G.children.push({id:`child_${Date.now()}`,name:gcName,isMale:gcIsMale,age:0,legitimate:false,relationship:50,health:rand(60,85),wit:rand(40,65),charm:rand(40,65),virtue:rand(40,65),traits:[],lname:G.lname});
+        G.marriageHappiness=clamp((G.marriageHappiness||70)-30);
+        addEvent('😞','An Uncomfortable Arrangement',`You have agreed to raise ${gcName} as part of your household. The servants suspect nothing.`,'neutral');
+        renderAll();}},
+      {label:'Acknowledge the child but reduce your spouse\'s allowance',fn:()=>{
+        G.marriageHappiness=clamp((G.marriageHappiness||70)-40);
+        G.income=Math.round((G.income||0)*0.9);
+        addEvent('😤','A Cold Peace',`${spouseName} knows you know. An uneasy silence settles over the household.`,'scandal');
+        renderAll();}},
+      {label:'Seek a divorce (enormous scandal)',fn:()=>seekDivorce()},
+      {label:'Say nothing — protect the family name',fn:()=>{
+        G.marriageHappiness=clamp((G.marriageHappiness||70)-20);
+        G.secrets.push({type:'spouse_affair',spouse:spouseName,year:G.year});
+        addEvent('🤐','A Terrible Secret','You bury the knowledge deep. It festers.','scandal');
+        renderAll();}}]);
+  } else {
+    // Affair discovered but no child
+    showModal('😱','An Uncomfortable Rumour',
+      `Whispers have reached you that your ${G.gender==='gentleman'?'wife':'husband'} ${spouseName} has been seen in the company of ${affairPersonName} under suspicious circumstances.`,
+      [{label:'Confront your spouse',fn:()=>{
+        const deny=Math.random()<0.5;
+        G.marriageHappiness=clamp((G.marriageHappiness||70)-25);
+        addEvent(deny?'😤':'😔',deny?'A Bitter Denial':'A Tearful Confession',deny?`${spouseName} denies everything indignantly. But the doubt remains.`:`${spouseName} admitted the truth. An icy atmosphere descends.`,'scandal');
+        renderAll();}},
+      {label:'Say nothing — watch and wait',fn:()=>{
+        G.marriageHappiness=clamp((G.marriageHappiness||70)-10);
+        addEvent('👁️','Watchful Silence','You say nothing, but trust is broken.','neutral');
+        renderAll();}},
+      {label:'Seek legal separation',fn:()=>seekDivorce()}]);
+  }
+}
+
+function seekDivorce(){
+  if(!G.spouse)return;
+  const spouseName=G.spouse.name;
+  showModal('⚖️','A Separation or Divorce',`Seeking to dissolve your marriage to ${spouseName} is an act of extraordinary scandal in Regency England. Legal separation is possible but ruinous; an Act of Parliament divorce is nearly impossible for women.\n\nThis will destroy your reputation and may cost you custody of your children.`,
+    [{label:'⚖️ Pursue Legal Separation (Rep -40, Scandal +50)',fn:()=>{
+      const formerSpouse=G.spouse;
+      G.married=false;
+      G.exSpouses=G.exSpouses||[];
+      G.exSpouses.push({...formerSpouse,divorcedYear:G.year});
+      G.spouse=null;G.marriageHappiness=0;
+      G.scandal=clamp(G.scandal+50,0,100);G.reputation=clamp(G.reputation-40);
+      G.virtue=clamp(G.virtue-15);
+      // Children custody — mother loses if female, father if male
+      if(G.gender==='lady'){
+        const sons=G.children.filter(c=>c.isMale&&c.age<16);
+        if(sons.length){addEvent('💔','Custody Lost',`The courts have awarded custody of your son${sons.length>1?'s':''} to their father.`,'scandal');G.children=G.children.filter(c=>!c.isMale||c.age>=16);}
+      }
+      addEvent('⚖️','A Separation Granted',`You and ${spouseName} are formally separated. Society is aghast.`,'scandal');
+      addGossipEntry('Scandal in Society',`We are grieved to report that the household of ${G.fname} ${G.lname} has been dissolved in most unfortunate circumstances.`,'scandal');
+      addMemory(`Separated from ${spouseName} in ${G.year}`,'negative');
+      G.income=Math.round(G.income*0.65); // income cut
+      renderAll();}},
+    {label:'💔 Informal Separation (live apart, no legal action)',fn:()=>{
+      G.marriageHappiness=0;
+      G.scandal=clamp(G.scandal+20,0,100);G.reputation=clamp(G.reputation-15);
+      addEvent('😶','A Quiet Separation',`You and ${spouseName} no longer live together, though you remain technically married.`,'scandal');
+      G.informalSeparation=true;
+      renderAll();}},
+    {label:'Endure the marriage',fn:()=>renderAll()}]);
+}
 
 // ═══════════════════════════════════════════════════
 //  FAMILY TAB — EXPANDED
@@ -2605,9 +3224,11 @@ function childAction(i,action){
   else if(action==='teach'){c.wit=clamp(c.wit+rand(2,5));c.virtue=clamp(c.virtue+rand(1,3));c.relationship=clamp(c.relationship+5);addEvent('📖','Teaching '+c.name,'Personal instruction.','good');}
   else if(action==='educate'){if(G.savings>=50){G.savings-=50;c.wit=clamp(c.wit+rand(5,10));c.charm=clamp(c.charm+rand(2,5));c.education=clamp((c.education||0)+10);addEvent('📚','Tutor Hired','Progress is admirable.','good');}else addEvent('💸','Cannot Afford','','neutral');}
   else if(action==='match'){
-    const p=pick(WORLD_NPCS.filter(n=>n.isMale!==c.isMale));
-    showModal('💍','A Match for '+c.name,`You consider ${c.name} and ${p.name}.\n\n"${p.desc}"`,
-      [{label:'Arrange the match',fn:()=>{c.betrothed=true;c.betrothedTo=p.name;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement Arranged',`${c.name} engaged to ${p.name}.`,'good');renderAll();}},
+    // Use makeChildProspect to always find a correct-gender prospect (fixes daughters)
+    const p=makeChildProspect(c.isMale);
+    if(!p){addEvent('😔','No Suitable Prospect','No appropriate match could be found at this time.','neutral');renderAll();return;}
+    showModal('💍','A Match for '+c.name,`You consider ${c.name} (${c.isMale?'son':'daughter'}, age ${c.age}) and ${p.name}.\n\n"${p.desc||'A person of good character.'}"`,
+      [{label:'Arrange the match',fn:()=>{c.betrothed=true;c.betrothedTo=p.name;c.betrothedYear=G.year;G.reputation=clamp(G.reputation+8);addEvent('💍','An Engagement Arranged',`${c.name} is engaged to ${p.name}.`,'good');renderAll();}},
        {label:'Not yet',fn:()=>renderAll()}]);return;
   }
   else if(action==='university'){if(G.savings>=600){G.savings-=600;c.atUniversity=true;c.wit=clamp(c.wit+25);c.education=clamp((c.education||0)+30);addEvent('🎓','Sent to University',c.name+' goes up to Oxford.','good');}else addEvent('💸','Cannot Afford','','neutral');}
@@ -2647,7 +3268,19 @@ function renderCareer(){
         <span class="choice-info">${e.title} ${e.cost>0?`(£${e.cost})`:'(Free)'}
         <small>${e.desc}</small></span>
       </button>`).join('')+`</div>`;
-  } else if(!G.atUniversity&&!G.universityDone&&G.age>=17&&G.age<=30){
+  } else {
+    // Male education & self-improvement section (always visible for gentlemen)
+    const maleEdOpts=(MALE_SELF_STUDY[G.socialClass]||MALE_SELF_STUDY.middling);
+    html+=`<div class="sub-header">📚 Self-Improvement & Education</div>
+    <div class="info-box">A gentleman cultivates his mind and accomplishments throughout life. Each pursuit improves wit, charm, or education.</div>`;
+    html+=`<div class="choices-grid">`+maleEdOpts.map(e=>`
+      <button class="choice-btn" onclick="pursueMaleEducation('${e.title.replace(/'/g,'\\x27')}')">
+        <span class="choice-emoji">📖</span>
+        <span class="choice-info">${e.title} ${e.cost>0?`(£${e.cost})`:'(Free)'}
+        <small>${e.desc}</small></span>
+      </button>`).join('')+`</div>`;
+  }
+  if(!G.atUniversity&&!G.universityDone&&G.age>=17&&G.age<=30&&!female){
     html+=`<div class="sub-header">🎓 University</div>
     <div class="info-box">University costs £200/year for 3 years. Unlocks the learned professions.</div>
     <div class="choices-grid">`+UNIV_SUBJECTS_M.map(s=>`
@@ -2680,6 +3313,16 @@ function pursueFemalEducation(title){
   if(ed.cost>0)G.savings-=ed.cost;
   ['charm','wit','composure','education','virtue'].forEach(k=>{if(ed[k])G[k]=clamp(G[k]+(ed[k]||0));});
   addEvent('📖','Education: '+title,ed.desc,'good');
+  renderAll();renderCareer();
+}
+
+function pursueMaleEducation(title){
+  const all=Object.values(MALE_SELF_STUDY).flat();
+  const ed=all.find(e=>e.title===title);if(!ed)return;
+  if(ed.cost>0&&G.savings<ed.cost){addEvent('💸','Cannot Afford','','neutral');renderAll();return;}
+  if(ed.cost>0)G.savings-=ed.cost;
+  ['charm','wit','confidence','composure','education','virtue'].forEach(k=>{if(ed[k])G[k]=clamp(G[k]+(ed[k]||0));});
+  addEvent('📖','Self-Improvement: '+title,ed.desc,'good');
   renderAll();renderCareer();
 }
 
@@ -2737,19 +3380,33 @@ function resignPosition(){
 //  HOUSEHOLD TAB
 // ═══════════════════════════════════════════════════
 function renderHousehold(){
-  const exp=HOUSEHOLD_EXPENSES[G.socialClass];
-  const totalExp=Object.values(exp).reduce((a,b)=>a+b,0);
+  if(!G.spendingPolicies)G.spendingPolicies=getDefaultPolicies(G.socialClass);
+  const totalExp=calcTotalExpenses();
   const propIncome=(G.ownedProperties||[]).reduce((s,p)=>s+(p.income||0),0);
   const net=G.income+G.estateIncome+G.jobIncome+propIncome-totalExp;
   const el=document.getElementById('household-content');
   const improvements=ESTATE_IMPROVEMENTS.filter(ei=>!G.estate.improvements.includes(ei.name));
+
+  // Build policy rows helper
+  function policyRow(cat,catLabel,keys){
+    return `<div style="margin-bottom:0.65rem">
+      <div style="font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.28rem">${catLabel}</div>
+      <div style="display:flex;gap:0.3rem;flex-wrap:wrap">${keys.map(k=>{
+        const pol=SPENDING_POLICIES[cat][k];
+        const active=G.spendingPolicies[cat]===k;
+        const monthly=Math.round(pol.annualCost/12);
+        return `<button class="friend-btn" style="font-size:0.72rem;${active?'border-color:var(--gold);background:rgba(154,125,58,0.18);color:var(--ink);font-weight:600':''}" onclick="setPolicy('${cat}','${k}');renderAll();renderHousehold()">${pol.label}<br><span style="font-size:0.65rem;color:${active?'var(--ink-light)':'var(--ink-light)'}">£${monthly}/mo</span></button>`;
+      }).join('')}</div>
+    </div>`;
+  }
+
   el.innerHTML=`
   <div class="estate-card">
     <div class="estate-name">🏡 ${G.estate.name}</div>
     <div class="estate-desc">Prestige: ${G.estate.prestige.toFixed(1)}/10 · Location: ${G.currentLocation||'Countryside'} · Improvements: ${G.estate.improvements.length}</div>
     <div class="estate-stats">${G.estate.improvements.map(i=>`<span>✓ ${i}</span>`).join('')}</div>
   </div>
-  ${G.debtLevel>0?`<div class="debt-box">⚠ Debt Level: ${G.debtLevel}/6 — ${G.debtLevel<3?'Creditors are pressing':'Serious financial distress'}. Net change per year: £${net.toLocaleString()}.</div>`:''}
+  ${G.debtLevel>0?`<div class="debt-box">⚠ Debt Level: ${G.debtLevel}/6 — ${G.debtLevel<3?'Creditors are pressing':'Serious financial distress'}.</div>`:''}
   <div style="background:white;border:1px solid var(--dark-parchment);border-radius:3px;padding:0.85rem;margin-bottom:0.9rem;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;font-size:0.85rem;">
       <div><span style="color:var(--ink-light)">Annual Income:</span> <strong>£${G.income.toLocaleString()}</strong></div>
@@ -2759,9 +3416,23 @@ function renderHousehold(){
       <div><span style="color:var(--ink-light)">Total Expenses:</span> <strong style="color:var(--burgundy)">£${totalExp.toLocaleString()}</strong></div>
       <div><span style="color:var(--ink-light)">Annual Net:</span> <strong style="color:${net>=0?'var(--sage)':'var(--burgundy)'}">£${net.toLocaleString()}</strong></div>
     </div>
-    <hr style="border:none;border-top:1px solid var(--dark-parchment);margin:0.55rem 0">
-    <div style="font-size:0.8rem;color:var(--ink-light)">${Object.entries(exp).map(([k,v])=>`<div style="display:flex;justify-content:space-between"><span>${k.charAt(0).toUpperCase()+k.slice(1)}:</span><span>£${v}</span></div>`).join('')}</div>
   </div>
+  <div class="sub-header">⚙ Household Spending Policies</div>
+  <div class="info-box">Choose your spending level in each category. These directly affect your annual net income shown above.</div>
+  ${policyRow('servants','🛎 Servants',['none','minimal','standard','large','grand'])}
+  ${policyRow('clothing','👗 Clothing & Fashion',['ragged','simple','fashionable','highfash','court'])}
+  ${policyRow('estate','🏰 Estate & Property',['neglected','basic','respectable','elegant','magnificent'])}
+  ${policyRow('entertainment','🎭 Entertainment & Social Life',['reclusive','occasional','active','elite','legendary'])}
+  ${policyRow('transport','🐎 Transport & Carriage',['walking','shared','personal','elegant','aristocratic'])}
+  <div class="sub-header">🏡 Host an Event at Home</div>
+  <div class="choices-grid">
+    <button class="choice-btn" onclick="hostHomeEvent('dinner')"><span class="choice-emoji">🍽</span><span class="choice-info">Host a Dinner Party (£40)<small>Charm +, Reputation +, new connections.</small></span></button>
+    <button class="choice-btn" onclick="hostHomeEvent('ball')"><span class="choice-emoji">💃</span><span class="choice-info">Host a Ball (£200)<small>Major reputation boost. Requires estate.</small></span></button>
+    <button class="choice-btn" onclick="hostHomeEvent('tea')"><span class="choice-emoji">🫖</span><span class="choice-info">Afternoon Tea (£15)<small>Strengthen friendships.</small></span></button>
+    <button class="choice-btn" onclick="hostHomeEvent('hunt')"><span class="choice-emoji">🐴</span><span class="choice-info">Hunting Party (£80)<small>Men's reputation. Requires stables.</small></span></button>
+  </div>
+  <div class="sub-header">🌾 Farm & Land Management</div>
+  ${renderFarmSection()}
   <div class="sub-header">Estate Improvements</div>
   <div class="choices-grid">${improvements.slice(0,4).map(ei=>`
     <button class="choice-btn" onclick="buyImprovement('${ei.name}')" ${G.savings<ei.cost?'style="opacity:0.5"':''}>
@@ -2770,12 +3441,101 @@ function renderHousehold(){
     </button>`).join('')}</div>
   <div class="sub-header">Financial Actions</div>
   <div class="choices-grid">
-    <button class="choice-btn" onclick="retrench()"><span class="choice-emoji">✂️</span><span class="choice-info">Retrench the Household<small>Reduce expenses. Reputation suffers.</small></span></button>
+    <button class="choice-btn" onclick="retrench()"><span class="choice-emoji">✂️</span><span class="choice-info">Retrench the Household<small>Income cut. Reputation suffers.</small></span></button>
     ${G.savings>500?`<button class="choice-btn" onclick="invest()"><span class="choice-emoji">📈</span><span class="choice-info">Invest in the Funds (£500)<small>Risk capital for returns.</small></span></button>`:''}
     <button class="choice-btn" onclick="sellJewels()"><span class="choice-emoji">💎</span><span class="choice-info">Sell Family Jewels<small>Raises funds. Invites questions.</small></span></button>
-    <button class="choice-btn" onclick="borrowMoney()"><span class="choice-emoji">🏦</span><span class="choice-info">Borrow from a Moneylender<small>Funds now. Scandal and interest later.</small></span></button>
+    <button class="choice-btn" onclick="borrowMoney()"><span class="choice-emoji">🏦</span><span class="choice-info">Borrow from a Moneylender<small>Funds now. Scandal later.</small></span></button>
     ${G.debtLevel>0?`<button class="choice-btn" onclick="payDebt()"><span class="choice-emoji">💸</span><span class="choice-info">Pay Down Debt (£500)<small>Reduce debt level.</small></span></button>`:''}
   </div>`;
+}
+
+function renderFarmSection(){
+  const isLanded=G.socialClass==='nobility'||G.socialClass==='gentry';
+  const isMiddlePoor=G.socialClass==='middling'||G.socialClass==='poor';
+  if(!isLanded&&!isMiddlePoor)return'';
+  let html='';
+  if(isLanded){
+    html+=`<div class="info-box">As a landed ${G.socialClass==='nobility'?'noble':'gentleman'}, you may lease your land to tenant farmers for profit.</div>
+    <div class="choices-grid">
+      <button class="choice-btn" onclick="farmAction('lease')"><span class="choice-emoji">📜</span><span class="choice-info">Lease Land to Tenants<small>Steady income. Low risk.</small></span></button>
+      <button class="choice-btn" onclick="farmAction('manage')"><span class="choice-emoji">🌾</span><span class="choice-info">Directly Manage the Harvest<small>Higher profits but risky.</small></span></button>
+      <button class="choice-btn" onclick="farmAction('tenant')"><span class="choice-emoji">🏘️</span><span class="choice-info">Review Tenant Contracts<small>Renegotiate rent for more income.</small></span></button>
+    </div>`;
+  } else {
+    html+=`<div class="info-box">You may rent small parcels of farmland to grow your income.</div>
+    <div class="choices-grid">
+      <button class="choice-btn" onclick="farmAction('rent_land')"><span class="choice-emoji">🌱</span><span class="choice-info">Rent Farmland (£30/yr)<small>Grow vegetables for market.</small></span></button>
+      <button class="choice-btn" onclick="farmAction('lease_shop')"><span class="choice-emoji">🏪</span><span class="choice-info">Lease a Market Stall<small>Sell goods locally.</small></span></button>
+    </div>`;
+  }
+  return html;
+}
+
+function farmAction(type){
+  // Per-year action cap: max 5 uses per action type per year
+  if(!G.farmActionsThisYear)G.farmActionsThisYear={};
+  const usedCount=G.farmActionsThisYear[type]||0;
+  if(usedCount>=1){
+    addEvent('🌾','Already Done','Each land action may only be taken once per year. Advance to next year to try again.','neutral');
+    renderAll();return;
+  }
+  G.farmActionsThisYear[type]=1;
+
+  if(type==='lease'){
+    const income=rand(80,250);G.estateIncome+=income;G.income+=income;
+    addEvent('📜','Land Leased',`Tenant contracts signed. Annual income rises by £${income}. (Returns next year)`,'good');
+  } else if(type==='manage'){
+    const r=Math.random();
+    if(r<0.2){G.savings-=rand(50,200);addEvent('🌧️','Failed Harvest','The crops were poor this year. Losses incurred. (Returns next year)','scandal');}
+    else if(r<0.5){const p=rand(100,300);G.savings+=p;addEvent('🌾','A Good Harvest',`A satisfactory harvest. £${p} profit. (Returns next year)`,'good');}
+    else{const p=rand(250,600);G.savings+=p;G.dynasty.prestige+=3;addEvent('🌾','An Excellent Harvest',`A bumper year. £${p} brought to market. (Returns next year)`,'good');}
+  } else if(type==='tenant'){
+    const r=Math.random();
+    if(r<0.3){G.scandal=clamp(G.scandal+8,0,100);G.reputation=clamp(G.reputation-5);addEvent('😤','Tenant Unrest','Your tenants resisted the new rents. (Returns next year)','scandal');}
+    else{const i=rand(40,120);G.income+=i;addEvent('📜','Rents Renegotiated',`New contracts secured. +£${i}/yr. (Returns next year)`,'good');}
+  } else if(type==='rent_land'){
+    if(G.savings<30){addEvent('💸','Cannot Afford','','neutral');G.farmActionsThisYear[type]=0;return;}
+    G.savings-=30;const income=rand(40,100);G.estateIncome+=income;
+    addEvent('🌱','Farmland Rented',`A small plot rented. Expected yield: £${income}/yr. (Returns next year)`,'good');
+  } else if(type==='lease_shop'){
+    const income=rand(20,60);G.jobIncome+=income;
+    addEvent('🏪','Market Stall Leased',`A stall in the market. +£${income}/yr. (Returns next year)`,'good');
+  }
+  renderAll();renderHousehold();
+}
+
+function hostHomeEvent(type){
+  const costs={dinner:40,ball:200,tea:15,hunt:80};
+  const cost=costs[type]||40;
+  if(G.savings<cost){addEvent('💸','Cannot Afford','','neutral');renderAll();return;}
+  if(type==='ball'&&G.estate.prestige<4){addEvent('😔','Unsuitable Premises','Your current home is not suited to a ball. Consider an estate improvement.','neutral');return;}
+  if(type==='hunt'&&!G.estate.improvements.includes('Stables')&&!(G.ownedProperties||[]).some(p=>p.features.join().toLowerCase().includes('stable'))){
+    addEvent('🐴','No Stables','You need a stable block to host a hunting party.','neutral');return;}
+  G.savings-=cost;
+  const repGain={dinner:rand(5,10),ball:rand(12,20),tea:rand(3,6),hunt:rand(6,12)}[type];
+  const charmGain={dinner:rand(3,6),ball:rand(5,10),tea:rand(2,4),hunt:rand(2,5)}[type];
+  G.reputation=clamp(G.reputation+repGain);
+  G.charm=clamp(G.charm+charmGain);
+  // Friends gain affection
+  G.friends.forEach(f=>{f.affection=Math.min(100,f.affection+rand(4,8));});
+  const labels={dinner:'Dinner Party',ball:'Grand Ball',tea:'Afternoon Tea',hunt:'Hunting Party'};
+  const descs={
+    dinner:`The table was elegantly set and the conversation most agreeable. Reputation +${repGain}.`,
+    ball:`Your ball was the talk of the Season! ${G.friends.length} friends attended. Reputation +${repGain}.`,
+    tea:`A pleasant afternoon with close friends. Bonds strengthened.`,
+    hunt:`An excellent day in the field. Your hospitality was praised by all.`,
+  };
+  addGossipEntry(labels[type],`${getShortTitle(G.gender,G.married)} ${G.fname} ${G.lname} hosted a ${labels[type].toLowerCase()} that was the talk of the neighbourhood.`,'neutral');
+  addEvent({dinner:'🍽',ball:'💃',tea:'🫖',hunt:'🐴'}[type],labels[type],descs[type],'good');
+  addMemory(`Hosted a ${labels[type].toLowerCase()} at ${G.estate.name} in ${G.year}`,'positive');
+  renderAll();renderHousehold();
+}
+
+function setPolicy(category, value){
+  if(!G.spendingPolicies)G.spendingPolicies=getDefaultPolicies(G.socialClass);
+  if(!SPENDING_POLICIES[category]||!SPENDING_POLICIES[category][value])return;
+  G.spendingPolicies[category]=value;
+  addEvent('🏡','Household Policy Adjusted',`${category.charAt(0).toUpperCase()+category.slice(1)} policy set to: ${SPENDING_POLICIES[category][value].label}.`,'neutral');
 }
 
 function buyImprovement(name){const ei=ESTATE_IMPROVEMENTS.find(e=>e.name===name);if(!ei||G.savings<ei.cost)return;G.savings-=ei.cost;G.estate.improvements.push(name);G.estate.prestige=clamp(G.estate.prestige+ei.prestige/10,0,10);G.estateIncome+=ei.income||0;G.reputation=clamp(G.reputation+Math.floor(ei.prestige/2));G.dynasty.prestige+=ei.prestige*0.5;addEvent(ei.emoji,ei.name+' Completed',ei.desc,'good');renderAll();renderHousehold();}
@@ -2833,6 +3593,129 @@ function renderDynasty(){
   el.innerHTML=html;
 }
 
+// ═══════════════════════════════════════════════════
+//  FAMILY TREE TAB
+// ═══════════════════════════════════════════════════
+function renderFamilyTree(){
+  const el=document.getElementById('familytree-content');
+  if(!el)return;
+  let html=`<div class="sub-header">🌳 The ${G.dynasty.name} — Family Tree</div>
+  <div class="info-box">Click any family member to view their profile and interact with them.</div>`;
+
+  // Grandparents
+  const grandparents=G.relationships.filter(r=>r.type==='Grandfather'||r.type==='Grandmother');
+  if(grandparents.length){
+    html+=`<div class="sub-header">👴👵 Grandparents</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=grandparents.map(r=>familyTreeCard(r)).join('');
+    html+=`</div>`;
+  }
+
+  // Parents
+  const parents=G.relationships.filter(r=>r.type==='Father'||r.type==='Mother'||r.type==='Father (Deceased)'||r.type==='Mother (Deceased)'||r.type==='Stepfather'||r.type==='Stepmother');
+  if(parents.length){
+    html+=`<div class="sub-header">👨👩 Parents</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=parents.map(r=>familyTreeCard(r)).join('');
+    html+=`</div>`;
+  }
+
+  // Player (self)
+  html+=`<div class="sub-header">✦ You</div>
+  <div style="background:rgba(154,125,58,0.15);border:2px solid var(--gold);border-radius:3px;padding:0.75rem;margin-bottom:0.7rem;display:inline-block;min-width:160px;">
+    <div style="font-weight:600;font-size:0.95rem;color:var(--ink)">${G.fname} ${G.lname}</div>
+    <div style="font-size:0.74rem;color:var(--gold);font-style:italic">${CLASS_DATA[G.socialClass].label}${G.nobleRank?' · '+G.nobleRank.rank:''}</div>
+    <div style="font-size:0.72rem;color:var(--ink-light)">Age ${G.age} · ${G.married?'Married':'Unmarried'}</div>
+  </div>`;
+
+  // Spouse
+  if(G.spouse){
+    html+=` <span style="font-size:1.2rem;color:var(--gold)">💍</span> `;
+    html+=`<div style="background:rgba(154,125,58,0.08);border:1px solid var(--gold);border-radius:3px;padding:0.75rem;margin-bottom:0.7rem;display:inline-block;min-width:160px;">
+      <div style="font-weight:600;font-size:0.95rem;color:var(--ink)">${G.spouse.name}</div>
+      <div style="font-size:0.74rem;color:var(--gold);font-style:italic">${G.spouse.class_label||'?'}</div>
+      <div style="font-size:0.72rem;color:var(--ink-light)">Age ${G.spouse.age||'?'} · Spouse</div>
+    </div>`;
+  }
+  if(G.exSpouses&&G.exSpouses.length){
+    html+=`<div class="sub-header">💔 Former Spouses</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=G.exSpouses.map(s=>`<div style="background:rgba(107,31,42,0.08);border:1px solid var(--burgundy-light);border-radius:3px;padding:0.6rem;min-width:140px;">
+      <div style="font-weight:600;font-size:0.88rem;color:var(--ink)">${s.name}</div>
+      <div style="font-size:0.7rem;color:var(--burgundy);font-style:italic">Separated ${s.divorcedYear}</div>
+    </div>`).join('');
+    html+=`</div>`;
+  }
+
+  // Siblings
+  const siblings=G.relationships.filter(r=>r.type==='Brother'||r.type==='Sister'||r.type==='Half Brother'||r.type==='Half Sister'||r.type==='Step Brother'||r.type==='Step Sister');
+  if(siblings.length){
+    html+=`<div class="sub-header">👦👧 Siblings</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=siblings.map(r=>familyTreeCard(r)).join('');
+    html+=`</div>`;
+  }
+
+  // Children
+  if(G.children.length){
+    html+=`<div class="sub-header">👶 Children (${G.children.length})</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=G.children.map((c,i)=>`<div class="child-card" style="min-width:150px;cursor:pointer;" onclick="childAction(${i},'bond')">
+      <div class="child-name">${c.isMale?'👦':'👧'} ${c.name}</div>
+      <div style="font-size:0.72rem;color:var(--ink-light)">Age ${c.age} · ${c.legitimate?'Legitimate':'⚠ Illegitimate'}</div>
+      <div class="child-stats"><span>❤️${c.health}</span><span>💡${c.wit}</span></div>
+      ${c.betrothed?`<div style="font-size:0.7rem;color:var(--rose)">💍 ${c.betrothedTo}</div>`:''}
+      ${c.atUniversity?`<div style="font-size:0.7rem;color:var(--sage)">🎓 University</div>`:''}
+    </div>`).join('');
+    html+=`</div>`;
+  }
+
+  // Grandchildren — clickable & interactive
+  const grandchildren=G.grandchildren||[];
+  if(grandchildren.length){
+    html+=`<div class="sub-header">👼 Grandchildren (${grandchildren.length})</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=grandchildren.map((gc,gi)=>`<div style="background:rgba(107,137,68,0.1);border:1px solid var(--sage);border-radius:3px;padding:0.75rem;min-width:150px;cursor:pointer;" onclick="showGrandchildProfile(${gi})">
+      <div style="font-weight:600;font-size:0.88rem;color:var(--ink)">${gc.isMale?'👦':'👧'} ${gc.name}</div>
+      <div style="font-size:0.72rem;color:var(--sage);font-style:italic">Grandchild · Age ${gc.age}</div>
+      <div style="font-size:0.7rem;color:var(--ink-light)">Child of ${gc.parent}</div>
+      ${gc.age>=3?`<div style="font-size:0.7rem;margin-top:0.3rem;color:var(--gold)">❤️ Bond ${gc.bond||50} · Click to interact</div>`:''}
+    </div>`).join('');
+    html+=`</div>`;
+  }
+
+  // Cousins, aunts, uncles
+  const extended=G.relationships.filter(r=>r.type==='Aunt'||r.type==='Uncle'||r.type==='Cousin');
+  if(extended.length){
+    html+=`<div class="sub-header">👨👩 Extended Family</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">`;
+    html+=extended.map(r=>familyTreeCard(r)).join('');
+    html+=`</div>`;
+  }
+
+  html+=`<div class="sub-header">📜 Dynasty Legacy</div>
+  <div class="info-box">Dynasty: <strong>${G.dynasty.name}</strong> · Prestige: <strong>${Math.round(G.dynasty.prestige)}</strong> · Motto: "${G.dynasty.motto}"</div>`;
+
+  el.innerHTML=html;
+}
+
+function familyTreeCard(r){
+  const isDeceased=r.alive===false||r.type.includes('Deceased');
+  return `<div style="background:${isDeceased?'rgba(26,18,8,0.1)':'white'};border:1px solid ${isDeceased?'var(--ink-light)':'var(--dark-parchment)'};border-radius:3px;padding:0.65rem;min-width:140px;cursor:pointer;opacity:${isDeceased?0.65:1}" onclick="showFamilyMemberProfile('${r.id}')">
+    <div style="font-size:1.3rem">${r.emoji||'👤'}</div>
+    <div style="font-weight:600;font-size:0.85rem;color:var(--ink)">${r.name.length>20?r.name.substring(0,18)+'…':r.name}</div>
+    <div style="font-size:0.7rem;color:var(--gold);font-style:italic">${r.type}</div>
+    <div style="font-size:0.7rem;color:var(--ink-light)">${isDeceased?'† Deceased':'Age '+(r.age||'?')}</div>
+    <div class="rel-bar" style="margin-top:0.25rem"><div class="rel-fill" style="width:${r.affection||50}%"></div></div>
+  </div>`;
+}
+
+function showGrandchildProfile(gi){
+  const gc=(G.grandchildren||[])[gi];if(!gc)return;
+  gc.bond=gc.bond||50;
+  showModal(gc.isMale?'👦':'👧',gc.name,
+    `Your grandchild ${gc.name}.\nAge: ${gc.age} · Child of ${gc.parent}\nBond: ${gc.bond}/100\n\n${gc.age<3?'Too young to interact directly — but your presence shapes them.':'How would you like to spend time with them?'}`,
+    gc.age<3?[{label:'Simply hold the child',fn:()=>{gc.bond=Math.min(100,gc.bond+5);addEvent('👶','A Precious Moment',`You hold little ${gc.name.split(' ')[0]}.`,'good');renderAll();renderFamily();}}]:
+    [{label:'❤️ Spend time together',fn:()=>{gc.bond=Math.min(100,gc.bond+12);addEvent('❤️','Quality Time with '+gc.name.split(' ')[0],`A delightful afternoon with your grandchild.`,'good');renderAll();renderFamily();}},
+     {label:'📖 Tell stories & read together',fn:()=>{gc.bond=Math.min(100,gc.bond+8);gc.wit=(gc.wit||50)+rand(1,4);addEvent('📖','Storytime','Your stories captivate them. Bond and wit grow.','good');renderAll();renderFamily();}},
+     {label:'🎁 Bring a small gift (£5)',fn:()=>{if(G.savings<5){addEvent('💸','Cannot Afford','','neutral');return;}G.savings-=5;gc.bond=Math.min(100,gc.bond+10);addEvent('🎁','A Gift for '+gc.name.split(' ')[0],'Their face lights up with joy.','good');renderAll();renderFamily();}},
+     {label:'🌳 Take for a walk in the gardens',fn:()=>{gc.bond=Math.min(100,gc.bond+10);gc.health=(gc.health||70)+rand(1,3);addEvent('🌳','A Garden Walk',`Fresh air and laughter with ${gc.name.split(' ')[0]}.`,'good');renderAll();renderFamily();}}
+    ]);
+}
+
 function secretDesc(s){
   if(s.type==='child_given_up')return `In ${s.year}, you gave up a child whose father was ${s.father}.`;
   return JSON.stringify(s);
@@ -2862,8 +3745,8 @@ function developTrait(){
 function renderGossip(){
   const el=document.getElementById('gossip-content');
   const log=G.gossipLog||[];
-  let html=`<div class="sub-header">📰 The ${G.currentLocation||'London'} Gazette — ${G.season} ${G.year}</div>
-  <div class="info-box">"All the intelligence of the Season, gathered for the discerning reader."</div>`;
+  let html=`<div class="sub-header">📰 The ${G.currentLocation||'London'} Gazette — ${G.year}</div>
+  <div class="info-box">"All the intelligence of the year, gathered for the discerning reader."</div>`;
 
   // Player scandal entries
   if(G.scandal>50){
@@ -2876,7 +3759,7 @@ function renderGossip(){
   // Recent gossip log
   if(log.length>0){
     html+=log.slice(0,8).map(g=>`<div class="gazette-entry ${g.type==='scandal'?'gazette-scandal':''}">
-      <div class="gazette-header">${g.season?g.season+' ':''}${g.year} — ${g.header}</div>
+      <div class="gazette-header">${g.year} — ${g.header}</div>
       <div class="gazette-text">${g.text}</div>
     </div>`).join('');
   } else {
@@ -2936,9 +3819,7 @@ function confrontGossip(){
 function renderLife(){
   const el=document.getElementById('life-content');
   const phase=G.age<5?'🍼 Early Infancy':G.age<12?'🌿 Childhood':G.age<18?'📚 Adolescence':G.age<30?'🌸 Young Adulthood':G.age<50?'🏡 Maturity':'🕯️ Later Years';
-  const seasonNote=SEASON_NOTES[G.season]||'';
-  let html=`<div class="age-phase-banner">${phase} · ${G.season} ${G.year} · Age ${G.age}</div>`;
-  if(seasonNote)html+=`<div class="info-box">${SEASON_EMOJIS[G.season]} <em>${seasonNote}</em></div>`;
+  let html=`<div class="age-phase-banner">${phase} · ${G.year} · Age ${G.age}</div>`;
   if(G.age<6){
     html+=`<div class="info-box">You are an infant. The world is the nursery, the garden, and the sound of your mother\'s voice.</div>`;
   } else if(G.age<12){
@@ -3005,10 +3886,9 @@ function renderRelationships(){
 function renderStatus(){
   const el=document.getElementById('status-block');
   const nr=G.nobleRank;
-  const seasonClass=`season-${(G.season||'Spring').toLowerCase()}`;
   const titleBadge=nr?`<span class="header-title-badge rank-${nr.rank}">${nr.rank}</span>`:'';
   el.innerHTML=[
-    `<span class="season-badge">${G.year}</span> <span class="season-indicator ${seasonClass}">${SEASON_EMOJIS[G.season]||''} ${G.season}</span>${titleBadge}`,
+    `<span class="season-badge">${G.year}</span>${titleBadge}`,
     `Age: ${G.age}`,
     G.married?`Married to ${G.spouse.name}`:'Unmarried',
     G.children.length>0?`${G.children.length} child${G.children.length>1?'ren':''}`:null,
@@ -3040,7 +3920,7 @@ function renderHiddenStats(){
 function renderAll(){
   document.getElementById('hdr-name').textContent=`${getShortTitle(G.gender,G.married)} ${G.fname} ${G.lname}`;
   const nrText=G.nobleRank?` · ${G.nobleRank.rank.charAt(0).toUpperCase()+G.nobleRank.rank.slice(1)}`:'';
-  document.getElementById('hdr-meta').textContent=`${G.season} ${G.year} · Age ${G.age} · ${CLASS_DATA[G.socialClass].label}${nrText}`;
+  document.getElementById('hdr-meta').textContent=`${G.year} · Age ${G.age} · ${CLASS_DATA[G.socialClass].label}${nrText}`;
   document.getElementById('hdr-health').textContent=Math.round(G.health);
   document.getElementById('hdr-rep').textContent=Math.round(G.reputation);
   document.getElementById('hdr-money').textContent=G.savings.toLocaleString();
@@ -3058,7 +3938,7 @@ function renderAll(){
   document.getElementById('scandal-fill').style.width=clamp(G.scandal,0,100)+'%';
   renderLog();renderRelationships();renderStatus();renderHiddenStats();
   const ap=document.getElementById('age-phase-display');
-  if(ap){const ph=G.age<5?'🍼 Infancy':G.age<12?'🌿 Childhood':G.age<18?'📚 Adolescence':G.age<30?'🌸 Young Adulthood':G.age<50?'🏡 Maturity':'🕯️ Later Years';ap.textContent=`${ph} · ${G.season} ${G.year}`;}
+  if(ap){const ph=G.age<5?'🍼 Infancy':G.age<12?'🌿 Childhood':G.age<18?'📚 Adolescence':G.age<30?'🌸 Young Adulthood':G.age<50?'🏡 Maturity':'🕯️ Later Years';ap.textContent=`${ph} · ${G.year}`;}
   const at=document.querySelector('.tab.active');
   if(at)showTab(at.dataset.tab||'chronicle',true);
 }
@@ -3066,7 +3946,7 @@ function renderAll(){
 function renderLog(){
   const el=document.getElementById('event-log');if(!el)return;
   el.innerHTML=G.events.slice(0,60).map(e=>`<div class="event-entry">
-    <span class="event-year">${e.year}${e.age!==undefined?` (${e.age})`:''}${e.season?` ${SEASON_EMOJIS[e.season]||''}`:''}</span>
+    <span class="event-year">${e.year}${e.age!==undefined?` (${e.age})`:''}</span>
     <span class="event-text event-${e.type}"><strong>${e.icon} ${e.headline}</strong>${e.detail?`<br><span style="font-size:0.84rem">${e.detail}</span>`:''}</span>
   </div>`).join('');
 }
@@ -3081,11 +3961,13 @@ function showTab(name,silent=false){
   if(!silent){
     if(name==='society')renderSociety();
     if(name==='connections')renderConnections();
+    if(name==='friends')renderFriends();
     if(name==='romance')renderRomance();
     if(name==='family')renderFamily();
     if(name==='career')renderCareer();
     if(name==='household')renderHousehold();
     if(name==='dynasty')renderDynasty();
+    if(name==='familytree')renderFamilyTree();
     if(name==='gossip')renderGossip();
     if(name==='life')renderLife();
     if(name==='hobbies')renderHobbies();
@@ -3110,6 +3992,25 @@ function showModal(deco,title,body,choices){
 function modalChoice(i){document.getElementById('modal').classList.add('hidden');if(window._mc&&window._mc[i])window._mc[i].fn();}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
 document.getElementById('profile-modal').addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
+
+// ═══════════════════════════════════════════════════
+//  LEAVE LIFE — save and return to main menu without ending dynasty
+// ═══════════════════════════════════════════════════
+function leaveLife(){
+  showModal('🚪','Leave This Life','Save your current character and return to the main menu to begin another story. Your dynasty is preserved — you can continue this life from the Load screen later.\n\nYour life is not ended. Only set aside for now.',
+    [{label:'💾 Save & Return to Main Menu',fn:()=>{
+      try{
+        const save={G,WORLD_NPCS,selectedClass,version:3};
+        localStorage.setItem('regencyLifeV3',JSON.stringify(save));
+        G.lifeEnded=false; // not dead, just left
+        document.getElementById('game-shell').style.display='none';
+        document.getElementById('splash').style.display='flex';
+        G={};WORLD_NPCS=[];selectedClass='nobility';
+        showAchievement('🚪 Life Saved & Paused');
+      } catch(e){alert('Could not save: '+e.message);}
+    }},
+    {label:'Continue Playing',fn:()=>renderAll()}]);
+}
 
 // ═══════════════════════════════════════════════════
 //  END LIFE BUTTON
@@ -3142,6 +4043,11 @@ function checkAchievements(){
     {id:'property',cond:G.ownedProperties&&G.ownedProperties.length>=2,text:'🏡 A Property Empire!'},
     {id:'hobbies',cond:G.hobbies.length>=2,text:'🎨 A Person of Accomplishments!'},
     {id:'debtfree',cond:G.debtLevel===0&&G.savings>5000,text:'💰 Debts Cleared!'},
+    {id:'diamond',cond:G.diamondOfSeason===true,text:'💎 Diamond of the Season!'},
+    {id:'childfriends',cond:G.childhoodFriends&&G.childhoodFriends.length>=2,text:'🌱 Lifelong Friendships!'},
+    {id:'legacy',cond:!!G.legacyParent,text:'🌿 A New Generation Rises!'},
+    {id:'grandparent',cond:(G.grandchildren||[]).length>=1,text:'👼 A Grandparent at Last!'},
+    {id:'grandchildren3',cond:(G.grandchildren||[]).length>=3,text:'👼👼👼 A Full Nursery of Grandchildren!'},
   ];
   checks.forEach(c=>{if(c.cond&&!G.achievements.includes(c.id)){G.achievements.push(c.id);showAchievement(c.text);}});
 }
@@ -3172,11 +4078,130 @@ function endGame(type){
     deco='💸';title='Financial Ruin';
     body=`The creditors have finally claimed everything. ${formatPlayerTitle(G.nobleRank,G.gender,G.fname,G.lname)} is forced to quit society entirely.\n\nLegacy Score: ${legacyScore} — ${legacyRank}`;
   }
-  showModal(deco,title,body,[{label:'✦ Begin a New Life ✦',fn:()=>{
+  const adultChildren=G.children.filter(c=>c.age>=16);
+  const choices=[{label:'✦ Begin a New Life ✦',fn:()=>{
     document.getElementById('game-shell').style.display='none';
     document.getElementById('splash').style.display='flex';
     G={};WORLD_NPCS=[];selectedClass='nobility';
-  }}]);
+  }}];
+  if(adultChildren.length>0){
+    const heir=adultChildren.find(c=>c.isMale)||adultChildren[0];
+    choices.unshift({label:`✦ Continue as ${heir.name} (Your Child) ✦`,fn:()=>{
+      continueAsChild(heir);
+    }});
+  }
+  showModal(deco,title,body,choices);
+}
+
+// ═══════════════════════════════════════════════════
+//  CONTINUE AS CHILD (legacy system)
+// ═══════════════════════════════════════════════════
+function continueAsChild(child){
+  const oldParentName=`${G.fname} ${G.lname}`;
+  const oldDynasty=G.dynasty;
+  const oldNobleRank=G.nobleRank;
+  const oldEstate=G.estate;
+  const oldSavings=Math.floor(G.savings*0.5);
+  const isMale=child.isMale;
+  const gender=isMale?'gentleman':'lady';
+  const cd=CLASS_DATA[G.socialClass];
+  G={
+    fname:child.fname||child.name.split(' ')[0],
+    lname:child.lname||child.name.split(' ').slice(-1)[0],
+    gender,year:G.year,startYear:G.year,
+    socialClass:G.socialClass,background:'accomplished',
+    nobleRank:isMale?oldNobleRank:null,
+    age:child.age,
+    health:clamp(child.health||75),
+    reputation:clamp((child.charm||50)*0.5+(G.reputation||50)*0.3),
+    charm:clamp(child.charm||50),
+    virtue:clamp(child.virtue||55),
+    wit:clamp(child.wit||50),
+    confidence:clamp(child.confidence||35),
+    composure:clamp(20),
+    education:clamp(child.education||10,0,100),
+    income:oldNobleRank&&isMale?NOBLE_RANK_INCOME[oldNobleRank.rank]:cd.income,
+    savings:oldSavings,
+    scandal:0,rumorLevel:0,
+    familyPrestige:cd.startRep,
+    fertility:clamp(70+rand(-10,10),0,100),
+    pregnant:false,pregnancyMonth:0,pregnancyFather:null,
+    married:false,spouse:null,marriageHappiness:0,
+    lovers:[],secretRelationships:[],courtships:[],
+    children:[],relationships:[],friends:[],
+    events:[],memories:[],
+    suitorsSeen:[],seasonCount:0,achievements:[],
+    debtLevel:0,debtWarned:false,
+    employed:child.employed||false,position:null,jobIncome:0,jobPromotion:0,
+    atUniversity:child.atUniversity||false,universitySubject:null,universityYear:0,universityDone:child.universityDone||false,
+    dead:false,exiled:false,hasDebuted:child.age>=17,
+    estate:oldEstate||{name:child.lname+' House',prestige:5,improvements:[]},
+    estateIncome:0,pendingLetters:[],secrets:[],
+    traits:child.traits||['Determined'],
+    traitChangedYear:G.year,
+    dynasty:{...oldDynasty,prestige:oldDynasty.prestige*0.8},
+    season:'Spring',seasonIndex:0,
+    hobbies:[],
+    travellingTo:null,travelYearsLeft:0,
+    ownedProperties:[],currentLocation:'Countryside',
+    childhoodFriends:[],
+    gossipLog:[],
+    arrangedMarriageShown:false,
+    lifeEnded:false,
+    legacyParent:oldParentName,
+  };
+  generateFamily();
+  WORLD_NPCS=generateNPCPool(80,gender);
+  addEvent('🌿','A New Generation',`${G.fname} ${G.lname} takes up the mantle of their parent, ${oldParentName}, and begins their own story.`,'good');
+  addMemory(`Inherited life from ${oldParentName} in ${G.year}`,'positive');
+  document.getElementById('modal').classList.add('hidden');
+  renderAll();showTab('chronicle',true);
+}
+
+// ═══════════════════════════════════════════════════
+//  FRIENDS TAB
+// ═══════════════════════════════════════════════════
+function renderFriends(){
+  const el=document.getElementById('friends-content');
+  if(!el)return;
+  let html='';
+  // Childhood friends
+  if(G.childhoodFriends&&G.childhoodFriends.length>0){
+    html+=`<div class="sub-header">🌱 Childhood Friends</div>`;
+    html+=G.childhoodFriends.map((f,i)=>`<div class="friend-card low-society">
+      <div class="friend-name">${f.name}</div>
+      <div style="font-size:0.74rem;color:var(--ink-light);font-style:italic">${f.type==='school_friend'?'School companion':'Childhood playmate'} — since ${f.since}</div>
+      <div class="rel-bar" style="margin-top:0.28rem"><div class="rel-fill" style="width:${f.affection||50}%;background:var(--sage)"></div></div>
+      <div class="friend-actions">
+        <button class="friend-btn" onclick="childhoodFriendAction(${i},'visit')">☕ Visit</button>
+        <button class="friend-btn" onclick="childhoodFriendAction(${i},'letter')">✉️ Letter</button>
+      </div></div>`).join('');
+  }
+  // Society friends
+  const highF=G.friends.filter(f=>f.tier==='high');
+  const riskyF=G.friends.filter(f=>f.tier==='risky');
+  const lowF=G.friends.filter(f=>f.tier==='low');
+  if(highF.length){html+=`<div class="sub-header">👑 High Society Friends</div>`;html+=highF.map(f=>renderFriendCard(f)).join('');}
+  if(riskyF.length){html+=`<div class="sub-header">🃏 Risky Acquaintances</div>`;html+=riskyF.map(f=>renderFriendCard(f)).join('');}
+  if(lowF.length){html+=`<div class="sub-header">🌿 Low Society Friends</div>`;html+=lowF.map(f=>renderFriendCard(f)).join('');}
+  if(!G.friends.length&&!(G.childhoodFriends&&G.childhoodFriends.length)){
+    html+=`<div class="info-box">You have no close friends yet. Visit Society to seek acquaintances, or wait for childhood friendships to develop.</div>`;
+  }
+  html+=`<div class="sub-header">Seek New Friends</div>
+  <div class="choices-grid">
+    <button class="choice-btn" onclick="meetNewFriend('high')"><span class="choice-emoji">👑</span><span class="choice-info">High Society Company<small>Titled, wealthy. Demanding but rewarding.</small></span></button>
+    <button class="choice-btn" onclick="meetNewFriend('risky')"><span class="choice-emoji">🃏</span><span class="choice-info">A Risky Friendship<small>Exciting but scandalous.</small></span></button>
+    <button class="choice-btn" onclick="meetNewFriend('low')"><span class="choice-emoji">🌿</span><span class="choice-info">Someone of Lower Station<small>Loyal, reputation risk.</small></span></button>
+  </div>`;
+  el.innerHTML=html;
+}
+
+function childhoodFriendAction(i,action){
+  const f=G.childhoodFriends[i];if(!f)return;
+  f.affection=f.affection||50;
+  if(action==='visit'){f.affection=Math.min(100,f.affection+12);G.confidence=clamp(G.confidence+2);addEvent('☕','Visiting '+f.name.split(' ')[0],`A warm reunion with your old ${f.type==='school_friend'?'school':'childhood'} friend.`,'good');}
+  else if(action==='letter'){f.affection=Math.min(100,f.affection+7);addEvent('✉️','A Letter to '+f.name.split(' ')[0],'Old memories rekindled by correspondence.','good');}
+  renderAll();renderFriends();
 }
 
 // ═══════════════════════════════════════════════════
